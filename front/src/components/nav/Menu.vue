@@ -26,12 +26,12 @@
       </v-list-item-icon>
       <v-list-item-title>Manage Users</v-list-item-title>
     </v-list-item>
-    <hr />
+    <v-divider></v-divider>
     <v-list-item>
       <v-list-item-icon>
         <v-icon>mdi-export</v-icon>
       </v-list-item-icon>
-      <v-list-item-title>Logout</v-list-item-title>
+      <v-list-item-title>Log out</v-list-item-title>
     </v-list-item>
   </v-list>
 </template>

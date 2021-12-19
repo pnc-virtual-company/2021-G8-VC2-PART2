@@ -10,7 +10,7 @@
     >
       <menu-item></menu-item>
     </v-navigation-drawer>
-    <v-app-bar app>
+    <v-app-bar app height="45px">
       <v-app-bar-nav-icon
         @click.prevent="showNavigation = !showNavigation"
       ></v-app-bar-nav-icon>
@@ -28,7 +28,6 @@
         <router-view></router-view>
       </v-container>
     </v-main>
-
     <v-footer app> </v-footer>
   </v-app>
 </template>
@@ -55,6 +54,6 @@ export default {
 .container {
   width: 50%;
   margin: auto;
-  background: #F3F2EF;
+  background: #f3f2ef;
 }
 </style>
