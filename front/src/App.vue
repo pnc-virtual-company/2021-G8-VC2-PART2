@@ -16,3 +16,8 @@ export default {
   }),
 };
 </script>
+<style>
+* {
+  font-family: 'San Francisco', Helvetica, Arial, san-serif;
+}
+</style>
