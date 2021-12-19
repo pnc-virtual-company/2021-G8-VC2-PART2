@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <!-- Navigation -->
-    <v-navigation-drawer app v-model="showNavigation" absolute bottom temporary>
+    <!-- <v-navigation-drawer app v-model="showNavigation" absolute bottom temporary>
       <app-nav></app-nav>
     </v-navigation-drawer>
     <v-app-bar app>
@@ -18,9 +18,9 @@
       size="36"
     >
       <img src="https://i.pinimg.com/originals/a6/58/32/a65832155622ac173337874f02b218fb.png" alt="">
-    </v-avatar>
+    </v-avatar> -->
       <!-- -->
-    </v-app-bar>
+    <!-- </v-app-bar> -->
     <v-main>
       <v-container fluid>
         <router-view></router-view>
@@ -30,12 +30,12 @@
   </v-app>
 </template>
 <script>
-import Navigation from "./components/nav/Navigation.vue";
+// import Navigation from "./components/nav/Navigation.vue";
 
 export default {
-  components: {
-    "app-nav": Navigation,
-  },
+  // components: {
+  //   "app-nav": Navigation,
+  // },
   data() {
     return {
       showNavigation: false,

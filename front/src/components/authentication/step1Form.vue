@@ -1,34 +1,59 @@
 <template>
   <section>
     <div class="step1">
-    <div class="profile">
-      <img src="../../assets/profilepic.svg" alt="" />
-    </div>
-    <div class="title-login">
-      <p>WELCOME BACK</p>
-    </div>
-    <v-form>
-      <v-container>
-      <v-row class="justify-center">
-        <v-col md="8">
-          <v-text-field
-            label="Email"
-            prepend-inner-icon="mdi-email"
-          ></v-text-field>
-        </v-col>
-      </v-row>
-      <v-row class="justify-center">
-        <v-col md="8">
-          <v-btn type="submit" depressed color="primary" @click="$emit('next')"> NEXT <v-icon>mdi-arrow-right</v-icon></v-btn>
-        </v-col>
-      </v-row>
-      </v-container>
-    </v-form>
+      <div class="profile">
+        <img src="../../assets/profilepic.svg" alt="" />
+      </div>
+      <div class="title-login">
+        <p>WELCOME BACK</p>
+      </div>
+      <v-form ref="form" v-model="valid" lazy-validation>
+        <v-container>
+          <v-row class="justify-center">
+            <v-col md="8">
+              <v-text-field
+                label="Email"
+                prepend-inner-icon="mdi-email"
+                v-model="email"
+                :rules="[rules.required]"
+                @click:append="show1 = !show1"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row class="justify-center">
+            <v-col md="8">
+              <v-btn
+                :disabled="!valid"
+                type="submit"
+                depressed
+                color="primary"
+                @click="$emit('next')"
+              >
+                NEXT <v-icon>mdi-arrow-right</v-icon></v-btn
+              >
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-form>
     </div>
   </section>
 </template>
 
-<script></script>
+<script>
+export default {
+  data() {
+    return {
+      valid: true,
+      show1: false,
+      email: "",
+      rules: {
+        required: (value) => !!value || "Required.",
+        min: (v) => v.length >= 8 || "Min 8 characters",
+      },
+    };
+  },
+};
+</script>
 
 <style scoped>
 .row-input {
