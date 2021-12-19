@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\DomainCompany;
+use App\Models\Skill;
 use Illuminate\Http\Request;
 
-class DomainCompanyController extends Controller
+class SkillController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function getDomainCompanies()
+    public function getSkills()
     {
-            return DomainCompany::latest()->get();
+        return Skill::latest()->get();
     }
 
     /**
@@ -23,17 +23,16 @@ class DomainCompanyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function createDomain(Request $request)
+    public function createSkill(Request $request)
     {
         $request->validate([
-            'domain_name' => 'required|unique:domain_companies',
+            'skill_name' => 'required|unique:skills',
         ]);
-        $domain = new DomainCompany();
-        $domain->domain_name = $request->domain_name;
+        $skill = new Skill();
+        $skill->skill_name = $request->skill_name;
 
-        $domain->save();
-        return response()->json(['message'=>'Your domain have been created', 'data'=>$domain ], 201);
-
+        $skill->save();
+        return response()->json(['message'=>'Your skill have been created', 'data'=>$skill ], 201);
     }
 
     /**
@@ -42,9 +41,9 @@ class DomainCompanyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function showOneDomain($id)
+    public function showOneSkill($id)
     {
-        return DomainCompany::findOrFail($id);
+        return Skill::findOrFail($id);
     }
 
     /**
@@ -54,16 +53,16 @@ class DomainCompanyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function updateDomain(Request $request, $id)
+    public function updateSkill(Request $request, $id)
     {
         $request->validate([
-            'domain_name' => 'required',
+            'skill_name' => 'required',
         ]);
-        $domain = DomainCompany::findOrFail($id);
-        $domain->domain_name = $request->domain_name;
+        $skill = Skill::findOrFail($id);
+        $skill->skill_name = $request->skill_name;
 
-        $domain->save();
-        return response()->json(['massage'=>'Your Domain have been updated', 'data'=> $domain], 200);
+        $skill->save();
+        return response()->json(['massage'=>'Your skill have been updated', 'data'=> $skill], 200);
     }
 
     /**
@@ -74,6 +73,6 @@ class DomainCompanyController extends Controller
      */
     public function destroy($id)
     {
-        return  DomainCompany::destroy($id);
+        return  Skill::destroy($id);
     }
 }
