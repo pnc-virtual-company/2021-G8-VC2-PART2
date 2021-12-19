@@ -42,7 +42,6 @@ class Usercontroller extends Controller
             'user' => $user,
         ]);
     }
-
     // sign in step1
     public function signInStep1(Request $request)
     {
