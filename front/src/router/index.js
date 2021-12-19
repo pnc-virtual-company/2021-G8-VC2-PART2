@@ -1,7 +1,7 @@
 
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Signup from '../components/authentication/Signup.vue'
+import SignIn from '../components/authentication/SignIn.vue'
 Vue.use(VueRouter)
 
 const router = new VueRouter({
@@ -9,12 +9,12 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes: [
     {
-      path: "/signup",
-      component: Signup
+      path: "/signIn",
+      component: SignIn
     },
     {
       path: "/",
-      redirect: "/signup"
+      redirect: "/signIn"
     },
   ]
 })
