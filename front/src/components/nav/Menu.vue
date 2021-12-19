@@ -1,6 +1,6 @@
 <template>
   <v-list nav dense>
-    <v-list-item :to="{ path: '/myProfile' }">
+    <v-list-item :to="{ path: '/myprofile' }">
       <v-list-item-icon>
         <v-icon>mdi-account</v-icon>
       </v-list-item-icon>

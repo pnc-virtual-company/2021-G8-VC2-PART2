@@ -2,22 +2,22 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import MyProfileView from '../components/views/MyProfileView.vue'
-import Signup from '../components/authentication/Signup.vue'
+import SignIn from '../components/authentication/SignIn.vue'
 
 const routes = [
   {
-    path: '/myProfile',
+    path: '/myprofile',
     name: 'MyProfile',
     component: MyProfileView
   },
   {
-    path: "/signup",
-    name: 'SignUp',
-    component: Signup
+    path: "/signin",
+    name: 'SignIn',
+    component: SignIn
   },
   {
     path: "/",
-    redirect: "/signup"
+    redirect: "/signin"
   },
 ]
 
