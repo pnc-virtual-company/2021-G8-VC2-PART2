@@ -57,7 +57,7 @@ class DomainCompanyController extends Controller
     public function updateDomain(Request $request, $id)
     {
         $request->validate([
-            'domain_name' => 'required',
+            'domain_name' => 'required|unique',
         ]);
         $domain = DomainCompany::findOrFail($id);
         $domain->domain_name = $request->domain_name;
