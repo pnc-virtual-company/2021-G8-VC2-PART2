@@ -1,22 +1,32 @@
-
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Signup from '../components/authentication/Signup.vue'
+
+import MyProfileView from '../components/views/MyProfileView.vue'
+import SignIn from '../components/authentication/SignIn.vue'
+
+const routes = [
+  {
+    path: '/myprofile',
+    name: 'MyProfile',
+    component: MyProfileView
+  },
+  {
+    path: "/signin",
+    name: 'SignIn',
+    component: SignIn
+  },
+  {
+    path: "/",
+    redirect: "/signin"
+  },
+]
+
 Vue.use(VueRouter)
 
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes: [
-    {
-      path: "/signup",
-      component: Signup
-    },
-    {
-      path: "/",
-      redirect: "/signup"
-    },
-  ]
+  routes
 })
 
 export default router

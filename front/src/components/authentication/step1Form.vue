@@ -13,9 +13,10 @@
             <v-col md="8">
               <v-text-field
                 label="Email"
+                type="email"
                 prepend-inner-icon="mdi-email"
                 v-model="email"
-                :rules="[rules.required]"
+                :rules="[rules.required, rules.emailRules]"
                 @click:append="show1 = !show1"
               ></v-text-field>
             </v-col>
@@ -33,7 +34,7 @@
               >
             </v-col>
           </v-row>
-        </v-container>
+        </v-container> 
       </v-form>
     </div>
   </section>
@@ -49,6 +50,7 @@ export default {
       rules: {
         required: (value) => !!value || "Required.",
         min: (v) => v.length >= 8 || "Min 8 characters",
+        emailRules: (v) => /.+@.+/.test(v) || "Invalid Email address",
       },
     };
   },
