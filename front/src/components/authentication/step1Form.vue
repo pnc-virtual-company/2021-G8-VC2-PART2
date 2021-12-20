@@ -8,33 +8,30 @@
         <p>WELCOME BACK</p>
       </div>
       <v-form ref="form" v-model="valid" lazy-validation>
-        <v-container>
-          <v-row class="justify-center">
-            <v-col md="8">
-              <v-text-field
-                label="Email"
-                type="email"
-                prepend-inner-icon="mdi-email"
-                v-model="email"
-                :rules="[rules.required, rules.emailRules]"
-                @click:append="show1 = !show1"
-              ></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row class="justify-center">
-            <v-col md="8">
-              <v-btn
-                :disabled="!valid"
-                type="submit"
-                depressed
-                color="primary"
-                @click="$emit('next')"
-              >
-                NEXT <v-icon>mdi-arrow-right</v-icon></v-btn
-              >
-            </v-col>
-          </v-row>
-        </v-container> 
+        <v-row class="justify-center">
+          <v-col md="8">
+            <v-text-field
+              label="Email"
+              type="email"
+              prepend-inner-icon="mdi-email"
+              v-model="email"
+              :rules="[rules.required, rules.emailRules]"
+            ></v-text-field>
+          </v-col>
+        </v-row>
+        <v-row class="justify-center">
+          <v-col md="8">
+            <v-btn
+              :disabled="!valid"
+              type="button"
+              depressed
+              color="primary"
+              @click="$emit('submitFirstStep', email)"
+            >
+              NEXT <v-icon>mdi-arrow-right</v-icon></v-btn
+            >
+          </v-col>
+        </v-row>
       </v-form>
     </div>
   </section>
@@ -49,7 +46,6 @@ export default {
       email: "",
       rules: {
         required: (value) => !!value || "Required.",
-        min: (v) => v.length >= 8 || "Min 8 characters",
         emailRules: (v) => /.+@.+/.test(v) || "Invalid Email address",
       },
     };

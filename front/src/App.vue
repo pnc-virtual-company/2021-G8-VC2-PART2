@@ -1,47 +1,79 @@
 <template>
   <v-app>
-    <v-navigation-drawer
-      app
-      v-model="showNavigation"
-      absolute
-      bottom
-      temporary
-      width="23%"
-    >
-      <menu-item></menu-item>
-    </v-navigation-drawer>
-    <v-app-bar app height="45px">
-      <v-app-bar-nav-icon
-        @click.prevent="showNavigation = !showNavigation"
-      ></v-app-bar-nav-icon>
-      <v-img max-height="50" max-width="250" src=""></v-img>
-      <v-spacer></v-spacer>
-      <v-avatar size="36">
-        <img
-          src="https://i.pinimg.com/originals/a6/58/32/a65832155622ac173337874f02b218fb.png"
-          alt=""
-        />
-      </v-avatar>
-    </v-app-bar>
+    <navigation-bar 
+      v-if="isLogin"
+      @signout="signOut"
+    ></navigation-bar>
     <v-main>
-      <v-container fluid ma-0 pa-0 fill-height>
-        <router-view></router-view>
-      </v-container>
+      <router-view
+        :status="signInData.status"
+        @submitFirstStep="submitStep1"
+        @submitSecondStep="submitStep2"
+      ></router-view>
     </v-main>
-    <v-footer app> </v-footer>
   </v-app>
 </template>
 
 <script>
-import Menu from "./components/nav/Menu.vue";
+import axios from "./axios-http.js";
+import Nav from "./components/nav/Navigation.vue";
 export default {
   components: {
-    "menu-item": Menu,
+    "navigation-bar": Nav,
   },
   data() {
     return {
       showNavigation: false,
-    };
+      user: null,
+      signInData: {
+        email: null,
+        password: null,
+        firstname: null,
+        lastname: null,
+        status: null
+      }
+    }
+  },
+  computed: {
+    isLogin: function() { 
+      return this.user !== null
+    }
+  },
+  methods: {
+    signOut() {
+      localStorage.removeItem("user");
+      this.user = null;
+    },
+    submitStep1(email) {
+      this.signInData.email = email;
+      axios.post('signIn/step1', {'email': email})
+      .then(res => {
+        this.signInData.status = res.data.status;
+        console.log(this.signInData)
+      })
+    },
+    submitStep2(data) {
+      if(this.signInData.status === 'invited') {
+        this.signInData.firstname = data.firstname;
+        this.signInData.lastname = data.lastname;
+        this.signInData.password = data.password;
+      } else {
+        this.signInData.password = data.password;
+      }
+      console.log(this.signInData);
+      axios.post('signIn/step2', this.signInData)
+      .then(res => {
+        this.user = res.data.user;
+        localStorage.setItem('user', JSON.stringify(res.data.user));
+        this.$router.push('/myprofile');
+      })
+    }
+  },
+  mounted() {
+    if (JSON.parse(localStorage.getItem("user"))) {
+      this.user = JSON.parse(localStorage.getItem("user"));
+      this.$router.push('/myprofile');
+    }
   },
 };
 </script>

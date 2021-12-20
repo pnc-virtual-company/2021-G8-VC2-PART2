@@ -23,4 +23,9 @@ section {
     margin: auto;
     background: #F3F2EF;
 }
+@media (max-width:1070px){
+    section{
+        width: 90%;
+    }
+}
 </style>

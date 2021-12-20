@@ -8,76 +8,71 @@
         <p>WELCOME BACK</p>
       </div>
       <v-form ref="form" v-model="valid" lazy-validation>
-        <v-container>
-          <v-row class="justify-center row-input">
-            <v-col md="4">
-              <v-text-field
-                class="ma-0 pa-0"
-                label="Firstname"
-                v-model="firstname"
-                prepend-inner-icon="mdi-account"
-                :rules="[rules.required]"
-                @click:append="show1 = !show1"
-              ></v-text-field>
-            </v-col>
-            <v-col md="4">
-              <v-text-field
-                class="ma-0 pa-0"
-                label="Lastname"
-                prepend-inner-icon="mdi-account"
-                v-model="lastname"
-                :rules="[rules.required]"
-              ></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row class="justify-center row-input">
-            <v-col md="8">
-              <v-text-field
-                class="ma-0 pa-0"
-                v-model="password"
-                :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                :rules="[rules.required, rules.min]"
-                :type="show1 ? 'text' : 'password'"
-                name="input-10-1"
-                label="Password"
-                hint="At least 8 characters"
-                @click:append="show1 = !show1"
-              ></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row class="justify-center row-input">
-            <v-col md="8">
-              <v-text-field
-                class="ma-0 pa-0"
-                v-model="comfirmPassword"
-                :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                :rules="[rules.required, rules.min]"
-                :type="show1 ? 'text' : 'password'"
-                name="input-10-1"
-                label="Comfirm Password"
-                hint="At least 8 characters"
-                @click:append="show1 = !show1"
-              ></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row class="justify-center row-input">
-            <v-col md="3">
-              <v-btn depressed color="4d4d4d ma-0 pa-0" @click="$emit('back')">
-                Back
-              </v-btn>
-            </v-col>
-            <v-col md="5">
-              <v-btn
-                :disabled="!valid"
-                @click="validate"
-                depressed
-                color="primary ma-0 pa-0"
-              >
-                Sign in
-              </v-btn>
-            </v-col>
-          </v-row>
-        </v-container>
+        <v-row class="justify-center row-input" v-if="status === 'invited'">
+          <v-col md="4">
+            <v-text-field
+              class="ma-0 pa-0"
+              label="Firstname"
+              v-model="firstname"
+              :rules="[rules.required]"
+            ></v-text-field>
+          </v-col>
+          <v-col md="4">
+            <v-text-field
+              class="ma-0 pa-0"
+              label="Lastname"
+              v-model="lastname"
+              :rules="[rules.required]"
+            ></v-text-field>
+          </v-col>
+        </v-row>
+        <v-row class="justify-center row-input">
+          <v-col md="8">
+            <v-text-field
+              class="ma-0 pa-0"
+              v-model="password"
+              :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+              :rules="[rules.required, rules.min]"
+              :type="show1 ? 'text' : 'password'"
+              name="input-10-1"
+              label="Password"
+              hint="At least 8 characters"
+              @click:append="show1 = !show1"
+            ></v-text-field>
+          </v-col>
+        </v-row>
+        <v-row class="justify-center row-input" v-if="status === 'invited'">
+          <v-col md="8">
+            <v-text-field
+              class="ma-0 pa-0"
+              v-model="confirmPassword"
+              :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+              :rules="[rules.required, rules.min]"
+              :type="show2 ? 'text' : 'password'"
+              name="input-10-1"
+              label="Comfirm Password"
+              hint="At least 8 characters"
+              @click:append="show2 = !show2"
+            ></v-text-field>
+          </v-col>
+        </v-row>
+        <v-row class="justify-center row-input">
+          <v-col md="3">
+            <v-btn depressed color="4d4d4d ma-0 pa-0" @click="$emit('back')">
+              Back
+            </v-btn>
+          </v-col>
+          <v-col md="5">
+            <v-btn
+              :disabled="!valid"
+              @click="validate"
+              depressed
+              color="primary ma-0 pa-0"
+            >
+              Sign in
+            </v-btn>
+          </v-col>
+        </v-row>
       </v-form>
     </div>
   </section>
@@ -85,12 +80,14 @@
 
 <script>
 export default {
+  props: ['status'],
   data() {
     return {
       valid: true,
       show1: false,
+      show2: false,
       password: "",
-      comfirmPassword: "",
+      confirmPassword: "",
       firstname: "",
       lastname: "",
       rules: {
@@ -99,9 +96,29 @@ export default {
       },
     };
   },
+  computed: {
+    passwordConfirmationRule() {
+      return () => this.password === this.confirmPassword || "Password must match";
+    },
+  },
   methods: {
     validate() {
-      this.$refs.form.validate();
+      let isValidated = this.$refs.form.validate();
+      if(isValidated) {
+        let data = {};
+        if(this.status === 'invited') {
+          data = {
+            'firstname': this.firstname,
+            'lastname': this.lastname,
+            'password': this.password,
+          }
+        } else if(this.status === 'validated') {
+          data = {
+            'password': this.password,
+          }
+        }
+        this.$emit('submitSecondStep', data);
+      }
     },
   },
 };

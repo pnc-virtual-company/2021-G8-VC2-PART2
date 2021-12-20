@@ -46,7 +46,7 @@ class Usercontroller extends Controller
     // sign in step1
     public function signInStep1(Request $request)
     {
-        $user = User::where('email', $request->email);
+        $user = User::where('email', $request->email)->get()->first();
 
         //return the user is invited or validated when email is registered or invited
         if(!$user) {
@@ -58,7 +58,7 @@ class Usercontroller extends Controller
     // sign in step2
     public function signInStep2(Request $request)
     {
-        $user = User::where('email', $request->email);
+        $user = User::where('email', $request->email)->get()->first();
 
         if(!$user){
             return response()->json(['message' => 'Unauthorized'], 401);
@@ -78,7 +78,10 @@ class Usercontroller extends Controller
             if($user->status === 'invited') {
                 $user->firstname = $request->firstname;
                 $user->lastname = $request->lastname;
-                $user->password = $request->password;
+                $user->password = bcrypt($request->password);
+                $user->status = 'validated';
+                $user->save();
+                return response()->json(['message' => 'Successfully', 'user' => $user]);
             } else if ($user->status === 'validated') {
                 if(!Hash::check($request->password, $user->password)){
                     return response()->json(['message' => 'Unauthorized'], 401);
@@ -93,7 +96,10 @@ class Usercontroller extends Controller
             if($user->status === 'invited') {
                 $user->firstname = $request->firstname;
                 $user->lastname = $request->lastname;
-                $user->password = $request->password;
+                $user->password = bcrypt($request->password);
+                $user->status = 'validated';
+                $user->save();
+                return response()->json(['message' => 'Successfully', 'user' => $user]);
             } else if ($user->status === 'validated') {
                 if(!Hash::check($request->password, $user->password)){
                     return response()->json(['message' => 'Unauthorized'], 401);
@@ -102,7 +108,7 @@ class Usercontroller extends Controller
                     ->join('alumni', 'user.id', '=', 'alumni.user_id')
                     ->select('user.*', 'alumni.*')
                     ->get();
-                    return response()->json(['message' => 'Successfully', 'user' => $alumni]);
+                    return response()->json(['message' => 'Successfully', 'user' => $user]);
                 }
             }
         }
