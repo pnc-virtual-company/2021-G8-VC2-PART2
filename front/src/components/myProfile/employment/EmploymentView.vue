@@ -1,7 +1,7 @@
 <template>
   <v-card class="mt-5 mb-4 pa-4 rounded-lg">
     <v-row class="mb-1">
-      <v-col cols="12" sm="3" md="5">
+      <v-col cols="8" sm="3" md="5">
         <h3>Employment</h3>
       </v-col>
       <v-col class="add-info">

@@ -1,7 +1,7 @@
 <template>
   <v-card class="mt-5 pa-4 rounded-lg">
     <v-row>
-      <v-col cols="12" sm="3" md="5">
+      <v-col cols="8" sm="3" md="5">
         <v-avatar size="80px">
           <img
             src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Circle-icons-profile.svg/1024px-Circle-icons-profile.svg.png"
