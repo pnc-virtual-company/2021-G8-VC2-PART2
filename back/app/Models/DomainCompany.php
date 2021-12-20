@@ -9,4 +9,8 @@ class DomainCompany extends Model
 {
     use HasFactory;
     protected $fillable =['domain_name'];
+    public function companies()
+    {
+        return $this->hasMany(Company::class);
+    }
 }

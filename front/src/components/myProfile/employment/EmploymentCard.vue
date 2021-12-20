@@ -1,71 +1,62 @@
 <template>
-  <v-container>
-    <v-card justify="center">
-
-      <v-expansion-panels>
-        <v-expansion-panel
-          v-for="(message, i) in messages"
-          :key="i"
-        >
-          <v-expansion-panel-header>
-            <v-row
-              align="center"
-              class="spacer"
-            >
-              <v-col
-                cols="4"
-                sm="2"
-                md="1"
-              >
-                <v-avatar
-                  size="36px"
-                >
-                  <img
-                    alt="Avatar"
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFJFVGbYZEtuty-p4ll8fevPzLvv7MOK9vJA&usqp=CAU"
-                  >
-                 
-                </v-avatar>
-              </v-col>
-              <v-col
-                class="hidden-xs-only"
-                sm="5"
-                md="3"
-              >
-                <strong v-html="message.name"></strong>
-              </v-col>
-            </v-row>
-          </v-expansion-panel-header>
-        </v-expansion-panel>
-      </v-expansion-panels>
-    </v-card>
-  </v-container>
+    <v-row justify="center">
+      <v-card width="100%" class="ma-1 pa-2 elevation-0 rounded-lg" >
+        <v-list-item class="ma-0 pa-0">
+          <v-avatar class="mr-3" size="50px">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Circle-icons-profile.svg/1024px-Circle-icons-profile.svg.png"
+            alt=""
+          />
+        </v-avatar>
+          <v-list-item-title>
+            <v-list-item-title>WEB Trainer</v-list-item-title>
+            <small>Passerelles numériques Cambodia</small>
+            <br>
+            <small>Jan 15 2020 - Feb 30 2021 Phnom Penh</small>
+          </v-list-item-title>
+        </v-list-item>
+        <v-divider></v-divider>
+      </v-card>
+      <v-card width="100%" class="ma-1 pa-2 elevation-0 rounded-lg" >
+        <v-list-item class="ma-0 pa-0">
+          <v-avatar class="mr-3" size="50px">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Circle-icons-profile.svg/1024px-Circle-icons-profile.svg.png"
+            alt=""
+          />
+        </v-avatar>
+          <v-list-item-title>
+            <v-list-item-title>WEB Trainer</v-list-item-title>
+            <small>Passerelles numériques Cambodia</small>
+            <br>
+            <small>Jan 15 2020 - Feb 30 2021 Phnom Penh</small>
+          </v-list-item-title>
+        </v-list-item>
+        <v-divider></v-divider>
+      </v-card>
+    </v-row>
 </template>
 
 <script>
-  export default {
-    data: () => ({
-      messages: [
-        {
-          avatar: 'https://avatars0.githubusercontent.com/u/9064066?v=4&s=460',
-          name: 'John Leider',
-          
-        },
-        {
-          avatar: 'mdi-account-multiple',
-          name: 'Social',
-          
-        },
-        {
-          
-          avatar: 'mdi-tag',
-          name: 'Promos',
-        },
-      ],
-    }),
-  }
+export default {
+  data: () => ({
+    messages: [
+      {
+        avatar: "https://avatars0.githubusercontent.com/u/9064066?v=4&s=460",
+        name: "John Leider",
+      },
+      {
+        avatar: "mdi-account-multiple",
+        name: "Social",
+      },
+      {
+        avatar: "mdi-tag",
+        name: "Promos",
+      },
+    ],
+  }),
+};
 </script>
 
 <style scoped>
-
 </style>

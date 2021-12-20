@@ -9,14 +9,14 @@ class Alumni extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'user_id',
         'gender',
         'profile',
         'batch',
         'major',
         'phone'
     ];
-    public function user() {
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 }
