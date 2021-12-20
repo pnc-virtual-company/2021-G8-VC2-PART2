@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Usercontroller;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\SkillController;
+use App\Http\Controllers\PositionController;
 
 Route::post('/signup', [UserController::class, "signUp"]);
 Route::post('/signup/admin', [UserController::class, "signUpAdmin"]);
@@ -37,3 +38,12 @@ Route::get('/skills/{id}',[SkillController::class, "showOneSkill"]);
 Route::post('/skills',[SkillController::class, "createSkill"]);
 Route::put('/skills/{id}',[SkillController::class, "updateSkill"]);
 Route::delete('/skills/{id}',[SkillController::class, "destroy"]);
+
+//Route for position
+
+Route::get('/workPositions',[PositionController::class, "getWorkPositions"]);
+Route::get('/workPositions/{id}',[PositionController::class, "getOneWorkPosition"]);
+
+Route::post('/workPositions',[PositionController::class, "createWorkPosition"]);
+Route::put('/workPositions/{id}',[PositionController::class, "updateWorkPosition"]);
+Route::delete('/workPositions/{id}',[PositionController::class, "deleteWorkPosition"]);
