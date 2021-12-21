@@ -13,7 +13,6 @@
     <employment-card></employment-card>
   </v-card>
 </template>
-
 <script>
 import EmploymentCard from "./EmploymentCard.vue";
 

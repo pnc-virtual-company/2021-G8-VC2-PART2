@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 
 import MyProfileView from '../components/views/MyProfileView.vue'
 import SignIn from '../components/authentication/SignIn.vue'
+import AdminView from '../components/views/AdminView.vue'
 
 const routes = [
   {
@@ -14,6 +15,11 @@ const routes = [
     path: "/signin",
     name: 'SignIn',
     component: SignIn
+  },
+  {
+    path: "/adminview",
+    name: 'AdminView',
+    component: AdminView
   },
   {
     path: "/",
