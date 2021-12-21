@@ -1,3 +1,4 @@
+
 <?php
 
 use App\Http\Controllers\DomainCompanyController;
@@ -7,10 +8,10 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\PositionController;
 
-Route::post('/signup', [UserController::class, "signUp"]);
-Route::post('/signup/admin', [UserController::class, "signUpAdmin"]);
-Route::post('/signIn/step1', [UserController::class, "signInStep1"]);
-Route::post('/signIn/step2', [UserController::class, "signInStep2"]);
+Route::post('/invite', [UserController::class, "signUp"]);
+Route::get('/signin/{email}', [UserController::class, "signInStep1"]);
+Route::post('/signin/password', [UserController::class, "signInStep2"]);
+Route::post('/signin/completeinfo', [UserController::class, "signInStep2"]);
 
 Route::get('/users',[UserController::class, "getUsers"]);
 

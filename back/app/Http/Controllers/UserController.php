@@ -44,9 +44,9 @@ class Usercontroller extends Controller
         ]);
     }
     // sign in step1
-    public function signInStep1(Request $request)
+    public function signInStep1($email)
     {
-        $user = User::where('email', $request->email)->get()->first();
+        $user = User::where('email', $email)->get()->first();
 
         //return the user is invited or validated when email is registered or invited
         if(!$user) {
