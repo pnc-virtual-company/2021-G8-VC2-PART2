@@ -1,6 +1,5 @@
 <template>
   <section>
-    <!-- <v-row justify="center"> -->
     <v-card class="ma-0 pa-2 elevation-0 rounded-lg">
       <v-row>
         <v-col>
@@ -12,53 +11,109 @@
               />
             </v-avatar>
             <v-list-item-title>
-              <v-list-item-title>WEB Trainer</v-list-item-title>
-              <small>Passerelles numériques Cambodia</small>
+              <v-list-item-title>{{ employment.position }}</v-list-item-title>
+              <small>{{ employment.company }}</small>
               <br />
-              <small>Jan 15 2020 - Feb 30 2021 Phnom Penh</small>
+              <small
+                >{{ employment.workStart }} - {{ employment.workLeave }}
+                {{ employment.location }}</small
+              >
             </v-list-item-title>
           </v-list-item>
         </v-col>
         <v-col cols-4 class="option mt-0">
-          <div class="mr-2">
-            <v-icon size="20px">mdi-dots-horizontal</v-icon>
-          </div>
+          <v-dialog v-model="dialog" persistent max-width="600px">
+            <template v-slot:activator="{ on, attrs }">
+            <div class="mr-2">
+              <v-icon size="20px">mdi-dots-horizontal</v-icon>
+            </div>
+            </template>
+            <v-card>
+              <v-card-title>
+                <span class="text-h5">User Profile</span>
+              </v-card-title>
+              <v-card-text>
+                <v-container>
+                  <v-row>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-text-field
+                        label="Legal first name*"
+                        required
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-text-field
+                        label="Legal middle name"
+                        hint="example of helper text only on focus"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-text-field
+                        label="Legal last name*"
+                        hint="example of persistent helper text"
+                        persistent-hint
+                        required
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12">
+                      <v-text-field label="Email*" required></v-text-field>
+                    </v-col>
+                    <v-col cols="12">
+                      <v-text-field
+                        label="Password*"
+                        type="password"
+                        required
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6">
+                      <v-select
+                        :items="['0-17', '18-29', '30-54', '54+']"
+                        label="Age*"
+                        required
+                      ></v-select>
+                    </v-col>
+                    <v-col cols="12" sm="6">
+                      <v-autocomplete
+                        :items="[
+                          'Skiing',
+                          'Ice hockey',
+                          'Soccer',
+                          'Basketball',
+                          'Hockey',
+                          'Reading',
+                          'Writing',
+                          'Coding',
+                          'Basejump',
+                        ]"
+                        label="Interests"
+                        multiple
+                      ></v-autocomplete>
+                    </v-col>
+                  </v-row>
+                </v-container>
+                <small>*indicates required field</small>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" text @click="dialog = false">
+                  Close
+                </v-btn>
+                <v-btn color="blue darken-1" text @click="dialog = false">
+                  Save
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
         </v-col>
       </v-row>
       <v-divider></v-divider>
     </v-card>
-    <v-card class="ma-0 pa-2 elevation-0 rounded-lg">
-      <v-row>
-        <v-col>
-          <v-list-item class="ma-0 pa-0">
-            <v-avatar class="mr-3" size="50px">
-              <img
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Circle-icons-profile.svg/1024px-Circle-icons-profile.svg.png"
-                alt=""
-              />
-            </v-avatar>
-            <v-list-item-title>
-              <v-list-item-title>WEB Trainer</v-list-item-title>
-              <small>Passerelles numériques Cambodia</small>
-              <br />
-              <small>Jan 15 2020 - Feb 30 2021 Phnom Penh</small>
-            </v-list-item-title>
-          </v-list-item>
-        </v-col>
-        <v-col cols-4 class="option mt-0">
-          <div class="mr-2">
-            <v-icon size="20px">mdi-dots-horizontal</v-icon>
-          </div>
-        </v-col>
-      </v-row>
-      <v-divider></v-divider>
-    </v-card>
-    <!-- </v-row> -->
   </section>
 </template>
 
 <script>
 export default {
+  props: ["employment"],
   data: () => ({
     messages: [
       {

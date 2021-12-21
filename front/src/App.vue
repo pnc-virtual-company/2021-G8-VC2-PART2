@@ -74,8 +74,9 @@ export default {
 </script>
 
 <style>
+@import url('http://fonts.cdnfonts.com/css/sf-ui-display');
 * {
-  font-family: "San Francisco", Helvetica, Arial, san-serif;
+font-family: 'SF UI Display 100', sans-serif;
   color: #4d4d4d;
 }
 .container {
