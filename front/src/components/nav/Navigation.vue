@@ -1,50 +1,46 @@
 <template>
   <nav>
-    <v-navigation-drawer v-model="sidebar" app absolute left temporary>
-      <v-list flat>
-        <v-list-item-group v-model="group">
-          <v-list-item
-            v-for="item in menuItems"
-            :key="item.title"
-            :to="item.path"
-          >
-            <v-list-item-action>
-              <v-icon>{{ item.icon }}</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>{{ item.title }}</v-list-item-content>
-          </v-list-item>
-          <v-divider></v-divider>
-          <v-list-item>
-            <v-list-item-action>
-              <v-icon>mdi-login</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>Logout</v-list-item-content>
-          </v-list-item>
-        </v-list-item-group>
+      <v-navigation-drawer v-model="sidebar" app absolute left temporary hieght="10vh">
+      <v-list>
+        <v-list-item-group
+          v-model="group"
+          active-class="deep-purple--text text--accent-4"
+        >
+        <v-list-item
+          v-for="item in menuItems"
+          :key="item.title"
+          :to="item.path">
+          <v-list-item-action>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>{{ item.title }}</v-list-item-content>
+        </v-list-item>
+          </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
 
-    <v-toolbar dense>
+    <v-toolbar height="50px" dense fixed>
       <span class="hidden-sm-and-up">
-        <v-app-bar-nav-icon @click="sidebar = !sidebar"> </v-app-bar-nav-icon>
+        <v-app-bar-nav-icon @click="sidebar = !sidebar">
+        </v-app-bar-nav-icon>
       </span>
-
+      <v-toolbar-title>
+        <router-link to="/" tag="span" style="cursor: pointer">
+          {{ appTitle }}
+        </router-link>
+      </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-xs-only">
         <v-btn
-          active-class="grey-5 white--text"
+          active-class="grey-5 black--text" 
           text
           v-for="item in menuItems"
           :key="item.title"
-          :to="item.path"
-        >
-          <v-icon left>{{ item.icon }}</v-icon>
+          :to="item.path">
+          <v-icon left class="orange--text">{{ item.icon }}</v-icon>
           {{ item.title }}
         </v-btn>
-        <div class="my-2" @click="$emit('signout')">
-          <v-btn small color="red" dark> Logout </v-btn>
-        </div>
-      </v-toolbar-items>
+      </v-toolbar-items> 
     </v-toolbar>
   </nav>
 </template>
@@ -53,6 +49,7 @@
 export default {
   data() {
     return {
+      appTitle: 'PNC Cambodia',
       sidebar: false,
       group: false,
       menuItems: [
@@ -67,4 +64,5 @@ export default {
 </script>
 
 <style>
+
 </style>

@@ -66,12 +66,10 @@ export default {
 };
 </script>
 <style scoped>
-section {
-  background: white;
-}
 .row {
   width: 100%;
-  display: flex;
+  padding: 0px;
+  /* display: flex; */
 }
 .left {
   width: 50%;
@@ -79,6 +77,9 @@ section {
   display: flex;
   justify-content: center;
   align-items: center;
+  position: absolute;
+  left: 0;
+  top: 0;
 }
 .left > img {
   width: 70vh;
@@ -86,12 +87,39 @@ section {
 .right {
   width: 50%;
   height: 100vh;
+  position: absolute;
+  right: 0;
+  top: 0;
 }
 .right > img {
   position: absolute;
   right: 0;
   top: 0;
-  width: 51.2%;
-  height: 20vh;
+  width: 100%;
+  height: 20%;
+}
+@media (max-width: 1000px){
+  .right{
+    width: 100%;
+  }
+  .right > img {
+    width: 100%;
+    height: 20%;
+  }
+  .left {
+    display: none;
+  }
+}
+@media (max-width: 600px){
+  .right > img {
+    width: 100%;
+    height: 15%;
+  }
+}
+@media (max-width: 500px){
+  .right > img {
+    width: 100%;
+    height: 10%;
+  }
 }
 </style>

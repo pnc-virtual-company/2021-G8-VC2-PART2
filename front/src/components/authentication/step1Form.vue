@@ -7,7 +7,7 @@
       <div class="title-login">
         <p>WELCOME BACK</p>
       </div>
-      <v-form ref="form" v-model="valid" lazy-validation>
+      <v-form cols-12 ref="form" v-model="valid" lazy-validation>
         <v-row class="justify-center">
           <v-col md="8">
             <v-text-field
@@ -97,5 +97,8 @@ export default {
 }
 .v-btn {
   width: 100%;
+}
+.v-form {
+  padding: 10%;
 }
 </style>
