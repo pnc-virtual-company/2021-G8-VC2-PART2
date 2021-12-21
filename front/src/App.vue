@@ -53,8 +53,9 @@ export default {
       this.$router.push("/signin");
     },
     submitStep1(email) {
+      let route = 'signin/';
       this.signInData.email = email;
-      axios.post("signIn/step1", { email: email })
+      axios.get(route + email)
       .then((res) => {
         this.signInData.status = res.data.status;
         this.error.invalidEmail = null;
@@ -66,14 +67,16 @@ export default {
       });
     },
     submitStep2(data) {
+      let route = 'signin/password';
       if (this.signInData.status === "invited") {
         this.signInData.firstname = data.firstname;
         this.signInData.lastname = data.lastname;
         this.signInData.password = data.password;
+        route = 'signin/completeinfo';
       } else {
         this.signInData.password = data.password;
       }
-      axios.post("signIn/step2", this.signInData)
+      axios.post(route, this.signInData)
       .then((res) => {
         this.user = res.data.user;
         localStorage.setItem("user", JSON.stringify(res.data.user));
