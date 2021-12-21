@@ -8,12 +8,15 @@
         <img src="../../assets/topright.png" alt="" />
         <form-step-one
           v-if="onForm === 1"
+          :invalidEmail="invalidEmail"
           @next="next"
           @submitFirstStep="submitStep1"
         ></form-step-one>
         <form-step-two 
-          v-else @back="back" 
+          v-else 
           :status="status"
+          :invalidEmailOrPassword="invalidEmailOrPassword"
+          @back="back" 
           @submitSecondStep="submitStep2"
         ></form-step-two>
       </div>
@@ -25,7 +28,7 @@
 import Step1 from "./step1Form.vue";
 import Step2 from "./step2Form.vue";
 export default {
-  props: ["status"],
+  props: ["status", "invalidEmail", "invalidEmailOrPassword"],
   components: {
     "form-step-one": Step1,
     "form-step-two": Step2,
@@ -33,7 +36,6 @@ export default {
   data() {
     return {
       onForm: 1,
-      emailToSignIn: null,
     };
   },
   watch: {
@@ -49,7 +51,7 @@ export default {
     },
     back() {
       this.onForm = 1;
-      this.emailToSignIn = null;
+      this.$emit('clearSignInData');
     },
     submitStep1(email) {
       this.$emit("submitFirstStep", email);
@@ -58,9 +60,15 @@ export default {
       this.$emit("submitSecondStep", data);
     },
   },
+  mounted() {
+    this.$emit('clearSignInData');
+  },
 };
 </script>
 <style scoped>
+section {
+  background: white;
+}
 .row {
   width: 100%;
   display: flex;

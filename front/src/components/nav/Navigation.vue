@@ -20,7 +20,7 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-toolbar dark dense>
+    <v-toolbar dense>
       <span class="hidden-sm-and-up">
         <v-app-bar-nav-icon @click="sidebar = !sidebar"> </v-app-bar-nav-icon>
       </span>
@@ -37,7 +37,7 @@
           <v-icon left>{{ item.icon }}</v-icon>
           {{ item.title }}
         </v-btn>
-        <v-btn> 
+        <v-btn @click="$emit('signout')"> 
           <v-icon class="mr-2" size="15">mdi-login</v-icon>
           Logout
           </v-btn>

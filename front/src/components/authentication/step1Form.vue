@@ -19,6 +19,11 @@
             ></v-text-field>
           </v-col>
         </v-row>
+        <v-row class="justify-center" v-if="invalidEmail !== null">
+          <v-col md="8">
+            <p class="red--text">{{ invalidEmail }}</p>
+          </v-col>
+        </v-row>
         <v-row class="justify-center">
           <v-col md="8">
             <v-btn
@@ -39,17 +44,19 @@
 
 <script>
 export default {
+  props: ["invalidEmail"],
   data() {
     return {
       valid: true,
       show1: false,
       email: "",
+      isInvalidEmail: [],
       rules: {
-        required: (value) => !!value || "Required.",
-        emailRules: (v) => /.+@.+/.test(v) || "Invalid Email address",
+        required: (value) => !!value || "Required",
+        emailRules: (v) => /.+@.+/.test(v) || "Invalid email format",
       },
     };
-  },
+  }
 };
 </script>
 
