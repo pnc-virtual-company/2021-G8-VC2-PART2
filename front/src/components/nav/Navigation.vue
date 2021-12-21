@@ -19,7 +19,7 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-toolbar >
+    <v-toolbar height="40px">
       <span class="hidden-sm-and-up">
         <v-app-bar-nav-icon @click="sidebar = !sidebar">
         </v-app-bar-nav-icon>

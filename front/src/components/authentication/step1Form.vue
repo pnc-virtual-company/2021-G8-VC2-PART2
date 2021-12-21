@@ -7,7 +7,7 @@
       <div class="title-login">
         <p>WELCOME BACK</p>
       </div>
-      <v-form ref="form" v-model="valid" lazy-validation>
+      <v-form cols-12 ref="form" v-model="valid" lazy-validation>
         <v-row class="justify-center">
           <v-col md="8">
             <v-text-field
@@ -17,6 +17,11 @@
               v-model="email"
               :rules="[rules.required, rules.emailRules]"
             ></v-text-field>
+          </v-col>
+        </v-row>
+        <v-row class="justify-center" v-if="invalidEmail !== null">
+          <v-col md="8">
+            <p class="red--text">{{ invalidEmail }}</p>
           </v-col>
         </v-row>
         <v-row class="justify-center">
@@ -39,17 +44,19 @@
 
 <script>
 export default {
+  props: ["invalidEmail"],
   data() {
     return {
       valid: true,
       show1: false,
       email: "",
+      isInvalidEmail: [],
       rules: {
-        required: (value) => !!value || "Required.",
-        emailRules: (v) => /.+@.+/.test(v) || "Invalid Email address",
+        required: (value) => !!value || "Required",
+        emailRules: (v) => /.+@.+/.test(v) || "Invalid email format",
       },
     };
-  },
+  }
 };
 </script>
 
@@ -90,5 +97,8 @@ export default {
 }
 .v-btn {
   width: 100%;
+}
+.v-form {
+  padding: 10%;
 }
 </style>

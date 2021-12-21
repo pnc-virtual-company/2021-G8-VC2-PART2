@@ -1,11 +1,17 @@
 <template>
   <v-app>
-    <navigation-bar @signout="signOut"></navigation-bar>
+    <navigation-bar
+      v-if="isLogin"
+      @signout="signOut"
+    ></navigation-bar>
     <v-main>
       <router-view
         :status="signInData.status"
+        :invalidEmail="error.invalidEmail"
+        :invalidEmailOrPassword="error.invalidEmailOrPassword"
         @submitFirstStep="submitStep1"
         @submitSecondStep="submitStep2"
+        @clearSignInData="clearSignInData"
       ></router-view>
     </v-main>
   </v-app>
@@ -22,6 +28,10 @@ export default {
     return {
       showNavigation: false,
       user: null,
+      error: {
+        invalidEmail: null,
+        invalidEmailOrPassword: null,
+      },
       signInData: {
         email: null,
         password: null,
@@ -40,12 +50,19 @@ export default {
     signOut() {
       localStorage.removeItem("user");
       this.user = null;
+      this.$router.push("/signin");
     },
     submitStep1(email) {
       this.signInData.email = email;
-      axios.post("signIn/step1", { email: email }).then((res) => {
+      axios.post("signIn/step1", { email: email })
+      .then((res) => {
         this.signInData.status = res.data.status;
-        console.log(this.signInData);
+        this.error.invalidEmail = null;
+      })
+      .catch(err => {
+        if(err.response.status === 401) {
+          this.error.invalidEmail = 'Invalid email address';
+        }
       });
     },
     submitStep2(data) {
@@ -56,13 +73,29 @@ export default {
       } else {
         this.signInData.password = data.password;
       }
-      console.log(this.signInData);
-      axios.post("signIn/step2", this.signInData).then((res) => {
+      axios.post("signIn/step2", this.signInData)
+      .then((res) => {
         this.user = res.data.user;
         localStorage.setItem("user", JSON.stringify(res.data.user));
         this.$router.push("/myprofile");
+        this.error.invalidEmailOrPassword = null;
+      })
+      .catch(err => {
+        if(err.response.status === 401) {
+          this.error.invalidEmailOrPassword = 'Invalid email or password';
+        }
       });
     },
+    clearSignInData() {
+      this.signInData = {
+        email: null,
+        password: null,
+        firstname: null,
+        lastname: null,
+        status: null,
+      }
+      this.error.invalidEmailOrPassword = null;
+    }
   },
   mounted() {
     if (JSON.parse(localStorage.getItem("user"))) {

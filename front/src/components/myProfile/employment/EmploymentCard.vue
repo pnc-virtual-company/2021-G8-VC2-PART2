@@ -23,7 +23,7 @@
         </v-col>
         <v-col cols-4 class="option mt-0">
           <v-dialog v-model="dialog" persistent max-width="600px">
-            <template v-slot:activator="{ on, attrs }">
+            <template v-slot:activator="{}">
             <div class="mr-2">
               <v-icon size="20px">mdi-dots-horizontal</v-icon>
             </div>

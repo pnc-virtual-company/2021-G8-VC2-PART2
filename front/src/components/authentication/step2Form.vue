@@ -32,13 +32,14 @@
               class="ma-0 pa-0"
               v-model="password"
               :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-              :rules="[rules.required, rules.min]"
+              :rules="[rules.required, rules.min, rules.isMatchWithConfirm]"
               :type="show1 ? 'text' : 'password'"
               name="input-10-1"
               label="Password"
               hint="At least 8 characters"
               @click:append="show1 = !show1"
             ></v-text-field>
+            <p v-if="invalidEmailOrPassword !== null" class="red--text">{{ invalidEmailOrPassword }}</p>
           </v-col>
         </v-row>
         <v-row class="justify-center row-input" v-if="status === 'invited'">
@@ -47,7 +48,7 @@
               class="ma-0 pa-0"
               v-model="confirmPassword"
               :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
-              :rules="[rules.required, rules.min]"
+              :rules="[rules.required, rules.min, rules.isMatchWithPassword]"
               :type="show2 ? 'text' : 'password'"
               name="input-10-1"
               label="Comfirm Password"
@@ -80,19 +81,23 @@
 
 <script>
 export default {
-  props: ['status'],
+  props: ["status", "invalidEmailOrPassword"],
   data() {
     return {
       valid: true,
       show1: false,
       show2: false,
+      firstValidation: [true],
+      secondValidation: [true],
       password: "",
       confirmPassword: "",
       firstname: "",
       lastname: "",
       rules: {
-        required: (value) => !!value || "Required.",
+        required: (value) => !!value || "Required",
         min: (v) => v.length >= 8 || "Min 8 characters",
+        isMatchWithConfirm: (v) => this.confirmPassword === '' || v === this.confirmPassword || 'Password does not match',
+        isMatchWithPassword: (v) => this.password === '' || v === this.password || 'Password does not match',
       },
     };
   },

@@ -8,12 +8,15 @@
         <img src="../../assets/topright.png" alt="" />
         <form-step-one
           v-if="onForm === 1"
+          :invalidEmail="invalidEmail"
           @next="next"
           @submitFirstStep="submitStep1"
         ></form-step-one>
         <form-step-two 
-          v-else @back="back" 
+          v-else 
           :status="status"
+          :invalidEmailOrPassword="invalidEmailOrPassword"
+          @back="back" 
           @submitSecondStep="submitStep2"
         ></form-step-two>
       </div>
@@ -25,7 +28,7 @@
 import Step1 from "./step1Form.vue";
 import Step2 from "./step2Form.vue";
 export default {
-  props: ["status"],
+  props: ["status", "invalidEmail", "invalidEmailOrPassword"],
   components: {
     "form-step-one": Step1,
     "form-step-two": Step2,
@@ -33,7 +36,6 @@ export default {
   data() {
     return {
       onForm: 1,
-      emailToSignIn: null,
     };
   },
   watch: {
@@ -49,7 +51,7 @@ export default {
     },
     back() {
       this.onForm = 1;
-      this.emailToSignIn = null;
+      this.$emit('clearSignInData');
     },
     submitStep1(email) {
       this.$emit("submitFirstStep", email);
@@ -58,12 +60,16 @@ export default {
       this.$emit("submitSecondStep", data);
     },
   },
+  mounted() {
+    this.$emit('clearSignInData');
+  },
 };
 </script>
 <style scoped>
 .row {
   width: 100%;
-  display: flex;
+  padding: 0px;
+  /* display: flex; */
 }
 .left {
   width: 50%;
@@ -71,6 +77,9 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  position: absolute;
+  left: 0;
+  top: 0;
 }
 .left > img {
   width: 70vh;
@@ -78,12 +87,39 @@ export default {
 .right {
   width: 50%;
   height: 100vh;
+  position: absolute;
+  right: 0;
+  top: 0;
 }
 .right > img {
   position: absolute;
   right: 0;
   top: 0;
-  width: 51.2%;
-  height: 20vh;
+  width: 100%;
+  height: 20%;
+}
+@media (max-width: 1000px){
+  .right{
+    width: 100%;
+  }
+  .right > img {
+    width: 100%;
+    height: 20%;
+  }
+  .left {
+    display: none;
+  }
+}
+@media (max-width: 600px){
+  .right > img {
+    width: 100%;
+    height: 15%;
+  }
+}
+@media (max-width: 500px){
+  .right > img {
+    width: 100%;
+    height: 10%;
+  }
 }
 </style>
