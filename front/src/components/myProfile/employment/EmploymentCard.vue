@@ -139,6 +139,6 @@ export default {
   justify-content: end;
 }
 .v-card:hover {
-  background: #f3f2ef;
+  background: #f5f4f3;
 }
 </style>
