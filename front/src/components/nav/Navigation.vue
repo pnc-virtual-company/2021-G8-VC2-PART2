@@ -81,9 +81,9 @@ export default {
       group: false,
       menuItems: [
         { title: "My Profile", path: "/myprofile", icon: "mdi-account" },
-        { title: "Event", path: "", icon: "mdi-calendar-today" },
+        { title: "Event", path: "/eventview", icon: "mdi-calendar-today" },
         { title: "Explore Alumi", path: "/eroview", icon: "mdi-account-search"},
-        { title: "Manage User", path: "", icon: "mdi-account-multiple" },
+        { title: "Manage User", path: "/adminview", icon: "mdi-account-multiple" },
       ],
     };
   },

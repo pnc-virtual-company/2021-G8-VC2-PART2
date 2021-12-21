@@ -4,6 +4,9 @@ import VueRouter from 'vue-router'
 import MyProfileView from '../components/views/MyProfileView.vue'
 import SignIn from '../components/authentication/SignIn.vue'
 import EroView from '../components/views/EroView.vue';
+import AdminView from '../components/views/AdminView.vue'
+import Event from '../components/views/EventView.vue'
+
 const routes = [
   {
     path: '/myprofile',
@@ -19,6 +22,16 @@ const routes = [
     path: "/eroview",
     name: 'EroView',
     component: EroView
+  },
+  {
+    path: "/adminview",
+    name: 'AdminView',
+    component: AdminView
+  },
+  {
+    path: "/eventview",
+    name: 'Event',
+    component: Event
   },
   {
     path: "/",
