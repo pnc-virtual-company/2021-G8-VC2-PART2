@@ -38,10 +38,11 @@
           <v-card-text>
               <v-row class="pa-0">
                 <v-col cols="12 mt-0">
-                  <v-select :items="roles" label="Select role" solo></v-select>
+                  <v-select :items="roles" v-model="selectedRole" label="Select role" solo></v-select>
                   <v-text-field
                     prepend-inner-icon="mdi-email"
                     label="Email"
+                    v-model="emailToInvite"
                     required
                   ></v-text-field>
                 </v-col>
@@ -53,7 +54,7 @@
             <v-btn color="blue darken-1" text @click="dialog = false">
               Close
             </v-btn>
-            <v-btn color="blue darken-1" text @click="dialog = false">
+            <v-btn color="blue darken-1" text @click="submit(emailToInvite, selectedRole)">
               Submit
             </v-btn>
           </v-card-actions>
@@ -76,7 +77,19 @@ export default {
   data() {
     return {
       dialog: false,
-      roles: ['ERO', 'Alumni'],
+      roles: ['ero', 'alumni'],
+      selectedRole: null,
+      emailToInvite: null,
+    }
+  },
+  methods: {
+    submit(emailToInvite, selectedRole) {
+      this.dialog = false;
+      let data = {
+        email: emailToInvite,
+        role: selectedRole
+      }
+      this.$emit('invite', data);
     }
   },
 };

@@ -9,7 +9,7 @@
       </div>
       <v-form cols-12 ref="form" v-model="valid" lazy-validation>
         <v-row class="justify-center">
-          <v-col md="8">
+          <v-col md="8" sm="8">
             <v-text-field
               label="Email"
               type="email"
@@ -20,12 +20,12 @@
           </v-col>
         </v-row>
         <v-row class="justify-center" v-if="invalidEmail !== null">
-          <v-col md="8">
+          <v-col md="8" sm="8">
             <p class="red--text">{{ invalidEmail }}</p>
           </v-col>
         </v-row>
         <v-row class="justify-center">
-          <v-col md="8">
+          <v-col md="8" sm="8">
             <v-btn
               :disabled="!valid"
               type="button"
@@ -98,7 +98,7 @@ export default {
 .v-btn {
   width: 100%;
 }
-.v-form {
+/* .v-form {
   padding: 10%;
-}
+} */
 </style>

@@ -12,11 +12,11 @@
           @next="next"
           @submitFirstStep="submitStep1"
         ></form-step-one>
-        <form-step-two 
-          v-else 
+        <form-step-two
+          v-else
           :status="status"
           :invalidEmailOrPassword="invalidEmailOrPassword"
-          @back="back" 
+          @back="back"
           @submitSecondStep="submitStep2"
         ></form-step-two>
       </div>
@@ -51,7 +51,7 @@ export default {
     },
     back() {
       this.onForm = 1;
-      this.$emit('clearSignInData');
+      this.$emit("clearSignInData");
     },
     submitStep1(email) {
       this.$emit("submitFirstStep", email);
@@ -61,7 +61,7 @@ export default {
     },
   },
   mounted() {
-    this.$emit('clearSignInData');
+    this.$emit("clearSignInData");
   },
 };
 </script>
@@ -69,9 +69,9 @@ export default {
 .row {
   width: 100%;
   padding: 0px;
-  /* display: flex; */
 }
 .left {
+  background: white;
   width: 50%;
   height: 100vh;
   display: flex;
@@ -85,6 +85,7 @@ export default {
   width: 70vh;
 }
 .right {
+  background: white;
   width: 50%;
   height: 100vh;
   position: absolute;
@@ -98,28 +99,45 @@ export default {
   width: 100%;
   height: 20%;
 }
-@media (max-width: 1000px){
-  .right{
+/* @media (max-width: 500px){
+  .right > img {
     width: 100%;
+    height: 10%;
+  }
+} */
+/* @media (max-width: 600px){
+  .right > img {
+    width: 100%;
+    height: 15%;
+  }
+} */
+@media (max-width: 600px) {
+  .right {
+    width: 100%;
+    padding: 0 10%;
+  }
+  .right > img {
+    width: 100%;
+    height: 15%;
+  }
+  .left {
+    display: none;
+  }
+}
+@media (min-width: 600px) and (max-width: 768px) {
+  .right {
+    width: 60%;
   }
   .right > img {
     width: 100%;
     height: 20%;
   }
   .left {
-    display: none;
+    width: 40%;
   }
-}
-@media (max-width: 600px){
-  .right > img {
-    width: 100%;
-    height: 15%;
-  }
-}
-@media (max-width: 500px){
-  .right > img {
-    width: 100%;
-    height: 10%;
+  .left > img {
+    width: 60vh;
+    /* height: 35ch; */
   }
 }
 </style>
