@@ -1,8 +1,22 @@
 <template>
   <section>
+    <div class="filter-container">
+      <div class="filter">
+        <v-select label="Company" dense solo></v-select>
+      </div>
+      <div class="filter">
+        <v-select label="Position" dense solo></v-select>
+      </div>
+      <div class="filter">
+        <v-select label="Batch" dense solo></v-select>
+      </div>
+      <div class="filter">
+        <v-select label="Major" dense solo></v-select>
+      </div>
+    </div>
     <v-flex class="d-flex">
       <v-flex class="d-flex">
-        <v-card class="card-alumni mr-8">
+        <v-card class="card-alumni mr-5">
           <v-icon class="mt-4">mdi-account</v-icon>
           <p>Alumni</p>
           <p class="numOfAlumni">200</p>
@@ -13,7 +27,7 @@
           <p class="numOfAlumni">100</p>
         </v-card>
       </v-flex>
-    <v-btn depressed color="primary invite-btn"> Invite </v-btn>
+      <v-btn depressed color="primary invite-btn"> Invite </v-btn>
     </v-flex>
     <v-card class="mt-7 mb-4 pa-4 rounded-lg">
       <ero-card></ero-card>
@@ -30,23 +44,6 @@ export default {
 </script>
 
 <style scoped>
-.add-info {
-  display: flex;
-  justify-content: flex-end;
-}
-.circle {
-  background-color: #ffff;
-  border-radius: 50%;
-  padding: 10px;
-  width: 25px;
-  height: 25px;
-  font-size: 18px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
-    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
-}
 .v-icon,
 .numOfAlumni {
   color: #00a3ff;
@@ -59,6 +56,16 @@ export default {
 }
 
 .invite-btn {
-  border-radius: 10px;
+  border-radius: 7px;
+}
+.v-select {
+  border-radius: 8px;
+}
+.filter-container {
+  display: flex;
+  justify-content: space-between;
+}
+.filter {
+  width: 23%;
 }
 </style>
