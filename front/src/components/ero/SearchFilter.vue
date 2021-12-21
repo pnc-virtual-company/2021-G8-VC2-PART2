@@ -2,7 +2,7 @@
   <section>
     <v-text-field
       class="mt-7"
-      prepend-inner-icon="mdi-yeast"
+      prepend-inner-icon="mdi-magnify"
       append-icon="mdi-close"
       placeholder="Search"
       solo
@@ -16,6 +16,6 @@ export default {};
 
 <style scoped>
 .v-text-field {
-  border-radius: 10px;
+  border-radius: 5px;
 }
 </style>
