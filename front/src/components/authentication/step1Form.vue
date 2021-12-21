@@ -98,7 +98,4 @@ export default {
 .v-btn {
   width: 100%;
 }
-/* .v-form {
-  padding: 10%;
-} */
 </style>

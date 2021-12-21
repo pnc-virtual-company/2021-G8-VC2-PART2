@@ -55,7 +55,7 @@ export default {
               location: "Phnom Penh",
             },
           ],
-        }
+        },
       ],
     };
   },
@@ -67,9 +67,15 @@ section {
   width: 50%;
   margin: auto;
 }
-@media (max-width: 1070px) {
+@media (max-width: 600px) {
   section {
-    width: 90%;
+    width: 80%;
+    margin: auto;
+  }
+}
+@media (min-width: 600px) and (max-width: 800px) {
+  section {
+    width: 70%;
   }
 }
 </style>

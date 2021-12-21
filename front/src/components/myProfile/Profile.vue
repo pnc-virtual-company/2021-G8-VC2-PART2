@@ -46,7 +46,7 @@
         </v-list-item>
       </v-col>
       <v-spacer></v-spacer>
-      <v-col xs="2" class="ma-0">
+      <v-col class="ma-0">
         <v-list-item class="ma-0 pa-0">
           <v-icon class="mr-3" style="color: blue">mdi-email</v-icon>
           <v-list-item-title>{{alumniData.email}}</v-list-item-title>

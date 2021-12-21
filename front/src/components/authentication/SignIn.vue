@@ -99,18 +99,6 @@ export default {
   width: 100%;
   height: 20%;
 }
-/* @media (max-width: 500px){
-  .right > img {
-    width: 100%;
-    height: 10%;
-  }
-} */
-/* @media (max-width: 600px){
-  .right > img {
-    width: 100%;
-    height: 15%;
-  }
-} */
 @media (max-width: 600px) {
   .right {
     width: 100%;
@@ -137,7 +125,6 @@ export default {
   }
   .left > img {
     width: 60vh;
-    /* height: 35ch; */
   }
 }
 </style>
