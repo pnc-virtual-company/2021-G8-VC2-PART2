@@ -70,7 +70,6 @@ section {
 @media (max-width: 600px) {
   section {
     width: 80%;
-    margin: auto;
   }
 }
 @media (min-width: 600px) and (max-width: 800px) {

@@ -1,16 +1,16 @@
 <template>
   <section class="eroview">
     <search-filter></search-filter>
-    <ero-container @invite="invite"></ero-container>
+    <alumni-container @invite="invite"></alumni-container>
   </section>
 </template>
 
 <script>
 import axios from "../../axios-http.js";
-import EroContainer from "../ero/AlumniContainer.vue";
+import AlumniContainer from "../ero/AlumniContainer.vue";
 import SearchFilter from '../ero/SearchFilter.vue';
 export default {
-  components: { EroContainer, SearchFilter },
+  components: { AlumniContainer, SearchFilter },
   methods: {
     invite(data) {
       axios.post('invite', data)
@@ -27,9 +27,14 @@ export default {
   width: 50%;
   margin: auto;
 }
-@media (max-width: 1070px) {
-  section {
-    width: 90%;
+@media (max-width: 600px) {
+  .eroview {
+    width: 80%;
+  }
+}
+@media (min-width: 600px) and (max-width: 800px) {
+  .eroview {
+    width: 70%;
   }
 }
 </style>
