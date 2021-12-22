@@ -104,9 +104,9 @@ class Usercontroller extends Controller
                 if(!Hash::check($request->password, $user->password)){
                     return response()->json(['message' => 'Unauthorized'], 401);
                 } else {
-                    $alumni = DB::table('user')
-                    ->join('alumni', 'user.id', '=', 'alumni.user_id')
-                    ->select('user.*', 'alumni.*')
+                    $alumni = DB::table('users')
+                    ->join('alumnis', 'users.id', '=', 'alumnis.user_id')
+                    ->select('users.*', 'alumnis.*')
                     ->get();
                     return response()->json(['message' => 'Successfully', 'user' => $user]);
                 }

@@ -1,8 +1,8 @@
 <template>
   <section class="myProfileView">
     <profile
-      v-for="alumniInfo in alumniData"
-      :key="alumniInfo.email"
+      v-for="(alumniInfo, index) in alumniData"
+      :key="index"
       :alumniData="alumniInfo"
     ></profile>
     <employemt-view
