@@ -35,31 +35,31 @@ export default {
     items: [
       {
         avatar:
-          "https://cdn.icon-icons.com/icons2/1879/PNG/512/iconfinder-8-avatar-2754583_120515.png",
+          "https://cdn.icon-icons.com/icons2/1879/PNG/512/iconfinder-3-avatar-2754579_120516.png",
         title: "Thon Theng",
         subtitle: "thon@gmail.com",
       },
       {
         avatar:
-          "https://cdn.icon-icons.com/icons2/1879/PNG/512/iconfinder-8-avatar-2754583_120515.png",
+          "https://cdn.icon-icons.com/icons2/1879/PNG/512/iconfinder-3-avatar-2754579_120516.png",
         title: "Thon Theng",
         subtitle: "thon@gmail.com",
       },
       {
         avatar:
-          "https://cdn.icon-icons.com/icons2/1879/PNG/512/iconfinder-8-avatar-2754583_120515.png",
+          "https://cdn.icon-icons.com/icons2/1879/PNG/512/iconfinder-3-avatar-2754579_120516.png",
         title: "Thon Theng",
         subtitle: "thon@gmail.com",
       },
       {
         avatar:
-          "https://cdn.icon-icons.com/icons2/1879/PNG/512/iconfinder-8-avatar-2754583_120515.png",
+          "https://cdn.icon-icons.com/icons2/1879/PNG/512/iconfinder-3-avatar-2754579_120516.png",
         title: "Thon Theng",
         subtitle: "thon@gmail.com",
       },
       {
         avatar:
-          "https://cdn.icon-icons.com/icons2/1879/PNG/512/iconfinder-8-avatar-2754583_120515.png",
+          "https://cdn.icon-icons.com/icons2/1879/PNG/512/iconfinder-3-avatar-2754579_120516.png",
         title: "Thon Theng",
         subtitle: "thon@gmail.com",
       },
@@ -77,7 +77,6 @@ export default {
   background: #f5f4f3;
 }
 .v-card {
-  width: 100%;
   cursor: pointer;
   border-radius: 10px;
 }

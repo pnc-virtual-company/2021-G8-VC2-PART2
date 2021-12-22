@@ -9,7 +9,7 @@
       </div>
       <v-form ref="form" v-model="valid" lazy-validation>
         <v-row class="justify-center row-input" v-if="status === 'invited'">
-          <v-col md="5" sm="5">
+          <v-col md="4" sm="5">
             <v-text-field
               class="ma-0 pa-0"
               label="Firstname"
@@ -17,7 +17,7 @@
               :rules="[rules.required]"
             ></v-text-field>
           </v-col>
-          <v-col md="5" sm="5">
+          <v-col md="4" sm="5">
             <v-text-field
               class="ma-0 pa-0"
               label="Lastname"
@@ -27,7 +27,7 @@
           </v-col>
         </v-row>
         <v-row class="justify-center row-input">
-          <v-col md="10" sm="10">
+          <v-col md="8" sm="8">
             <v-text-field
               class="ma-0 pa-0"
               v-model="password"
@@ -43,7 +43,7 @@
           </v-col>
         </v-row>
         <v-row class="justify-center row-input" v-if="status === 'invited'">
-          <v-col md="10" sm="10">
+          <v-col md="8" sm="8">
             <v-text-field
               class="ma-0 pa-0"
               v-model="confirmPassword"
@@ -58,12 +58,12 @@
           </v-col>
         </v-row>
         <v-row class="justify-center row-input">
-          <v-col md="4" sm="4">
+          <v-col md="3" sm="3">
             <v-btn depressed color="4d4d4d ma-0 pa-0" @click="$emit('back')">
               Back
             </v-btn>
           </v-col>
-          <v-col md="6" sm="6">
+          <v-col md="5" sm="5">
             <v-btn
               :disabled="!valid"
               @click="validate"

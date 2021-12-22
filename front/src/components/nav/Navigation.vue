@@ -34,7 +34,7 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-toolbar height="50px" dense fixed>
+    <v-toolbar height="60px" dense fixed>
       <span class="hidden-sm-and-up">
         <v-app-bar-nav-icon @click="sidebar = !sidebar"> </v-app-bar-nav-icon>
       </span>
@@ -50,20 +50,26 @@
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-xs-only">
-        <v-btn active-class="grey-5 black--text" v-for="item in menuItems" :key="item.title" :to="item.path" text>
-            <v-icon left class="blue--text">{{ item.icon }}</v-icon>
-            {{ item.title }}
+        <v-btn
+          active-class="grey-5 black--text"
+          v-for="item in menuItems"
+          :key="item.title"
+          :to="item.path"
+          text
+        >
+          <v-icon left class="blue--text">{{ item.icon }}</v-icon>
+          {{ item.title }}
         </v-btn>
         <v-spacer></v-spacer>
-        <v-btn
-          @click="$emit('signout')"
-          class="rounded-lg ml-3"
-          small
-          color="error"
-        >
-          <v-icon left class="">mdi-subdirectory-arrow-right</v-icon>
-          Log out
-        </v-btn>
+         <div class="my-2 logout" @click="$emit('signout')">
+            <v-btn
+              small
+              color="grey"
+              dark
+            >
+              Logout
+            </v-btn>
+          </div>
       </v-toolbar-items>
     </v-toolbar>
   </nav>
@@ -112,8 +118,8 @@ export default {
     },
   },
   mounted() {
-    for(let menu of this.allMenuItems) {
-      if(this.isAllowedToSee(menu.whoCanSee)) {
+    for (let menu of this.allMenuItems) {
+      if (this.isAllowedToSee(menu.whoCanSee)) {
         this.menuItems.push(menu);
       }
     }
@@ -122,4 +128,9 @@ export default {
 </script>
 
 <style scoped>
+.logout {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 </style>

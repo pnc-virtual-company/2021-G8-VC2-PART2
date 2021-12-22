@@ -36,23 +36,23 @@
       <v-col cols="12" md="6">
         <v-list-item class="ma-0 pa-0">
           <div class="mr-3">
-            <v-icon style="color: red">mdi-clipboard-text</v-icon>
+            <v-icon color="#00A3FF">mdi-clipboard-text</v-icon>
           </div>
           <v-list-item-title>{{alumniData.batch}}</v-list-item-title>
         </v-list-item>
         <v-list-item class="ma-0 pa-0">
-          <v-icon class="mr-3" style="color: green">mdi-school</v-icon>
+          <v-icon class="mr-3" color="#00A3FF">mdi-school</v-icon>
           <v-list-item-title>{{alumniData.skill}}</v-list-item-title>
         </v-list-item>
       </v-col>
       <v-spacer></v-spacer>
       <v-col class="ma-0">
         <v-list-item class="ma-0 pa-0">
-          <v-icon class="mr-3" style="color: blue">mdi-email</v-icon>
+          <v-icon class="mr-3" color="#00A3FF">mdi-email</v-icon>
           <v-list-item-title>{{alumniData.email}}</v-list-item-title>
         </v-list-item>
         <v-list-item class="ma-0 pa-0">
-          <v-icon class="mr-3" style="color: orange">mdi-phone-in-talk</v-icon>
+          <v-icon class="mr-3" color="#00A3FF">mdi-phone-in-talk</v-icon>
           <v-list-item-title>{{alumniData.phone}}</v-list-item-title>
         </v-list-item>
       </v-col>
