@@ -23,7 +23,7 @@ export default {
 </script>
 
 <style scoped>
-.eroview {
+/* .eroview {
   width: 50%;
   margin: auto;
 }
@@ -36,5 +36,5 @@ export default {
   .eroview {
     width: 60%;
   }
-}
+} */
 </style>

@@ -1,6 +1,7 @@
 <template>
   <section>
-    <v-card  v-for="(item, index) in items"
+    <v-card
+      v-for="(item, index) in items"
       :key="index"
       class="ma-0 pa-2 elevation-0 rounded-lg"
     >
@@ -76,6 +77,7 @@ export default {
   background: #f5f4f3;
 }
 .v-card {
+  width: 100%;
   cursor: pointer;
   border-radius: 10px;
 }

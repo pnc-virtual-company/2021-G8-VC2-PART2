@@ -33,7 +33,6 @@
                 <span class="text-h5">User Profile</span>
               </v-card-title>
               <v-card-text>
-                <v-container>
                   <v-row>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
@@ -90,7 +89,6 @@
                       ></v-autocomplete>
                     </v-col>
                   </v-row>
-                </v-container>
                 <small>*indicates required field</small>
               </v-card-text>
               <v-card-actions>

@@ -23,10 +23,8 @@
             </v-list-item-action>
             <v-list-item-content>{{ item.title }}</v-list-item-content>
           </v-list-item>
-          <hr>
-          <v-list-item
-            @click="$emit('signout')"
-          >
+          <hr />
+          <v-list-item @click="$emit('signout')">
             <v-list-item-action>
               <v-icon>mdi-subdirectory-arrow-right</v-icon>
             </v-list-item-action>
@@ -52,18 +50,17 @@
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-xs-only">
-        <v-btn
-          active-class="grey-5 black--text"
-          text
-          v-for="item in menuItems"
-          :key="item.title"
-          :to="item.path"
-        >
-          <v-icon left class="blue--text">{{ item.icon }}</v-icon>
-          {{ item.title }}
+        <v-btn active-class="grey-5 black--text" v-for="item in menuItems" :key="item.title" :to="item.path" text>
+            <v-icon left class="blue--text">{{ item.icon }}</v-icon>
+            {{ item.title }}
         </v-btn>
         <v-spacer></v-spacer>
-        <v-btn @click="$emit('signout')" class="rounded-lg ml-3" small color="error">
+        <v-btn
+          @click="$emit('signout')"
+          class="rounded-lg ml-3"
+          small
+          color="error"
+        >
           <v-icon left class="">mdi-subdirectory-arrow-right</v-icon>
           Log out
         </v-btn>
@@ -74,21 +71,55 @@
 
 <script>
 export default {
+  props: ["role"],
   data() {
     return {
       appTitle: "ERO-ALUMNI",
       sidebar: false,
       group: false,
-      menuItems: [
-        { title: "My Profile", path: "/myprofile", icon: "mdi-account" },
-        { title: "Event", path: "/eventview", icon: "mdi-calendar-today" },
-        { title: "Explore Alumi", path: "/eroview", icon: "mdi-account-search"},
-        { title: "Manage User", path: "/adminview", icon: "mdi-account-multiple" },
+      menuItems: [],
+      allMenuItems: [
+        {
+          title: "My Profile",
+          path: "/myprofile",
+          icon: "mdi-account",
+          whoCanSee: ["alumni", "ero"],
+        },
+        {
+          title: "Explore Alumi",
+          path: "/eroview",
+          icon: "mdi-account-search",
+          whoCanSee: ["ero", "admin"],
+        },
+        {
+          title: "Manage User",
+          path: "/adminview",
+          icon: "mdi-account-multiple",
+          whoCanSee: ["admin"],
+        },
+        {
+          title: "Event",
+          path: "/eventview",
+          icon: "mdi-calendar-today",
+          whoCanSee: ["alumni", "ero", "admin"],
+        },
       ],
     };
+  },
+  methods: {
+    isAllowedToSee(rights) {
+      return rights.includes(this.role);
+    },
+  },
+  mounted() {
+    for(let menu of this.allMenuItems) {
+      if(this.isAllowedToSee(menu.whoCanSee)) {
+        this.menuItems.push(menu);
+      }
+    }
   },
 };
 </script>
 
-<style>
+<style scoped>
 </style>

@@ -17,7 +17,7 @@
               :rules="[rules.required]"
             ></v-text-field>
           </v-col>
-          <v-col md="4" sm="4">
+          <v-col md="5" sm="5">
             <v-text-field
               class="ma-0 pa-0"
               label="Lastname"

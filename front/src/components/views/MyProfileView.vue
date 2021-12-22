@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section class="myProfileView">
     <profile
       v-for="alumniInfo in alumniData"
       :key="alumniInfo.email"
@@ -63,18 +63,13 @@ export default {
 </script>
 
 <style scoped>
-section {
+.myProfileView {
   width: 50%;
   margin: auto;
 }
-@media (max-width: 600px) {
-  section {
-    width: 80%;
-  }
-}
-@media (min-width: 600px) and (max-width: 800px) {
-  section {
-    width: 70%;
+@media (max-width: 1070px) {
+  .myProfileView {
+    width: 90%;
   }
 }
 </style>
