@@ -5,7 +5,7 @@
         <img src="../../assets/profilepic.svg" alt="" />
       </div>
       <div class="title-login">
-        <p>WELCOME BACK</p>
+        <p>COMPLETE INFORMATION</p>
       </div>
       <v-form ref="form" v-model="valid" lazy-validation>
         <v-row class="justify-center row-input" v-if="status === 'invited'">
@@ -13,6 +13,7 @@
             <v-text-field
               class="ma-0 pa-0"
               label="Firstname"
+              clearable
               v-model="firstname"
               :rules="[rules.required]"
             ></v-text-field>
@@ -21,14 +22,58 @@
             <v-text-field
               class="ma-0 pa-0"
               label="Lastname"
+              clearable
               v-model="lastname"
               :rules="[rules.required]"
             ></v-text-field>
           </v-col>
         </v-row>
+        <v-row class="justify-center row-input" v-if="status === 'invited'">
+          <v-col md="4" sm="5">
+            <v-combobox
+              class="ma-0 pa-0"
+              dense
+              clearable
+              label="Batch"
+              :rules="[rules.required]"
+            ></v-combobox>
+          </v-col>
+          <v-col md="4" sm="5">
+            <v-combobox
+              class="ma-0 pa-0"
+              dense
+              clearable
+              label="Major"
+              :rules="[rules.required]"
+            ></v-combobox>
+          </v-col>
+        </v-row>
+        <v-row class="justify-center row-input" v-if="status === 'invited'">
+          <v-col md="4" sm="5">
+            <v-text-field
+              class="ma-0 pa-0"
+              dense
+              clearable
+              label="Phone Number"
+              placeholder="+885"
+              :rules="[rules.required]"
+            ></v-text-field>
+          </v-col>
+          <v-col md="4" sm="5">
+            <v-select
+              class="ma-0 pa-0"
+              dense
+              clearable
+              label="Gender"
+              :rules="[rules.required]"
+              :items="items"
+            ></v-select>
+          </v-col>
+        </v-row>
         <v-row class="justify-center row-input">
           <v-col md="8" sm="8">
             <v-text-field
+              clearable
               class="ma-0 pa-0"
               v-model="password"
               :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
@@ -39,12 +84,15 @@
               hint="At least 8 characters"
               @click:append="show1 = !show1"
             ></v-text-field>
-            <p v-if="invalidEmailOrPassword !== null" class="red--text">{{ invalidEmailOrPassword }}</p>
+            <p v-if="invalidEmailOrPassword !== null" class="red--text">
+              {{ invalidEmailOrPassword }}
+            </p>
           </v-col>
         </v-row>
         <v-row class="justify-center row-input" v-if="status === 'invited'">
           <v-col md="8" sm="8">
             <v-text-field
+              clearable
               class="ma-0 pa-0"
               v-model="confirmPassword"
               :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
@@ -84,6 +132,7 @@ export default {
   props: ["status", "invalidEmailOrPassword"],
   data() {
     return {
+      items: ["Male", "Female", "Other"],
       valid: true,
       show1: false,
       show2: false,
@@ -96,33 +145,40 @@ export default {
       rules: {
         required: (value) => !!value || "Required",
         min: (v) => v.length >= 8 || "Min 8 characters",
-        isMatchWithConfirm: (v) => this.confirmPassword === '' || v === this.confirmPassword || 'Password does not match',
-        isMatchWithPassword: (v) => this.password === '' || v === this.password || 'Password does not match',
+        isMatchWithConfirm: (v) =>
+          this.confirmPassword === "" ||
+          v === this.confirmPassword ||
+          "Password does not match",
+        isMatchWithPassword: (v) =>
+          this.password === "" ||
+          v === this.password ||
+          "Password does not match",
       },
     };
   },
   computed: {
     passwordConfirmationRule() {
-      return () => this.password === this.confirmPassword || "Password must match";
+      return () =>
+        this.password === this.confirmPassword || "Password must match";
     },
   },
   methods: {
     validate() {
       let isValidated = this.$refs.form.validate();
-      if(isValidated) {
+      if (isValidated) {
         let data = {};
-        if(this.status === 'invited') {
+        if (this.status === "invited") {
           data = {
-            'firstname': this.firstname,
-            'lastname': this.lastname,
-            'password': this.password,
-          }
-        } else if(this.status === 'validated') {
+            firstname: this.firstname,
+            lastname: this.lastname,
+            password: this.password,
+          };
+        } else if (this.status === "validated") {
           data = {
-            'password': this.password,
-          }
+            password: this.password,
+          };
         }
-        this.$emit('submitSecondStep', data);
+        this.$emit("submitSecondStep", data);
       }
     },
   },
@@ -154,7 +210,7 @@ export default {
   align-items: center;
 }
 .profile > img {
-  margin-top: 15%;
+  margin-top: 6%;
   width: 12vh;
 }
 .title-login {
