@@ -99,6 +99,14 @@ class Usercontroller extends Controller
                 $user->password = bcrypt($request->password);
                 $user->status = 'validated';
                 $user->save();
+
+                $alumni = Alumni::where('user_id', $user->id)->get()->first();
+                $alumni->phone = $request->phone;
+                $alumni->gender = $request->gender;
+                $alumni->batch = $request->batch;
+                $alumni->major = $request->major;
+                $alumni->save();
+                
                 return response()->json(['message' => 'Successfully', 'user' => $user]);
             } else if ($user->status === 'validated') {
                 if(!Hash::check($request->password, $user->password)){
@@ -108,7 +116,7 @@ class Usercontroller extends Controller
                     ->join('alumnis', 'users.id', '=', 'alumnis.user_id')
                     ->select('users.*', 'alumnis.*')
                     ->get();
-                    return response()->json(['message' => 'Successfully', 'user' => $user]);
+                    return response()->json(['message' => 'Successfully', 'user' => $alumni]);
                 }
             }
         }
