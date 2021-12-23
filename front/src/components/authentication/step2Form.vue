@@ -132,7 +132,7 @@ export default {
   props: ["status", "invalidEmailOrPassword"],
   data() {
     return {
-      items: ["Male", "Female", "Other"],
+      items: ["Female", "Male", "Other"],
       valid: true,
       show1: false,
       show2: false,
