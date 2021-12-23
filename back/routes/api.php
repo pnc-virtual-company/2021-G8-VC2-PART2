@@ -7,6 +7,7 @@ use App\Http\Controllers\Usercontroller;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\PositionController;
+use App\Http\Controllers\BatchController;
 
 Route::post('/invite', [UserController::class, "signUp"]);
 Route::get('/signin/{email}', [UserController::class, "signInStep1"]);
@@ -48,3 +49,10 @@ Route::get('/workPositions/{id}',[PositionController::class, "getOneWorkPosition
 Route::post('/workPositions',[PositionController::class, "createWorkPosition"]);
 Route::put('/workPositions/{id}',[PositionController::class, "updateWorkPosition"]);
 Route::delete('/workPositions/{id}',[PositionController::class, "deleteWorkPosition"]);
+
+// Route for batch
+Route::get('/batchs',[BatchController::class, "getAllBatchNames"]);
+
+Route::post('/batchs',[BatchController::class, "addANewBatch"]);
+Route::delete('/batchs/{id}',[BatchController::class, "removeOneBatchNames"]);
+
