@@ -16,6 +16,9 @@ Route::post('/signin/completeinfo', [UserController::class, "signInStep2"]);
 
 Route::get('/users',[UserController::class, "getUsers"]);
 
+// update alumni information
+Route::put('/users/{id}/updateinfo',[UserController::class, "updateAlumniInfo"]);
+
 //Route for domain company
 Route::get('/domain_companies',[DomainCompanyController::class, "getDomainCompanies"]);
 Route::get('/domain_companies/{id}',[DomainCompanyController::class, "showOneDomain"]);
