@@ -19,4 +19,7 @@ class Alumni extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function alumni_skill() {
+        return $this->hasMany(Alumni_skill::class);
+    }
 }
