@@ -100,7 +100,7 @@ class Usercontroller extends Controller
                 $user->status = 'validated';
                 $user->save();
 
-                $alumni = Alumni::where('user_id', $user->id)->get()->first();
+                $alumni = Alumni::where('user_id', '=', $user->id)->get()->first();
                 $alumni->phone = $request->phone;
                 $alumni->gender = $request->gender;
                 $alumni->batch = $request->batch;

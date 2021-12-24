@@ -1,4 +1,3 @@
-
 <?php
 
 use App\Http\Controllers\DomainCompanyController;
@@ -51,8 +50,7 @@ Route::put('/workPositions/{id}',[PositionController::class, "updateWorkPosition
 Route::delete('/workPositions/{id}',[PositionController::class, "deleteWorkPosition"]);
 
 // Route for batch
-Route::get('/batchs',[BatchController::class, "getAllBatchNames"]);
+Route::get('/batches',[BatchController::class, "getAllBatchNames"]);
 
-Route::post('/batchs',[BatchController::class, "addANewBatch"]);
-Route::delete('/batchs/{id}',[BatchController::class, "removeOneBatchNames"]);
-
+Route::post('/batches',[BatchController::class, "addANewBatch"]);
+Route::delete('/batches/{id}',[BatchController::class, "removeOneBatchNames"]);

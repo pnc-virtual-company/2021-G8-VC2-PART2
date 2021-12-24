@@ -61,7 +61,7 @@
           {{ item.title }}
         </v-btn>
         <v-spacer></v-spacer>
-         <div class="my-2 logout" @click="$emit('signout')">
+         <div class="my-2 ml-2 logout" @click="$emit('signout')">
             <v-btn
               small
               color="grey"

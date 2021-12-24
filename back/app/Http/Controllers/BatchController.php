@@ -13,8 +13,12 @@ class BatchController extends Controller
      */
     public function getAllBatchNames()
     {
-        //
-        return Batch::all();
+        $batches = Batch::latest()->get();
+        $cleanBatches = [];
+        foreach($batches as $batch) {
+            array_push($cleanBatches, $batch->name);
+        }
+        return $cleanBatches;
     }
 
     /**
@@ -25,7 +29,6 @@ class BatchController extends Controller
      */
     public function addANewBatch(Request $request)
     {
-        //
         $request->validate([
             'name' => 'required',
         ]);
