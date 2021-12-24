@@ -1,6 +1,7 @@
 
 <?php
 
+use App\Http\Controllers\AlumniSkillController;
 use App\Http\Controllers\DomainCompanyController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Usercontroller;
@@ -43,6 +44,10 @@ Route::get('/skills/{id}',[SkillController::class, "showOneSkill"]);
 Route::post('/skills',[SkillController::class, "createSkill"]);
 Route::put('/skills/{id}',[SkillController::class, "updateSkill"]);
 Route::delete('/skills/{id}',[SkillController::class, "destroy"]);
+//alumni skill
+Route::post('/alumniskills', [AlumniSkillController::class ,'createAlumniSkill']);
+Route::post('/alumniskills/{id}', [AlumniSkillController::class ,'deleteAlumniSkill']);
+
 
 //Route for position
 
