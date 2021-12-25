@@ -34,7 +34,7 @@
                 <v-divider></v-divider>
                 <v-card-text class="text-center">
                   <v-avatar size="270">
-                    <v-img class="center" max-width="350" :src="image"> </v-img>
+                    <v-img class="center" max-width="300" :src="image"> </v-img>
                   </v-avatar>
                 </v-card-text>
                 <v-card-actions class="btn-upload">
@@ -49,8 +49,9 @@
                       for="myFile"
                       class="custom-file-upload"
                       color="primary"
-                      >CHOOSE PROFILE</label
+                      >SELECT PROFILE</label
                     >
+
                   </div>
                   <v-spacer></v-spacer>
                   <v-btn
