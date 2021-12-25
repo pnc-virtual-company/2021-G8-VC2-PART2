@@ -14,6 +14,7 @@ Route::post('/signin/password', [UserController::class, "signInStep2"]);
 Route::post('/signin/completeinfo', [UserController::class, "signInStep2"]);
 
 Route::get('/users',[UserController::class, "getUsers"]);
+Route::get('/users/{id}',[UserController::class, "getAUser"]);
 
 //Route for domain company
 Route::get('/domain_companies',[DomainCompanyController::class, "getDomainCompanies"]);

@@ -47,12 +47,10 @@ class Usercontroller extends Controller
     public function signInStep1($email)
     {
         $user = User::where('email', $email)->get()->first();
-
-        //return the user is invited or validated when email is registered or invited
         if(!$user) {
             return response()->json(['status' => 'Invalid Email'], 401);
         }
-        return response()->json(['status' => $user->status]);
+        return response()->json(['status' => $user->status, 'role' => $user->role]);
     }
 
     // sign in step2
@@ -69,7 +67,7 @@ class Usercontroller extends Controller
             if(!Hash::check($request->password, $user->password)){
                 return response()->json(['message' => 'Unauthorized'], 401);
             } else {
-                return response()->json(['message' => 'Successfully', 'user' => $user]);
+                return response()->json(['message' => 'Successfully', 'user' => $user], 201);
             }
         }
 
@@ -81,12 +79,12 @@ class Usercontroller extends Controller
                 $user->password = bcrypt($request->password);
                 $user->status = 'validated';
                 $user->save();
-                return response()->json(['message' => 'Successfully', 'user' => $user]);
+                return response()->json(['message' => 'Successfully', 'user' => $user], 201);
             } else if ($user->status === 'validated') {
                 if(!Hash::check($request->password, $user->password)){
                     return response()->json(['message' => 'Unauthorized'], 401);
                 } else {
-                    return response()->json(['message' => 'Successfully', 'user' => $user]);
+                    return response()->json(['message' => 'Successfully', 'user' => $user], 200);
                 }
             }
         }
@@ -99,24 +97,26 @@ class Usercontroller extends Controller
                 $user->password = bcrypt($request->password);
                 $user->status = 'validated';
                 $user->save();
+                $alumni = Alumni::where('user_id', $user->id)->update([
+                    'gender' => $request->gender,
+                    'batch' => $request->batch,
+                    'major' => $request->major,
+                    'phone' => $request->phone,
+                ]);
 
-                $alumni = Alumni::where('user_id', '=', $user->id)->get()->first();
-                $alumni->phone = $request->phone;
-                $alumni->gender = $request->gender;
-                $alumni->batch = $request->batch;
-                $alumni->major = $request->major;
-                $alumni->save();
+                $updatedResult = User::join('alumnis', 'users.id', '=', 'alumnis.user_id')
+                                ->where('users.id', $user->id)
+                                ->get(['users.*', 'alumnis.*']);
                 
-                return response()->json(['message' => 'Successfully', 'user' => $user]);
+                return response()->json(['message' => 'Successfully', 'user' => $updatedResult[0]], 201);
             } else if ($user->status === 'validated') {
                 if(!Hash::check($request->password, $user->password)){
                     return response()->json(['message' => 'Unauthorized'], 401);
                 } else {
-                    $alumni = DB::table('users')
-                    ->join('alumnis', 'users.id', '=', 'alumnis.user_id')
-                    ->select('users.*', 'alumnis.*')
-                    ->get();
-                    return response()->json(['message' => 'Successfully', 'user' => $alumni]);
+                    $alumni = User::join('alumnis', 'users.id', '=', 'alumnis.user_id')
+                    ->where('users.id', $user->id)
+                    ->get(['users.*', 'alumnis.*']);
+                    return response()->json(['message' => 'Successfully', 'user' => $alumni[0]], 200);
                 }
             }
         }
@@ -124,5 +124,16 @@ class Usercontroller extends Controller
 
     public function getUsers(){
         return User::latest()->get();
+    }
+    
+    public function getAUser($id){
+        $user = User::findOrFail($id);
+        if($user->role === 'alumni') {
+            $alumni = User::join('alumnis', 'users.id', '=', 'alumnis.user_id')
+                    ->where('users.id', $id)
+                    ->get(['users.*', 'alumnis.*']);
+            return response()->json(['user' => $alumni[0]]);
+        }
+        return response()->json(['user' => $user]);
     }
 }
