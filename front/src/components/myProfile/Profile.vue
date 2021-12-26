@@ -4,7 +4,7 @@
       <v-col cols="8" sm="3" md="5">
         <v-avatar size="80px">
           <img
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Circle-icons-profile.svg/1024px-Circle-icons-profile.svg.png"
+            :src="image"
             alt=""
           />
         </v-avatar>
@@ -29,24 +29,33 @@
 
               <v-card>
                 <v-card-title>
-                  <span class="text-h6">Edit Image</span>
+                  <span class="text-h6">EDIT PROFILE</span>
                 </v-card-title>
                 <v-divider></v-divider>
-                <v-card-text>
-                  <v-img
-                    class="center"
-                    max-width="350"
-                    :src="image"
-                  >
-                  </v-img>
+                <v-card-text class="text-center">
+                  <v-avatar size="270">
+                    <v-img class="center" max-width="300" :src="image"> </v-img>
+                  </v-avatar>
                 </v-card-text>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <div text class="image-upload mb-3">
-                    <input type="file" @change="fileChange">
+                <v-card-actions class="btn-upload">
+                  <div class="image-upload mb-2">
+                    <input
+                      type="file"
+                      @change="fileChange"
+                      name="myFile"
+                      id="myFile"
+                    />
+                    <label
+                      for="myFile"
+                      class="custom-file-upload"
+                      color="primary"
+                      >SELECT PROFILE</label
+                    >
+
                   </div>
+                  <v-spacer></v-spacer>
                   <v-btn
-                    class="mb-3"
+                    class="mb-1"
                     small
                     depressed
                     color="primary"
@@ -58,8 +67,8 @@
                   <v-btn
                     small
                     depressed
-                    color="blue"
-                    class="white--text mb-3"
+                    color="primary"
+                    class="white--text mb-1"
                     @click="dialog = false"
                   >
                     Change
@@ -115,19 +124,34 @@ export default {
   data() {
     return {
       dialog: false,
-      image: "https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-PNG-Free-Image.png"
+      image:
+        "https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-PNG-Free-Image.png",
     };
   },
   methods: {
     fileChange(e) {
       let file = e.target.files[0];
-      this.image = URL.createObjectURL(file)
-    }
+      this.image = URL.createObjectURL(file);
+    },
   },
 };
 </script>
 
 <style scoped>
+.v-dialog > .v-card > .v-card__actions {
+  padding: 16px 24px 14px;
+}
+.custom-file-upload {
+  font-size: 12px;
+  border-radius: 5px;
+  background: #00a3ff;
+  padding: 8px 9px;
+  cursor: pointer;
+  color: white;
+}
+input[type="file"] {
+  display: none;
+}
 .img {
   position: absolute;
   top: 60px;
