@@ -4,22 +4,80 @@
       <v-col cols="8" sm="3" md="5">
         <v-avatar size="80px">
           <img
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Circle-icons-profile.svg/1024px-Circle-icons-profile.svg.png"
+            :src="image"
             alt=""
           />
         </v-avatar>
         <div class="img mr-3">
-          <v-btn
-            color="white"
-            fab
-            x-small
-            height="25"
-            width="25"
-            dark
-            elevation="1"
-          >
-            <v-icon color="black">mdi-camera</v-icon>
-          </v-btn>
+          <div class="text-center">
+            <v-dialog v-model="dialog" width="500">
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  color="white"
+                  fab
+                  x-small
+                  height="25"
+                  width="25"
+                  dark
+                  elevation="1"
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                  <v-icon color="black">mdi-camera</v-icon>
+                </v-btn>
+              </template>
+
+              <v-card>
+                <v-card-title>
+                  <span class="text-h6">EDIT PROFILE</span>
+                </v-card-title>
+                <v-divider></v-divider>
+                <v-card-text class="text-center">
+                  <v-avatar size="270">
+                    <v-img class="center" max-width="300" :src="image"> </v-img>
+                  </v-avatar>
+                </v-card-text>
+                <v-card-actions class="btn-upload">
+                  <div class="image-upload mb-2">
+                    <input
+                      type="file"
+                      @change="fileChange"
+                      name="myFile"
+                      id="myFile"
+                    />
+                    <label
+                      for="myFile"
+                      class="custom-file-upload"
+                      color="primary"
+                      >SELECT PROFILE</label
+                    >
+
+                  </div>
+                  <v-spacer></v-spacer>
+                  <v-btn
+                    class="mb-1"
+                    small
+                    depressed
+                    color="primary"
+                    text
+                    @click="dialog = false"
+                  >
+                    Cancel
+                  </v-btn>
+                  <v-btn
+                    small
+                    depressed
+                    color="primary"
+                    class="white--text mb-1"
+                    @click="dialog = false"
+                  >
+                    Change
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+          </div>
+          <!--  -->
         </div>
         <div class="d-flex">
           <h3 class="mt-2">{{userData.firstname.toUpperCase() + ' ' + userData.lastname.toUpperCase()}}</h3>
@@ -63,6 +121,13 @@
 <script>
 export default {
   props:['userData'],
+  data() {
+    return {
+      dialog: false,
+      image:
+        "https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-PNG-Free-Image.png",
+    };
+  },
   computed: {
     getGenderSign: function() {
       let result = 'mdi-gender-female';
@@ -73,11 +138,31 @@ export default {
       }
       return result;
     }
-  }
+  },
+  methods: {
+    fileChange(e) {
+      let file = e.target.files[0];
+      this.image = URL.createObjectURL(file);
+    },
+  },
 };
 </script>
 
 <style scoped>
+.v-dialog > .v-card > .v-card__actions {
+  padding: 16px 24px 14px;
+}
+.custom-file-upload {
+  font-size: 12px;
+  border-radius: 5px;
+  background: #00a3ff;
+  padding: 8px 9px;
+  cursor: pointer;
+  color: white;
+}
+input[type="file"] {
+  display: none;
+}
 .img {
   position: absolute;
   top: 60px;
@@ -87,5 +172,14 @@ export default {
 .edit-info {
   display: flex;
   justify-content: flex-end;
+}
+.center {
+  display: block;
+  margin: auto;
+  width: 50%;
+  margin-top: 10px;
+}
+.v-card-title {
+  background: rgb(168, 96, 96);
 }
 </style>

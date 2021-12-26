@@ -136,4 +136,26 @@ class Usercontroller extends Controller
         }
         return response()->json(['user' => $user]);
     }
+    
+    // update alumni information (email,phone number)
+    public function updateAlumniInfo(Request $request, $id)
+    {
+        $request->validate([
+            'email' => 'required',
+            'phone' => 'required',
+        ]);
+        $userInfo = User::findOrFail($id);
+        $userInfo->email = $request->email;
+        $userInfo->save();
+        
+        $alumniInfo = Alumni::where('user_id', $userInfo->id)->get()->first()->update(['phone' => $request->phone]);
+        
+        $updatedResult = DB::table('users')
+        ->join('alumnis', 'users.id', '=', 'alumnis.user_id')
+        ->select('users.*', 'alumnis.*')
+        ->where('users.id', '=', $userInfo->id)
+        ->get();
+        
+        return response()->json(['message' => 'Email updated', 'alumniIfo' => $updatedResult], 200);
+    }
 }
