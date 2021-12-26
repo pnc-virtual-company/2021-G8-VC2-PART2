@@ -114,7 +114,7 @@ export default {
   props: ["alumniData"],
   data() {
     return {
-      dialog: true,
+      dialog: false,
       image: "https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-PNG-Free-Image.png"
     };
   },
