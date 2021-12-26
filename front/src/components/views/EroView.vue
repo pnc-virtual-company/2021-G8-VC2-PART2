@@ -14,9 +14,6 @@ export default {
   methods: {
     invite(data) {
       axios.post('invite', data)
-      .then(res => {
-        console.log(res.data);
-      })
     }
   },
 };

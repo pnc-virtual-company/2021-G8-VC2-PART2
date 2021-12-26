@@ -28,7 +28,7 @@
             ></v-text-field>
           </v-col>
         </v-row>
-        <v-row class="justify-center row-input" v-if="status === 'invited'">
+        <v-row class="justify-center row-input" v-if="status === 'invited' && role === 'alumni'">
           <v-col md="4" sm="5">
             <v-select
               v-model="signInData.selectedBatch"
@@ -52,7 +52,7 @@
             ></v-select>
           </v-col>
         </v-row>
-        <v-row class="justify-center row-input" v-if="status === 'invited'">
+        <v-row class="justify-center row-input" v-if="status === 'invited' && role === 'alumni'">
           <v-col md="4" sm="5">
             <v-text-field
               v-model="signInData.phone"
@@ -137,7 +137,7 @@
 <script>
 import axios from "../../axios-http.js";
 export default {
-  props: ["status", "invalidEmailOrPassword"],
+  props: ["status", "invalidEmailOrPassword", "role"],
   data() {
     return {
       genders: ["Female", "Male", "Other"],
@@ -177,7 +177,25 @@ export default {
     validate() {
       let isValidated = this.$refs.form.validate();
       if (isValidated) {
-        this.$emit("submitSecondStep", this.signInData);
+        let data = {};
+        if(this.status === 'validated') {
+          data['password'] = this.signInData.password;
+        } else {
+          if(this.role === 'alumni') {
+            data['firstname'] = this.signInData.firstname;
+            data['lastname'] = this.signInData.lastname;
+            data['gender'] = this.signInData.selectedGender;
+            data['batch'] = this.signInData.selectedBatch;
+            data['major'] = this.signInData.selectedMajor;
+            data['phone'] = this.signInData.phone;
+            data['password'] = this.signInData.password;
+          } else {
+            data['firstname'] = this.signInData.firstname;
+            data['lastname'] = this.signInData.lastname;
+            data['password'] = this.signInData.password;
+          }
+        }
+        this.$emit("submitSecondStep", data);
       }
     },
   },

@@ -10,18 +10,13 @@
         </v-btn>
       </v-col>
     </v-row>
-    <employment-card
-      v-for="emp in alumniData.employment"
-      :key="emp.position"
-      :employment="emp"
-    ></employment-card>
+    <employment-card></employment-card>
   </v-card>
 </template>
 <script>
 import EmploymentCard from "./EmploymentCard.vue";
 
 export default {
-  props: ["alumniData"],
   components: {
     "employment-card": EmploymentCard,
   },

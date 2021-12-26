@@ -7,12 +7,15 @@
     ></navigation-bar>
     <v-main>
       <router-view
+        :userData="user"
         :status="signInData.status"
+        :role="signInData.role"
         :invalidEmail="error.invalidEmail"
         :invalidEmailOrPassword="error.invalidEmailOrPassword"
         @submitFirstStep="submitStep1"
         @submitSecondStep="submitStep2"
         @clearSignInData="clearSignInData"
+        @clearErrorMessage="clearErrorMessage"
       ></router-view>
     </v-main>
   </v-app>
@@ -28,7 +31,9 @@ export default {
   data() {
     return {
       showNavigation: false,
-      user: null,
+      user: {
+        role: null,
+      },
       error: {
         invalidEmail: null,
         invalidEmailOrPassword: null,
@@ -36,18 +41,19 @@ export default {
       signInData: {
         email: null,
         status: null,
+        role: null,
       },
     };
   },
   computed: {
     isLogin: function () {
-      return this.user !== null;
+      return this.user.role !== null;
     },
   },
   methods: {
     signOut() {
-      localStorage.removeItem("user");
-      this.user = null;
+      localStorage.removeItem("userId");
+      this.user = {role: null};
       this.$router.push("/signin");
     },
     submitStep1(email) {
@@ -57,11 +63,14 @@ export default {
         .get(route + email)
         .then((res) => {
           this.signInData.status = res.data.status;
+          this.signInData.role = res.data.role;
           this.error.invalidEmail = null;
         })
         .catch((err) => {
           if (err.response.status === 401) {
             this.error.invalidEmail = "Invalid email address";
+          } else {
+            console.log(err);
           }
         });
     },
@@ -72,22 +81,24 @@ export default {
       }
       data['status'] = this.signInData.status;
       data['email'] = this.signInData.email;
-      console.log(data);
       axios
         .post(route, data)
         .then((res) => {
           this.user = res.data.user;
-          localStorage.setItem("user", JSON.stringify(res.data.user));
           this.error.invalidEmailOrPassword = null;
           if (this.user.role === "admin" || this.user.role === "ero") {
+            localStorage.setItem("userId", this.user.id);
             this.$router.push("/eroview");
           } else {
+            localStorage.setItem("userId", this.user.user_id);
             this.$router.push("/myprofile");
           }
         })
         .catch((err) => {
           if (err.response.status === 401) {
             this.error.invalidEmailOrPassword = "Invalid email or password";
+          } else {
+            console.log(err);
           }
         });
     },
@@ -98,15 +109,22 @@ export default {
       };
       this.error.invalidEmailOrPassword = null;
     },
+    clearErrorMessage() {
+      this.error.invalidEmail = null;
+    }
   },
   mounted() {
-    if (JSON.parse(localStorage.getItem("user"))) {
-      this.user = JSON.parse(localStorage.getItem("user"));
-      if (this.user.role === "admin" || this.user.role === "ero") {
-        this.$router.push("/eroview");
-      } else {
-        this.$router.push("/myprofile");
-      }
+    if (localStorage.getItem("userId")) {
+      let userId = localStorage.getItem("userId");
+      axios.get('users/' + userId)
+      .then(res => {
+        this.user = res.data.user;
+        if (this.user.role === "admin" || this.user.role === "ero") {
+          this.$router.push("/eroview");
+        } else {
+          this.$router.push("/myprofile");
+        }
+      })
     }
   },
 };

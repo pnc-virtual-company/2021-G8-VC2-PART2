@@ -11,13 +11,10 @@
               />
             </v-avatar>
             <v-list-item-title>
-              <v-list-item-title>{{ employment.position }}</v-list-item-title>
-              <small>{{ employment.company }}</small>
+              <v-list-item-title>Position</v-list-item-title>
+              <small>Company</small>
               <br />
-              <small
-                >{{ employment.workStart }} - {{ employment.workLeave }}
-                {{ employment.location }}</small
-              >
+              <small>Job-StartDate -> Job-EndDate Location</small>
             </v-list-item-title>
           </v-list-item>
         </v-col>
@@ -111,8 +108,8 @@
 
 <script>
 export default {
-  props: ["employment"],
   data: () => ({
+    dialog: false,
     messages: [
       {
         avatar: "https://avatars0.githubusercontent.com/u/9064066?v=4&s=460",

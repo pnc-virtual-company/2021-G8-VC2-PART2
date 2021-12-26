@@ -22,8 +22,8 @@
           </v-btn>
         </div>
         <div class="d-flex">
-          <h3 class="mt-2">{{alumniData.name}}</h3>
-          <v-icon>mdi-gender-female</v-icon>
+          <h3 class="mt-2">{{userData.firstname.toUpperCase() + ' ' + userData.lastname.toUpperCase()}}</h3>
+          <v-icon>{{ getGenderSign }}</v-icon>
         </div>
       </v-col>
       <v-col class="edit-info">
@@ -38,22 +38,22 @@
           <div class="mr-3">
             <v-icon color="#00A3FF">mdi-clipboard-text</v-icon>
           </div>
-          <v-list-item-title>{{alumniData.batch}}</v-list-item-title>
+          <v-list-item-title>{{userData.batch}}</v-list-item-title>
         </v-list-item>
         <v-list-item class="ma-0 pa-0">
           <v-icon class="mr-3" color="#00A3FF">mdi-school</v-icon>
-          <v-list-item-title>{{alumniData.skill}}</v-list-item-title>
+          <v-list-item-title>{{userData.major}}</v-list-item-title>
         </v-list-item>
       </v-col>
       <v-spacer></v-spacer>
       <v-col class="ma-0">
         <v-list-item class="ma-0 pa-0">
           <v-icon class="mr-3" color="#00A3FF">mdi-email</v-icon>
-          <v-list-item-title>{{alumniData.email}}</v-list-item-title>
+          <v-list-item-title>{{userData.email}}</v-list-item-title>
         </v-list-item>
         <v-list-item class="ma-0 pa-0">
           <v-icon class="mr-3" color="#00A3FF">mdi-phone-in-talk</v-icon>
-          <v-list-item-title>{{alumniData.phone}}</v-list-item-title>
+          <v-list-item-title>+885 {{userData.phone}}</v-list-item-title>
         </v-list-item>
       </v-col>
     </v-row>
@@ -62,7 +62,18 @@
 
 <script>
 export default {
-  props:['alumniData'],
+  props:['userData'],
+  computed: {
+    getGenderSign: function() {
+      let result = 'mdi-gender-female';
+      if(this.userData.gender === 'Male') {
+        result = 'mdi-gender-male'
+      } else if(this.userData.gender === 'Other') {
+        result = '';
+      }
+      return result;
+    }
+  }
 };
 </script>
 

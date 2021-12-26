@@ -40,7 +40,7 @@
       </span>
       <v-toolbar-title>
         <router-link
-          to="/myprofile"
+          to=""
           tag="span"
           style="cursor: pointer"
           class="blue--text"
@@ -89,7 +89,7 @@ export default {
           title: "My Profile",
           path: "/myprofile",
           icon: "mdi-account",
-          whoCanSee: ["alumni", "ero"],
+          whoCanSee: ["alumni"],
         },
         {
           title: "Explore Alumi",
