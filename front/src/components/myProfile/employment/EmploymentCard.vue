@@ -131,7 +131,7 @@ export default {
 <style scoped>
 .option {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
 }
 .v-card:hover {
   background: #f5f4f3;
