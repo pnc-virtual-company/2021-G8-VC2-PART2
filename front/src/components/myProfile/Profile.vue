@@ -2,6 +2,7 @@
   <v-card class="mt-5 pa-4 rounded-lg">
     <!-- edit info -->
     <v-dialog
+      persistent
       v-model="editInfoDialog"
       :max-width="options.width"
       :style="{ zIndex: options.zIndex }"
@@ -53,7 +54,7 @@
         </v-avatar>
         <div class="img mr-3">
           <div class="text-center">
-            <v-dialog v-model="dialog" width="500">
+            <v-dialog v-model="dialog" persistent width="500">
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
                   color="white"
