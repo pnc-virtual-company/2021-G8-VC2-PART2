@@ -6,7 +6,7 @@
       </v-col>
       <v-col class="add-info">
         <div class="text-center">
-          <v-dialog v-model="dialog" width="500">
+          <v-dialog v-model="dialog" persistent width="500">
             <template v-slot:activator="{ on, attrs }">
               <v-btn color="white" fab x-small dark elevation="1" v-bind="attrs" v-on="on">
                 <v-icon color="black">mdi-plus</v-icon>
@@ -26,7 +26,6 @@
                     hide-selected
                     label="Work Position"
                     persistent-hint
-                    small-chips
                     :rules="[rules.required]"
                   >
                     <template v-slot:no-data>
@@ -49,7 +48,6 @@
                     hide-selected
                     label="Company"
                     persistent-hint
-                    small-chips
                     prepend-inner-icon="mdi-domain"
                     :rules="[rules.required]"
                   >
@@ -72,15 +70,14 @@
                     <v-spacer></v-spacer>
                     <v-col cols="12" sm="12" md="6">
                       <v-dialog
-                        ref="dialog"
-                        v-model="modal"
-                        :return-value.sync="date"
-                        persistent
+                        ref="dialog1"
+                        v-model="modal1"
+                        :return-value.sync="date1"
                         width="290px"
                       >
                         <template v-slot:activator="{ on, attrs }">
                           <v-text-field
-                            v-model="date"
+                            v-model="date1"
                             label="Picker in dialog"
                             prepend-inner-icon="mdi-calendar"
                             readonly
@@ -88,24 +85,23 @@
                             v-on="on"
                           ></v-text-field>
                         </template>
-                        <v-date-picker v-model="date1" scrollable>
+                        <v-date-picker v-model="date" scrollable>
                           <v-spacer></v-spacer>
-                          <v-btn text color="primary" @click="modal = false">Cancel</v-btn>
-                          <v-btn text color="primary" @click="$refs.dialog.save(date)">OK</v-btn>
+                          <v-btn text color="primary" @click="modal1 = false">Cancel</v-btn>
+                          <v-btn text color="primary" @click="$refs.dialog1.save(date)">OK</v-btn>
                         </v-date-picker>
                       </v-dialog>
                     </v-col>
                     <v-col cols="12" sm="12" md="6">
                       <v-dialog
-                        ref="dialog"
+                        ref="dialog2"
                         v-model="modal"
-                        :return-value.sync="date"
-                        persistent
+                        :return-value.sync="date2"
                         width="290px"
                       >
                         <template v-slot:activator="{ on, attrs }">
                           <v-text-field
-                            v-model="date"
+                            v-model="date2"
                             label="Picker in dialog"
                             prepend-inner-icon="mdi-calendar"
                             readonly
@@ -113,10 +109,10 @@
                             v-on="on"
                           ></v-text-field>
                         </template>
-                        <v-date-picker v-model="date2" scrollable>
+                        <v-date-picker v-model="date" scrollable>
                           <v-spacer></v-spacer>
-                          <v-btn text color="primary" @click="modal = false">Cancel</v-btn>
-                          <v-btn text color="primary" @click="$refs.dialog.save(date)">OK</v-btn>
+                          <v-btn text color="primary" @click="modal2 = false">Cancel</v-btn>
+                          <v-btn text color="primary" @click="$refs.dialog2.save(date)">OK</v-btn>
                         </v-date-picker>
                       </v-dialog>
                     </v-col>
@@ -213,6 +209,11 @@ export default {
     return {
       showAddCompanyForm: false,
       dialog: false,
+      dialog1: false,
+      dialog2: false,
+      date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+        .toISOString()
+        .substr(0, 10),
       date1: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
         .toISOString()
         .substr(0, 10),

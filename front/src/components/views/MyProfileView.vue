@@ -2,6 +2,7 @@
   <section class="myProfileView">
     <profile
       :userData="userData"
+      @changeProfile="changeProfile"
     ></profile>
     <skill-view
       :skills="skills"
@@ -27,15 +28,20 @@ export default {
     return {
       skills: [],
     };
-    
+  },
+  methods: {
+    changeProfile(profile) {
+      this.$emit('changeProfile', profile);
+    }
   },
   mounted() {
-   axios.get("skills").then(res=>{
+    axios.get("skills").then(res=>{
      for(let skill of res.data){
        this.skills.push(skill.skill_name);
      }
    })
-  },
+  }
+
 };
 </script>
 
