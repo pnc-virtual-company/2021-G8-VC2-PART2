@@ -1,4 +1,3 @@
-
 <?php
 
 use App\Http\Controllers\AlumniSkillController;
@@ -16,6 +15,7 @@ Route::post('/signin/password', [UserController::class, "signInStep2"]);
 Route::post('/signin/completeinfo', [UserController::class, "signInStep2"]);
 
 Route::get('/users',[UserController::class, "getUsers"]);
+Route::get('/users/{id}',[UserController::class, "getAUser"]);
 
 // update alumni information
 Route::put('/users/{id}/updateinfo',[UserController::class, "updateAlumniInfo"]);
@@ -64,4 +64,3 @@ Route::get('/batches',[BatchController::class, "getAllBatchNames"]);
 
 Route::post('/batches',[BatchController::class, "addANewBatch"]);
 Route::delete('/batches/{id}',[BatchController::class, "removeOneBatchNames"]);
-

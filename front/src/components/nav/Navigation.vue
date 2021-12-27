@@ -39,7 +39,7 @@
       </span>
       <v-toolbar-title>
         <router-link
-          to="/myprofile"
+          to=""
           tag="span"
           style="cursor: pointer"
           class="blue--text"
@@ -62,7 +62,7 @@
           {{ item.title }}
         </v-tab>
         <v-spacer></v-spacer>
-         <div class="my-2 logout ma-2" @click="$emit('signout')">
+         <div class="my-2 ml-2 logout" @click="$emit('signout')">
             <v-btn
               color="grey"
               dark
@@ -90,7 +90,7 @@ export default {
           title: "My Profile",
           path: "/myprofile",
           icon: "mdi-account",
-          whoCanSee: ["alumni", "ero"],
+          whoCanSee: ["alumni"],
         },
         {
           title: "Explore Alumi",

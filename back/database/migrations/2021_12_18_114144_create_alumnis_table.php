@@ -16,10 +16,9 @@ class CreateAlumnisTable extends Migration
         Schema::create('alumnis', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('CASCADE');
-            $table->foreignId('skill_id');
             $table->string('gender')->nullable();
             $table->string('profile')->nullable();
-            $table->integer('batch')->nullable();
+            $table->string('batch')->nullable();
             $table->string('major')->nullable();
             $table->string('phone')->nullable();
             $table->timestamps();
