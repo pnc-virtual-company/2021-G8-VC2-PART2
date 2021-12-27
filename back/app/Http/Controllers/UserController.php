@@ -160,15 +160,16 @@ class Usercontroller extends Controller
     }
     /* upload profile alumni*/
     public function profilePost(Request $request, $id){
-        Alumni::where('user_id', $id)->get()->first()->update(['profile' => $request->profile]);
+        
         $request->validate([
             'profile' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:1999',
         ]);
         
         $profileName = time().'.'.$request->profile->extension();  
         /* store profile in public folder */
-       $pathProfile = $request->profile->move(public_path('profiles'), $profileName);
-        return response()->json(['message'=>'Your profile have been uploaded',"profile" => $pathProfile],200);
+        $request->profile->move(public_path('profiles'), $profileName);
+       Alumni::where('user_id', $id)->get()->first()->update(['profile' => $profileName]);
+    return response()->json(['message'=>'Your profile have been uploaded',"profile" => $$profileName],200);
     }
 
 }
