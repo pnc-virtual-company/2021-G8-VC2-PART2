@@ -132,6 +132,6 @@ export default {
 }
 
 .v-main {
-  background: #f3f2ef;
+  background: #E0E8EF;
 }
 </style>

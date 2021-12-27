@@ -21,7 +21,7 @@
             </v-list-item-title>
           </v-list-item>
         </v-col>
-        <v-col cols-4 class="option mt-0">
+        <!-- <v-col cols-4 class="option mt-0">
           <v-dialog v-model="dialog" persistent max-width="600px">
             <template v-slot:activator="{}">
             <div class="mr-2">
@@ -102,9 +102,9 @@
               </v-card-actions>
             </v-card>
           </v-dialog>
-        </v-col>
+        </v-col> -->
       </v-row>
-      <v-divider></v-divider>
+      <v-divider class="mt-2"></v-divider>
     </v-card>
   </section>
 </template>

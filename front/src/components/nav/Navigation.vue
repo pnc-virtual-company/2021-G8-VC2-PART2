@@ -33,8 +33,7 @@
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
-
-    <v-toolbar height="60px" dense fixed>
+    <v-toolbar flat app height="60px" dense fixed elevation="0">
       <span class="hidden-sm-and-up">
         <v-app-bar-nav-icon @click="sidebar = !sidebar"> </v-app-bar-nav-icon>
       </span>
@@ -49,28 +48,30 @@
         </router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-toolbar-items class="hidden-xs-only">
-        <v-btn
-          active-class="grey-5 black--text"
+      <v-tabs class="hidden-xs-only d-flex justify-end">
+        <v-tabs-slider color="blue" class="font-weight-bold"></v-tabs-slider>
+        <v-tab
+          active-class=" blue--text"
           v-for="item in menuItems"
           :key="item.title"
           :to="item.path"
           text
+          class=""
         >
-          <v-icon left class="blue--text">{{ item.icon }}</v-icon>
+          <v-icon left>{{ item.icon }}</v-icon>
           {{ item.title }}
-        </v-btn>
+        </v-tab>
         <v-spacer></v-spacer>
-         <div class="my-2 logout" @click="$emit('signout')">
+         <div class="my-2 logout ma-2" @click="$emit('signout')">
             <v-btn
-              small
               color="grey"
               dark
+              elevation="0"
             >
               Logout
             </v-btn>
           </div>
-      </v-toolbar-items>
+      </v-tabs>
     </v-toolbar>
   </nav>
 </template>
