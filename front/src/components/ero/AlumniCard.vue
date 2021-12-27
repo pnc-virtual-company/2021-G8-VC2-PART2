@@ -24,7 +24,7 @@
           </div>
         </v-col>
       </v-row>
-      <v-divider></v-divider>
+      <v-divider class="mt-2"></v-divider>
     </v-card>
   </section>
 </template>
@@ -71,7 +71,7 @@ export default {
 <style scoped>
 .option {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
 }
 .v-card:hover {
   background: #f5f4f3;
