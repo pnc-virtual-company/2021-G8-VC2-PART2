@@ -2,8 +2,9 @@
   <section class="myProfileView">
     <profile
       :userData="userData"
+      @changeProfile="changeProfile"
     ></profile>
-    <skill-view class="d-none"></skill-view>
+    <skill-view></skill-view>
     <employemt-view></employemt-view>
   </section>
 </template>
@@ -20,11 +21,10 @@ export default {
     "employemt-view": EmploymentView,
     "skill-view": Skill,
   },
-  data() {
-    return {
-      
-    };
-    
+  methods: {
+    changeProfile(profile) {
+      this.$emit('changeProfile', profile);
+    }
   },
 };
 </script>
