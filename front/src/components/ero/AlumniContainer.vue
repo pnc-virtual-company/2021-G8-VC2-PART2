@@ -27,39 +27,6 @@
           <p class="numOfAlumni">100</p>
         </v-card>
       </v-flex>
-      <v-dialog v-model="dialog" max-width="500px">
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn depressed color="primary invite-btn" v-bind="attrs" v-on="on"> Invite </v-btn>
-        </template>
-        <v-card>
-          <v-card-title>
-            <span class="text-h5">Invite People</span>
-          </v-card-title>
-          <v-card-text>
-              <v-row class="pa-0">
-                <v-col cols="12 mt-0">
-                  <v-select :items="roles" v-model="selectedRole" label="Select role" solo></v-select>
-                  <v-text-field
-                    prepend-inner-icon="mdi-email"
-                    label="Email"
-                    v-model="emailToInvite"
-                    required
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-          </v-card-text>
-          <v-divider></v-divider>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="dialog = false">
-              Close
-            </v-btn>
-            <v-btn color="blue darken-1" text @click="submit(emailToInvite, selectedRole)">
-              Submit
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
     </v-flex>
     <v-card class="mt-7 mb-4 pa-4 rounded-lg">
       <ero-card></ero-card>
@@ -76,10 +43,6 @@ export default {
   },
   data() {
     return {
-      dialog: false,
-      roles: ['ero', 'alumni'],
-      selectedRole: null,
-      emailToInvite: null,
     }
   },
   methods: {

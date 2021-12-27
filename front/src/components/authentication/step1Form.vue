@@ -7,7 +7,7 @@
       <div class="title-login">
         <p>WELCOME BACK</p>
       </div>
-      <v-form cols-12 ref="form" v-model="valid" lazy-validation>
+      <v-form class="pa-10" ref="form" v-model="valid" lazy-validation>
         <v-row class="justify-center">
           <v-col md="8" sm="8">
             <v-text-field
@@ -17,13 +17,14 @@
               v-model="email"
               :rules="[rules.required, rules.emailRules]"
             ></v-text-field>
+            <small v-if="invalidEmail !== null" class="red--text">{{ invalidEmail }}</small>
           </v-col>
         </v-row>
-        <v-row class="justify-center" v-if="invalidEmail !== null">
+        <!-- <v-row class="justify-center">
           <v-col md="8" sm="8">
-            <p class="red--text">{{ invalidEmail }}</p>
+            
           </v-col>
-        </v-row>
+        </v-row> -->
         <v-row class="justify-center">
           <v-col md="8" sm="8">
             <v-btn

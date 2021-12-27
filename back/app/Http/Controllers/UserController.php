@@ -121,7 +121,6 @@ class Usercontroller extends Controller
             }
         }
     }
-
     public function getUsers(){
         return User::latest()->get();
     }

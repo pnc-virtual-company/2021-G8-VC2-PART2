@@ -104,7 +104,6 @@ export default {
 @media (max-width: 600px) {
   .right {
     width: 100%;
-    padding: 0 10%;
   }
   .right > img {
     width: 100%;

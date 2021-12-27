@@ -33,7 +33,7 @@
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar flat app height="60px" dense fixed elevation="0">
+    <v-toolbar flat app height="60px" dense elevation="0">
       <span class="hidden-sm-and-up">
         <v-app-bar-nav-icon @click="sidebar = !sidebar"> </v-app-bar-nav-icon>
       </span>
@@ -48,7 +48,7 @@
         </router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-tabs class="hidden-xs-only d-flex justify-end">
+      <v-tabs class="hidden-sm-only d-flex justify-end">
         <v-tabs-slider color="blue" class="font-weight-bold"></v-tabs-slider>
         <v-tab
           active-class=" blue--text"
@@ -62,7 +62,7 @@
           {{ item.title }}
         </v-tab>
         <v-spacer></v-spacer>
-         <div class="my-2 ml-2 logout" @click="$emit('signout')">
+         <div class="my-2 ml-2 logout ma-2" @click="$emit('signout')">
             <v-btn
               color="grey"
               dark
@@ -100,7 +100,7 @@ export default {
         },
         {
           title: "Manage User",
-          path: "/adminview",
+          path: "/manageuser",
           icon: "mdi-account-multiple",
           whoCanSee: ["admin"],
         },
