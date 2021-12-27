@@ -3,12 +3,14 @@
     <profile
       :userData="userData"
     ></profile>
+    <skill-view></skill-view>
     <employemt-view></employemt-view>
   </section>
 </template>
 
 <script>
 import Profile from "../myProfile/Profile.vue";
+import Skill from "../myProfile/Skill.vue";
 import EmploymentView from "../myProfile/employment/EmploymentView.vue";
 
 export default {
@@ -16,11 +18,13 @@ export default {
   components: {
     profile: Profile,
     "employemt-view": EmploymentView,
+    "skill-view": Skill,
   },
   data() {
     return {
       
     };
+    
   },
 };
 </script>
