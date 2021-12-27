@@ -1,16 +1,10 @@
 <template>
   <section class="myProfileView">
     <profile
-      v-for="(alumniInfo, index) in alumniData"
-      :key="index"
-      :alumniData="alumniInfo"
+      :userData="userData"
     ></profile>
-    <skill-view></skill-view>
-    <employemt-view
-      v-for="alumniInfo in alumniData"
-      :key="alumniInfo.email"
-      :alumniData="alumniInfo"
-    ></employemt-view>
+    <skill-view class="d-none"></skill-view>
+    <employemt-view></employemt-view>
   </section>
 </template>
 
@@ -20,6 +14,7 @@ import Skill from "../myProfile/Skill.vue";
 import EmploymentView from "../myProfile/employment/EmploymentView.vue";
 
 export default {
+  props: ['userData'],
   components: {
     profile: Profile,
     "employemt-view": EmploymentView,
@@ -27,39 +22,6 @@ export default {
   },
   data() {
     return {
-      alumniData: [
-        {
-          name: "Thon Theng",
-          email: "g@g.com",
-          batch: "Batch 2021",
-          skill: "WEB",
-          phone: "09876543",
-          gender: "Male",
-          employment: [
-            {
-              position: "Developer",
-              company: "Passerelles numériques Cambodia",
-              workStart: "15 06 2006",
-              workLeave: "14 08 2010",
-              location: "Phnom Penh",
-            },
-            {
-              position: "Manager",
-              company: "Passerelles numériques Cambodia",
-              workStart: "15 06 2006",
-              workLeave: "14 08 2010",
-              location: "Phnom Penh",
-            },
-            {
-              position: "Mobile Dev",
-              company: "Passerelles numériques Cambodia",
-              workStart: "15 06 2006",
-              workLeave: "14 08 2010",
-              location: "Phnom Penh",
-            },
-          ],
-        },
-      ],
       
     };
     

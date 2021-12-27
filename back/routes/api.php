@@ -1,4 +1,3 @@
-
 <?php
 
 use App\Http\Controllers\AlumniSkillController;
@@ -16,10 +15,12 @@ Route::post('/signin/password', [UserController::class, "signInStep2"]);
 Route::post('/signin/completeinfo', [UserController::class, "signInStep2"]);
 
 Route::get('/users',[UserController::class, "getUsers"]);
+Route::get('/users/{id}',[UserController::class, "getAUser"]);
 
 // update alumni information
 Route::put('/users/{id}/updateinfo',[UserController::class, "updateAlumniInfo"]);
-
+// post profile alumni
+Route::put('alumnis/profiles/{id}',[Usercontroller::class,"profilePost"]);
 //Route for domain company
 Route::get('/domain_companies',[DomainCompanyController::class, "getDomainCompanies"]);
 Route::get('/domain_companies/{id}',[DomainCompanyController::class, "showOneDomain"]);
@@ -59,8 +60,7 @@ Route::put('/workPositions/{id}',[PositionController::class, "updateWorkPosition
 Route::delete('/workPositions/{id}',[PositionController::class, "deleteWorkPosition"]);
 
 // Route for batch
-Route::get('/batchs',[BatchController::class, "getAllBatchNames"]);
+Route::get('/batches',[BatchController::class, "getAllBatchNames"]);
 
-Route::post('/batchs',[BatchController::class, "addANewBatch"]);
-Route::delete('/batchs/{id}',[BatchController::class, "removeOneBatchNames"]);
-
+Route::post('/batches',[BatchController::class, "addANewBatch"]);
+Route::delete('/batches/{id}',[BatchController::class, "removeOneBatchNames"]);

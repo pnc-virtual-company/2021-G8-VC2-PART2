@@ -56,6 +56,13 @@ export default {
         emailRules: (v) => /.+@.+/.test(v) || "Invalid email format",
       },
     };
+  },
+  watch: {
+    email: function(newValue) {
+      if(newValue !== '') {
+        this.$emit('clearErrorMessage');
+      }
+    }
   }
 };
 </script>
