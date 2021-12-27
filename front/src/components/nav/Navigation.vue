@@ -100,7 +100,7 @@ export default {
         },
         {
           title: "Manage User",
-          path: "/adminview",
+          path: "/manageuser",
           icon: "mdi-account-multiple",
           whoCanSee: ["admin"],
         },
