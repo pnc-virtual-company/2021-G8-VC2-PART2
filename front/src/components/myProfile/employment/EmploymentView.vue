@@ -14,10 +14,10 @@
             </template>
             <!-- Dialog create new employment -->
             <v-card>
-              <v-card-title>Add Employment</v-card-title>
-              <v-divider></v-divider>
-              <v-card-text>
-                <v-col md="12" sm="12" v-if="!showAddCompanyForm">
+              <v-card-text v-if="!showAddCompanyForm">
+                <v-card-title>Add Employment</v-card-title>
+                <v-divider></v-divider>
+                <v-col md="12" sm="12" >
                   <v-combobox
                     prepend-inner-icon="mdi-clipboard-account"
                     v-model="position"
@@ -66,8 +66,7 @@
                     </template>
                   </v-combobox>
                   <!-- date picker -->
-                  <v-row class="mt-2">
-                    <v-spacer></v-spacer>
+                  <v-row>
                     <v-col cols="12" sm="12" md="6">
                       <v-dialog
                         ref="dialog"
@@ -125,16 +124,28 @@
               </v-card-text>
               <!-- end dialog create new company -->
               <!-- if no company matching -->
-              <v-card-text>
-                <v-col md="12" sm="12" v-if="showAddCompanyForm">
+              <v-card-text v-if="showAddCompanyForm">
+                <v-card-title>Add Company</v-card-title>
+                <v-divider></v-divider>
+                <v-col md="12" sm="12" class="mt-2">
                   <v-row justify="center">
                     <div class="image-upload">
                       <label for="file-input">
                         <v-avatar size="90">
                           <v-img class="companyImage" :src="companyPic"></v-img>
                         </v-avatar>
+                        <v-btn
+                          color="white"
+                          fab
+                          height="30"
+                          width="30"
+                          dark
+                          elevation="1"
+                          class="camera"
+                          for="file-input">
+                          <v-icon color="black">mdi-camera</v-icon>
+                        </v-btn>
                       </label>
-
                       <input id="file-input" type="file" @change="fileChange" />
                     </div>
                   </v-row>
@@ -146,6 +157,7 @@
                     :rules="[rules.required]"
                   ></v-text-field>
                   <v-text-field
+                    class="ma-0"
                     :items="items2"
                     hide-selected
                     label="Address"
@@ -153,6 +165,12 @@
                     prepend-inner-icon="mdi-google-maps"
                     :rules="[rules.required]"
                   ></v-text-field>
+                  <v-select
+                  class="mt-3"
+                    :items="items"
+                    label="Select doman"
+                    solo
+                  ></v-select>
                   <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn
@@ -267,5 +285,10 @@ export default {
 .add-info {
   display: flex;
   justify-content: flex-end;
+}
+.camera{
+  position: absolute;
+  top: 130px;
+  left: 270px;
 }
 </style>

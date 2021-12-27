@@ -1,13 +1,14 @@
 <template>
   <section>
-    <div class="step2">
+    <div class="step2 mt-5">
       <div class="profile">
         <img src="../../assets/profilepic.svg" alt="" />
       </div>
       <div class="title-login">
-        <p>COMPLETE INFORMATION</p>
+        <p v-if="status === 'invited'">COMPLETE INFORMATION</p>
+        <p v-else>INPUT PASSWORD</p>
       </div>
-      <v-form ref="form" v-model="valid" lazy-validation>
+      <v-form class="pa-10" ref="form" v-model="valid" lazy-validation>
         <v-row class="justify-center row-input" v-if="status === 'invited'">
           <v-col md="4" sm="5">
             <v-text-field
