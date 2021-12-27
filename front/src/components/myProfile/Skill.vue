@@ -35,25 +35,48 @@
                     :items="skills"
                     label="Skill"
                     multiple
+                    clearable
                   ></v-combobox>
                 </v-col>
               </v-row>
             </v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="white" v-if="leave" @click="cancel"> Cancel </v-btn>
-              <v-btn color="primary" v-if="leave" @click="addSkill" > Create </v-btn>
-            </v-card-actions>
+            <v-card-actions class="btn-upload">
+          <v-spacer></v-spacer>
+          <v-btn
+            class="mb-1"
+            small
+            depressed
+            color="primary"
+            text
+            @click="leave = false"
+          >
+            Cancel
+          </v-btn>
+          <v-btn
+            small
+            depressed
+            color="primary"
+            class="white--text mb-1"
+            @click="addSkill"
+          >
+            ADD
+          </v-btn>
+        </v-card-actions>
           </v-card>
         </v-dialog>
       </v-col>
     </v-row>
 
-    <div class="text-left" >
-      <v-chip class="ma-2" v-for="(skill,index) in added_skill" :key="index" close @click:close="removed(index)">
-        {{skill}}
+    <div class="text-left">
+      <v-chip
+        class="ma-2"
+        v-for="(skill, index) in added_skill"
+        :key="index"
+        close
+        @click:close="removed(index)"
+      >
+        {{ skill }}
       </v-chip>
-      
     </div>
   </v-card>
 </template>
@@ -61,34 +84,34 @@
 export default {
   data: () => ({
     leave: false,
-    skills:[
-     "Mobile Developer",
-    "Web Developer",
-    "IT Admin",
-    "IT support",
-    "Tester"
+    skills: [
+      "Mobile Developer",
+      "Web Developer",
+      "IT Admin",
+      "IT support",
+      "Tester",
     ],
     added_skill: [],
     getInputSkill: "",
   }),
   methods: {
-    removed(index){
-      this.added_skill.splice(index,1);
+    removed(index) {
+      this.added_skill.splice(index, 1);
     },
-    addSkill(){
-      if(this.getInputSkill != ""){
-        for(let n in this.getInputSkill){
+    addSkill() {
+      if (this.getInputSkill != "") {
+        for (let n in this.getInputSkill) {
           this.added_skill.push(this.getInputSkill[n]);
         }
-        for(let s in this.added_skill){
+        for (let s in this.added_skill) {
           this.skills.push(this.added_skill[s]);
         }
         this.leave = false;
       }
     },
-    cancel(){
-       this.leave = false;
-    }
+    cancel() {
+      this.leave = false;
+    },
   },
 };
 </script>

@@ -1,5 +1,52 @@
 <template>
   <v-card class="mt-5 pa-4 rounded-lg">
+    <!-- edit info -->
+    <v-dialog
+      persistent
+      v-model="editInfoDialog"
+      :max-width="options.width"
+      :style="{ zIndex: options.zIndex }"
+    >
+      <v-card>
+        <v-card-title class="mx-auto text--h6">Edit Information</v-card-title>
+        <v-divider></v-divider>
+        <v-card-text class="mt-2">
+          <v-text-field
+            v-model="email"
+            label="Email"
+            prepend-inner-icon="mdi-email"
+          ></v-text-field>
+          <v-text-field
+            v-model="phoneNumber"
+            label="Phone"
+            prepend-inner-icon="mdi-phone-in-talk"
+          ></v-text-field>
+        </v-card-text>
+        <v-card-actions class="btn-upload">
+          <v-spacer></v-spacer>
+          <v-btn
+            class="mb-1"
+            small
+            depressed
+            color="primary"
+            text
+            @click="editInfoDialog = false"
+          >
+            Cancel
+          </v-btn>
+          <v-btn
+            small
+            depressed
+            color="primary"
+            class="white--text mb-1"
+            @click="editInfodialog = false"
+          >
+            Change
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <!-- end edit info -->
     <v-row>
       <v-col cols="8" sm="3" md="5">
         <v-avatar size="80px">
@@ -10,7 +57,7 @@
         </v-avatar>
         <div class="img mr-3">
           <div class="text-center">
-            <v-dialog v-model="dialog" width="500">
+            <v-dialog v-model="dialog" persistent width="500">
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
                   color="white"
@@ -51,7 +98,6 @@
                       color="primary"
                       >SELECT PROFILE</label
                     >
-
                   </div>
                   <v-spacer></v-spacer>
                   <v-btn
@@ -80,12 +126,25 @@
           <!--  -->
         </div>
         <div class="d-flex">
-          <h3 class="mt-2">{{userData.firstname.toUpperCase() + ' ' + userData.lastname.toUpperCase()}}</h3>
+          <h3 class="mt-2">
+            {{
+              userData.firstname.toUpperCase() +
+              " " +
+              userData.lastname.toUpperCase()
+            }}
+          </h3>
           <v-icon>{{ getGenderSign }}</v-icon>
         </div>
       </v-col>
       <v-col class="edit-info">
-        <v-btn color="white" fab x-small dark elevation="1">
+        <v-btn
+          color="white"
+          fab
+          x-small
+          dark
+          elevation="1"
+          @click="editInfoDialog = true"
+        >
           <v-icon color="black">mdi-pencil</v-icon>
         </v-btn>
       </v-col>
@@ -96,22 +155,22 @@
           <div class="mr-3">
             <v-icon color="#00A3FF">mdi-clipboard-text</v-icon>
           </div>
-          <v-list-item-title>{{userData.batch}}</v-list-item-title>
+          <v-list-item-title>{{ userData.batch }}</v-list-item-title>
         </v-list-item>
         <v-list-item class="ma-0 pa-0">
           <v-icon class="mr-3" color="#00A3FF">mdi-school</v-icon>
-          <v-list-item-title>{{userData.major}}</v-list-item-title>
+          <v-list-item-title>{{ userData.major }}</v-list-item-title>
         </v-list-item>
       </v-col>
       <v-spacer></v-spacer>
       <v-col class="ma-0">
         <v-list-item class="ma-0 pa-0">
           <v-icon class="mr-3" color="#00A3FF">mdi-email</v-icon>
-          <v-list-item-title>{{userData.email}}</v-list-item-title>
+          <v-list-item-title>{{ userData.email }}</v-list-item-title>
         </v-list-item>
         <v-list-item class="ma-0 pa-0">
           <v-icon class="mr-3" color="#00A3FF">mdi-phone-in-talk</v-icon>
-          <v-list-item-title>+885 {{userData.phone}}</v-list-item-title>
+          <v-list-item-title>+885 {{ userData.phone }}</v-list-item-title>
         </v-list-item>
       </v-col>
     </v-row>
@@ -121,25 +180,37 @@
 <script>
 import axios from "../../axios-http.js";
 export default {
-  props:['userData'],
+  props: ["userData"],
   data() {
     return {
       imageUrl: "http://127.0.0.1:8000/storage/profiles/",
       dialog: false,
       image: "https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-PNG-Free-Image.png",
       imageFile: null,
+      email: "",
+      phoneNumber: "",
+      editInfoDialog: false,
+      options: {
+        color: "grey lighten-3",
+        width: 400,
+        zIndex: 200,
+        noconfirm: false,
+      },
+      rules: {
+        required: (value) => !!value || "Required",
+      },
     };
   },
   computed: {
-    getGenderSign: function() {
-      let result = 'mdi-gender-female';
-      if(this.userData.gender === 'Male') {
-        result = 'mdi-gender-male'
-      } else if(this.userData.gender === 'Other') {
-        result = '';
+    getGenderSign: function () {
+      let result = "mdi-gender-female";
+      if (this.userData.gender === "Male") {
+        result = "mdi-gender-male";
+      } else if (this.userData.gender === "Other") {
+        result = "";
       }
       return result;
-    }
+    },
   },
   methods: {
     fileChange(e) {
@@ -159,12 +230,29 @@ export default {
       }
     }
   },
+  watch: {
+    editInfoDialog: function (val) {
+      if (val) {
+        this.email = "";
+        this.phoneNumber = "";
+      }
+    },
+  },
 };
 </script>
 
 <style scoped>
+.v-application .mt-2 {
+  margin-top: 10px !important;
+}
 .v-dialog > .v-card > .v-card__actions {
   padding: 16px 24px 14px;
+}
+.v-dialog > .v-card > .v-card__title {
+  font-size: 17px;
+  font-weight: 200;
+  letter-spacing: 0.0125em;
+  padding: 16px 24px 10px;
 }
 .custom-file-upload {
   font-size: 12px;
