@@ -74,13 +74,13 @@
                       <v-dialog
                         ref="dialog"
                         v-model="modal"
-                        :return-value.sync="date"
+                        :return-value.sync="date1"
                         persistent
                         width="290px"
                       >
                         <template v-slot:activator="{ on, attrs }">
                           <v-text-field
-                            v-model="date"
+                            v-model="date1"
                             label="Picker in dialog"
                             prepend-inner-icon="mdi-calendar"
                             readonly
@@ -99,13 +99,13 @@
                       <v-dialog
                         ref="dialog"
                         v-model="modal"
-                        :return-value.sync="date"
+                        :return-value.sync="date2"
                         persistent
                         width="290px"
                       >
                         <template v-slot:activator="{ on, attrs }">
                           <v-text-field
-                            v-model="date"
+                            v-model="date2"
                             label="Picker in dialog"
                             prepend-inner-icon="mdi-calendar"
                             readonly

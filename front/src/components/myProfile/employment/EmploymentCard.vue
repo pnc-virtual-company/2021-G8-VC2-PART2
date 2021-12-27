@@ -2,7 +2,6 @@
   <section>
     <v-card class="ma-0 pa-2 elevation-0 rounded-lg emp-card">
       <!-- confirm delete -->
-      <div class="text-center">
         <v-dialog
           v-model="dialog"
           :max-width="options.width"
@@ -23,7 +22,8 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
-      </div>
+        <!-- end confirm dialog -->
+      
         <div class="text-center">
           <v-dialog v-model="editDialog" width="500">
             <!-- Dialog create new employment -->
@@ -88,13 +88,13 @@
                       <v-dialog
                         ref="dialog"
                         v-model="modal"
-                        :return-value.sync="date"
+                        :return-value.sync="date1"
                         persistent
                         width="290px"
                       >
                         <template v-slot:activator="{ on, attrs }">
                           <v-text-field
-                            v-model="date"
+                            v-model="date1"
                             label="Picker in dialog"
                             prepend-inner-icon="mdi-calendar"
                             readonly
@@ -120,13 +120,13 @@
                       <v-dialog
                         ref="dialog"
                         v-model="modal"
-                        :return-value.sync="date"
+                        :return-value.sync="date2"
                         persistent
                         width="290px"
                       >
                         <template v-slot:activator="{ on, attrs }">
                           <v-text-field
-                            v-model="date"
+                            v-model="date2"
                             label="Picker in dialog"
                             prepend-inner-icon="mdi-calendar"
                             readonly
@@ -302,6 +302,12 @@ export default {
     company: null,
     search1: null,
     search2: null,
+    date1: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+        .toISOString()
+        .substr(0, 10),
+      date2: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+        .toISOString()
+        .substr(0, 10),
     companyPic:
       "https://www.passerellesnumeriques.org/wp-content/uploads/2016/03/pn-logo.png",
     rules: {

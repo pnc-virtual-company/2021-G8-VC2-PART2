@@ -3,7 +3,7 @@
     <profile
       :userData="userData"
     ></profile>
-    <skill-view class="d-none"></skill-view>
+    <skill-view></skill-view>
     <employemt-view></employemt-view>
   </section>
 </template>
