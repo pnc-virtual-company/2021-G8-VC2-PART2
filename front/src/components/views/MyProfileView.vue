@@ -5,6 +5,7 @@
       :key="index"
       :alumniData="alumniInfo"
     ></profile>
+    <skill-view></skill-view>
     <employemt-view
       v-for="alumniInfo in alumniData"
       :key="alumniInfo.email"
@@ -15,12 +16,14 @@
 
 <script>
 import Profile from "../myProfile/Profile.vue";
+import Skill from "../myProfile/Skill.vue";
 import EmploymentView from "../myProfile/employment/EmploymentView.vue";
 
 export default {
   components: {
     profile: Profile,
     "employemt-view": EmploymentView,
+    "skill-view": Skill,
   },
   data() {
     return {
@@ -57,7 +60,9 @@ export default {
           ],
         },
       ],
+      
     };
+    
   },
 };
 </script>
