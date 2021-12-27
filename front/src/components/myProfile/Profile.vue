@@ -4,7 +4,7 @@
       <v-col cols="8" sm="3" md="5">
         <v-avatar size="80px">
           <img
-            :src="image"
+            :src="imageUrl + userData.profile"
             alt=""
           />
         </v-avatar>
@@ -69,7 +69,7 @@
                     depressed
                     color="primary"
                     class="white--text mb-1"
-                    @click="dialog = false"
+                    @click="changeProfile"
                   >
                     Change
                   </v-btn>
@@ -119,13 +119,15 @@
 </template>
 
 <script>
+import axios from "../../axios-http.js";
 export default {
   props:['userData'],
   data() {
     return {
+      imageUrl: "http://127.0.0.1:8000/storage/profiles/",
       dialog: false,
-      image:
-        "https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-PNG-Free-Image.png",
+      image: "https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-PNG-Free-Image.png",
+      imageFile: null,
     };
   },
   computed: {
@@ -141,9 +143,21 @@ export default {
   },
   methods: {
     fileChange(e) {
-      let file = e.target.files[0];
-      this.image = URL.createObjectURL(file);
+      this.imageFile = e.target.files[0];
+      this.image = URL.createObjectURL(this.imageFile);
     },
+    changeProfile() {
+      this.dialog = false;
+      if(this.imageFile !== null) {
+        let imageFile = new FormData();
+        imageFile.append('profile', this.imageFile);
+        imageFile.append('_method', 'PUT')
+        axios.post("alumnis/profiles/" + this.userData.user_id, imageFile)
+        .then(res => {
+          this.$emit('changeProfile', res.data.profile);
+        })
+      }
+    }
   },
 };
 </script>
