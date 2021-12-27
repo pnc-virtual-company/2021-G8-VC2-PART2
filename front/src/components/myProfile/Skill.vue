@@ -6,7 +6,7 @@
       </v-col>
 
       <v-col class="add-info">
-        <v-dialog v-model="addSkill" persistent max-width="400px">
+        <v-dialog v-model="leave" persistent max-width="400px">
           <template v-slot:activator="{ on, attrs }">
             <v-btn
               color="white"
@@ -29,38 +29,29 @@
             <v-card-text>
               <v-row class="pa-0">
                 <v-col cols="12 mt-0">
-                  <v-autocomplete
+                  <v-combobox
+                    v-model="getInputSkill"
                     prepend-inner-icon="mdi-checkbox-multiple-marked"
-                    :items="[
-                      'Skiing',
-                      'Ice hockey',
-                      'Soccer',
-                      'Basketball',
-                      'Hockey',
-                      'Reading',
-                      'Writing',
-                      'Coding',
-                      'Basejump',
-                    ]"
-                    label="Interests"
+                    :items="skills"
+                    label="Skill"
                     multiple
-                  ></v-autocomplete>
+                  ></v-combobox>
                 </v-col>
               </v-row>
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="white" @click="addSkill = false"> Cancel </v-btn>
-              <v-btn color="primary" @click="addSkill = false"> Create </v-btn>
+              <v-btn color="white" v-if="leave" @click="cancel"> Cancel </v-btn>
+              <v-btn color="primary" v-if="leave" @click="addSkill" > Create </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
       </v-col>
     </v-row>
 
-    <div class="text-left" v-for="skill in skills" :key="skill.id">
-      <v-chip class="ma-2" close @click="removed(skill)">
-        {{skill.name}}
+    <div class="text-left" >
+      <v-chip class="ma-2" v-for="(skill,index) in added_skill" :key="index" close @click:close="removed(index)">
+        {{skill}}
       </v-chip>
       
     </div>
@@ -69,21 +60,34 @@
 <script>
 export default {
   data: () => ({
-    editSkill: false,
-    addSkill: false,
+    leave: false,
     skills:[
-      { id: 1 , name: "Mobile Developer"},
-      { id: 2 , name: "Web Developer"},
-      { id: 3 , name: "IT Admin"},
-      { id: 4 , name: "IT support"},
-      { id: 5, name: "Tester"}
-    ]
-    
+     "Mobile Developer",
+    "Web Developer",
+    "IT Admin",
+    "IT support",
+    "Tester"
+    ],
+    added_skill: [],
+    getInputSkill: "",
   }),
   methods: {
-    removed(skill){
-      this.skills.splice(skill);
-      console.log(this.skills);
+    removed(index){
+      this.added_skill.splice(index,1);
+    },
+    addSkill(){
+      if(this.getInputSkill != ""){
+        for(let n in this.getInputSkill){
+          this.added_skill.push(this.getInputSkill[n]);
+        }
+        for(let s in this.added_skill){
+          this.skills.push(this.added_skill[s]);
+        }
+        this.leave = false;
+      }
+    },
+    cancel(){
+       this.leave = false;
     }
   },
 };

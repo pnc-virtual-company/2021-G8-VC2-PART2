@@ -54,12 +54,14 @@
                     :rules="[rules.required]"
                   >
                     <template v-slot:no-data>
-                      <v-list-item>
+                      <v-list-item @click="createCompa">
                         <v-list-item-content>
                           <v-list-item-title>
-                            No company matching"
-                            <strong>{{ search2 }}</strong>" Click
-                            <v-icon class="createCompany" @click="createCompa">mdi-new-box</v-icon>to create
+                            <strong> ( {{ search2 }} )</strong
+                            > Create
+                            <v-icon class="createCompany"
+                              >mdi-new-box</v-icon
+                            >
                           </v-list-item-title>
                         </v-list-item-content>
                       </v-list-item>
