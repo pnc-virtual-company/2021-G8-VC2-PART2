@@ -3,7 +3,10 @@
     <profile
       :userData="userData"
     ></profile>
-    <skill-view class="d-none"></skill-view>
+    <skill-view
+      :skills="skills"
+    >
+    </skill-view>
     <employemt-view></employemt-view>
   </section>
 </template>
@@ -12,7 +15,7 @@
 import Profile from "../myProfile/Profile.vue";
 import Skill from "../myProfile/Skill.vue";
 import EmploymentView from "../myProfile/employment/EmploymentView.vue";
-
+import axios from '../../axios-http';
 export default {
   props: ['userData'],
   components: {
@@ -22,9 +25,16 @@ export default {
   },
   data() {
     return {
-      
+      skills: [],
     };
     
+  },
+  mounted() {
+   axios.get("skills").then(res=>{
+     for(let skill of res.data){
+       this.skills.push(skill.skill_name);
+     }
+   })
   },
 };
 </script>
