@@ -129,7 +129,7 @@ class Usercontroller extends Controller
         $userInfo->email = $request->email;
         $userInfo->save();
 
-        $alumniInfo = Alumni::where('user_id', $userInfo->id)->get()->first()->update(['phone' => $request->phone]);
+        Alumni::where('user_id', $userInfo->id)->get()->first()->update(['phone' => $request->phone]);
 
         $updatedResult = DB::table('users')
                         ->join('alumnis', 'users.id', '=', 'alumnis.user_id')
@@ -139,4 +139,17 @@ class Usercontroller extends Controller
 
         return response()->json(['message' => 'Email updated', 'alumniIfo' => $updatedResult], 200);
     }
+    /* upload profile alumni*/
+    public function profilePost(Request $request, $id){
+        Alumni::where('user_id', $id)->get()->first()->update(['profile' => $request->profile]);
+        $request->validate([
+            'profile' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:1999',
+        ]);
+        
+        $profileName = time().'.'.$request->profile->extension();  
+        /* store profile in public folder */
+       $pathProfile = $request->profile->move(public_path('profiles'), $profileName);
+        return response()->json(['message'=>'Your profile have been uploaded',"profile" => $pathProfile],200);
+    }
+
 }
