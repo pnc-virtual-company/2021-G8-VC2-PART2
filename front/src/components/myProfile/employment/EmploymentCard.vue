@@ -361,7 +361,7 @@ export default {
 }
 .option {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
 }
 .emp-card:hover {
   background: #f5f4f3;

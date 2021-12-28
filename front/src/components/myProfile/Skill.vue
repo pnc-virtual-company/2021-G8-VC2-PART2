@@ -83,15 +83,9 @@
 </template>
 <script>
 export default {
+  props:["skills"],
   data: () => ({
     leave: false,
-    skills: [
-      "Mobile Developer",
-      "Web Developer",
-      "IT Admin",
-      "IT support",
-      "Tester",
-    ],
     added_skill: [],
     getInputSkill: "",
   }),
@@ -110,10 +104,13 @@ export default {
         this.leave = false;
       }
     },
-    cancel() {
-      this.leave = false;
+    cancel(){
+       this.leave = false;
     },
-  },
+    
+    
+  }, 
+  
 };
 </script>
 <style>

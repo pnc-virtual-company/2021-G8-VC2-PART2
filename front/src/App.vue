@@ -128,10 +128,16 @@ export default {
       axios.get('users/' + userId)
       .then(res => {
         this.user = res.data.user;
-        if (this.user.role === "admin" || this.user.role === "ero") {
-          this.$router.push("/eroview");
-        } else {
-          this.$router.push("/myprofile");
+        if(this.$router.path === "/eroview" ||
+           this.$router.path === "/myprofile" ||
+           this.$router.path === "/signin" ||
+           this.$router.path === "/" 
+        ) {
+          if (this.user.role === "admin" || this.user.role === "ero") {
+            this.$router.push("/eroview");
+          } else {
+            this.$router.push("/myprofile");
+          }
         }
       })
     }

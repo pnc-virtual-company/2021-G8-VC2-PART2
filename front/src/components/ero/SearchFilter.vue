@@ -1,7 +1,7 @@
 <template>
   <section>
     <v-text-field
-      class="mt-7"
+      class="mt-5"
       prepend-inner-icon="mdi-magnify"
       append-icon="mdi-close"
       placeholder="Search"

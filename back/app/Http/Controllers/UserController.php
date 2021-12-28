@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpKernel\Profiler\Profile;
 use Symfony\Contracts\Service\Attribute\Required;
 
 class Usercontroller extends Controller
@@ -97,11 +98,18 @@ class Usercontroller extends Controller
                 $user->password = bcrypt($request->password);
                 $user->status = 'validated';
                 $user->save();
+
+                $defaultImg = 'male.jpg';
+                if($request->gender == 'female') {
+                    $request->$defaultImg = "female.jpg";
+                }
+
                 $alumni = Alumni::where('user_id', $user->id)->update([
                     'gender' => $request->gender,
                     'batch' => $request->batch,
                     'major' => $request->major,
                     'phone' => $request->phone,
+                    'profile'=>$defaultImg 
                 ]);
 
                 $updatedResult = User::join('alumnis', 'users.id', '=', 'alumnis.user_id')
@@ -121,7 +129,6 @@ class Usercontroller extends Controller
             }
         }
     }
-
     public function getUsers(){
         return User::latest()->get();
     }
@@ -157,9 +164,10 @@ class Usercontroller extends Controller
         $request->validate([
             'profile' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:1999',
         ]);
-        
         $request->profile->store('public/profiles');
-        Alumni::where('user_id', $id)->get()->first()->update(['profile' => $request->profile->hashName()]);
+        $alumniProfile = $request->profile->hashName();
+        Alumni::where('user_id', $id)->get()->first()->update(['profile' => $alumniProfile]);
+        
         return response()->json(['message'=>'Your profile have been uploaded',"profile" => $request->profile->hashName()],200);
     }
 
