@@ -48,12 +48,13 @@
   </section>
 </template>
 <script>
+import axios from "../../axios-http.js";
 export default {
   data: () => ({
-      dialog: false,
-      roles: ['ero', 'alumni'],
-      selectedRole: null,
-      emailToInvite: null,
+    dialog: false,
+    roles: ['ero', 'alumni'],
+    selectedRole: null,
+    emailToInvite: null,
     desserts: [
       {
         firstname: "Lyheang",
@@ -99,6 +100,24 @@ export default {
       { text: "Action", value: "remove" },
     ],
   }),
+  watch: {
+    dialog: function (val) {
+      if (val) {
+        this.selectedRole = null;
+        this.emailToInvite = null;
+      }
+    },
+  },
+  methods: {
+    submit(emailToInvite, selectedRole) {
+      this.dialog = false;
+      let data = {
+        email: emailToInvite,
+        role: selectedRole
+      }
+      axios.post('invite', data);
+    }
+  },
 };
 </script>
 <style scoped>

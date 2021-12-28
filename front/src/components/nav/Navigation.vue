@@ -97,7 +97,7 @@ export default {
           title: "Manage User",
           path: "/manageuser",
           icon: "mdi-account-multiple",
-          whoCanSee: ["admin"],
+          whoCanSee: ["ero", "admin"],
         },
         {
           title: "Event",
