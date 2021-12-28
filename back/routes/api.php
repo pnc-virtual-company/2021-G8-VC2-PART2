@@ -19,9 +19,9 @@ Route::get('/users',[UserController::class, "getUsers"]);
 Route::get('/users/{id}',[UserController::class, "getAUser"]);
 
 // update alumni information
-Route::put('/users/{id}/updateinfo',[UserController::class, "updateAlumniInfo"]);
+Route::put('/users/updateinfo/{id}',[UserController::class, "updateAlumniInfo"]);
 // post profile alumni
-Route::put('alumnis/profiles/{id}',[Usercontroller::class,"profilePost"]);
+Route::put('users/updateprofiles/{id}',[Usercontroller::class,"profilePost"]);
 //Route for domain company
 Route::get('/domain_companies',[DomainCompanyController::class, "getDomainCompanies"]);
 Route::get('/domain_companies/{id}',[DomainCompanyController::class, "showOneDomain"]);

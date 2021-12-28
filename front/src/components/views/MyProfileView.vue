@@ -3,6 +3,7 @@
     <profile
       :userData="userData"
       @changeProfile="changeProfile"
+      @changeAlumniInfo="changeAlumniInfo"
     ></profile>
     <skill-view></skill-view>
     <employemt-view></employemt-view>
@@ -24,6 +25,9 @@ export default {
   methods: {
     changeProfile(profile) {
       this.$emit('changeProfile', profile);
+    },
+    changeAlumniInfo(newEmail, newPhone) {
+      this.$emit('changeAlumniInfo', newEmail, newPhone);
     }
   },
 };

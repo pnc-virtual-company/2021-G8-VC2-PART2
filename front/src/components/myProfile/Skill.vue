@@ -36,6 +36,7 @@
                     label="Skill"
                     multiple
                     clearable
+                    small-chips
                   ></v-combobox>
                 </v-col>
               </v-row>

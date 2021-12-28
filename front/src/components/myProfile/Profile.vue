@@ -10,17 +10,24 @@
       <v-card>
         <v-card-title class="mx-auto text--h6">Edit Information</v-card-title>
         <v-divider></v-divider>
-        <v-card-text class="mt-2">
-          <v-text-field
-            v-model="email"
-            label="Email"
-            prepend-inner-icon="mdi-email"
-          ></v-text-field>
-          <v-text-field
-            v-model="phoneNumber"
-            label="Phone"
-            prepend-inner-icon="mdi-phone-in-talk"
-          ></v-text-field>
+        <v-card-text>
+          <v-form ref="form" v-model="valid" lazy-validation>
+            <v-text-field
+              label="Email"
+              type="email"
+              prepend-inner-icon="mdi-email"
+              v-model="newEmail"
+              :rules="[rules.required, rules.emailRules]"
+            ></v-text-field>
+            <v-text-field class="mt-2"
+              v-model="newPhone"
+              clearable
+              label="Phone"
+              type="number"
+              prepend-inner-icon="mdi-phone-in-talk"
+              :rules="[rules.required]"
+            ></v-text-field>
+          </v-form>
         </v-card-text>
         <v-card-actions class="btn-upload">
           <v-spacer></v-spacer>
@@ -35,11 +42,12 @@
             Cancel
           </v-btn>
           <v-btn
+            :disabled="!valid"
             small
             depressed
             color="primary"
             class="white--text mb-1"
-            @click="editInfodialog = false"
+            @click="changeInfo"
           >
             Change
           </v-btn>
@@ -143,7 +151,7 @@
           x-small
           dark
           elevation="1"
-          @click="editInfoDialog = true"
+          @click="openEditInfoDialog"
         >
           <v-icon color="black">mdi-pencil</v-icon>
         </v-btn>
@@ -185,10 +193,12 @@ export default {
     return {
       imageUrl: "http://127.0.0.1:8000/storage/profiles/",
       dialog: false,
-      image: "https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-PNG-Free-Image.png",
+      image:
+        "https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-PNG-Free-Image.png",
       imageFile: null,
-      email: "",
-      phoneNumber: "",
+      valid: true,
+      newEmail: "",
+      newPhone: "",
       editInfoDialog: false,
       options: {
         color: "grey lighten-3",
@@ -198,6 +208,7 @@ export default {
       },
       rules: {
         required: (value) => !!value || "Required",
+        emailRules: (v) => /.+@.+/.test(v) || "Invalid email format",
       },
     };
   },
@@ -219,16 +230,33 @@ export default {
     },
     changeProfile() {
       this.dialog = false;
-      if(this.imageFile !== null) {
+      if (this.imageFile !== null) {
         let imageFile = new FormData();
-        imageFile.append('profile', this.imageFile);
-        imageFile.append('_method', 'PUT')
-        axios.post("alumnis/profiles/" + this.userData.user_id, imageFile)
-        .then(res => {
-          this.$emit('changeProfile', res.data.profile);
-        })
+        imageFile.append("profile", this.imageFile);
+        imageFile.append("_method", "PUT");
+        axios
+          .post("users/updateprofiles/" + this.userData.user_id, imageFile)
+          .then((res) => {
+            this.$emit("changeProfile", res.data.profile);
+          });
       }
-    }
+    },
+    changeInfo() {
+      this.editInfoDialog = false;
+      let data = {
+        "email": this.newEmail,
+        "phone": this.newPhone,
+      }
+      axios.put("users/updateinfo/" + this.userData.user_id, data)
+      .then(res => {
+        this.$emit('changeAlumniInfo', res.data.newEmail, res.data.newPhone);
+      })
+    },
+    openEditInfoDialog() {
+      this.editInfoDialog = true;
+      this.newEmail = this.userData.email;
+      this.newPhone = this.userData.phone;
+    },
   },
   watch: {
     editInfoDialog: function (val) {

@@ -147,16 +147,10 @@ class Usercontroller extends Controller
         $userInfo = User::findOrFail($id);
         $userInfo->email = $request->email;
         $userInfo->save();
-
-        Alumni::where('user_id', $userInfo->id)->get()->first()->update(['phone' => $request->phone]);
-
-        $updatedResult = DB::table('users')
-        ->join('alumnis', 'users.id', '=', 'alumnis.user_id')
-        ->select('users.*', 'alumnis.*')
-        ->where('users.id', '=', $userInfo->id)
-        ->get();
         
-        return response()->json(['message' => 'Email updated', 'alumniIfo' => $updatedResult], 200);
+        $alumni = Alumni::where('user_id', $userInfo->id)->get()->first()->update(['phone' => $request->phone]);
+        
+        return response()->json(['message' => 'Email updated', 'newEmail' => $request->email, 'newPhone' => $request->phone, 'user' => $userInfo], 200);
     }
     /* upload profile alumni*/
     public function profilePost(Request $request, $id){
