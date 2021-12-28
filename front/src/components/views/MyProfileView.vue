@@ -56,7 +56,6 @@ export default {
        this.skills.push(skill.skill_name);
        this.lastId = skill.id;
      }
-     console.log(res.data);
    })
   }
 
