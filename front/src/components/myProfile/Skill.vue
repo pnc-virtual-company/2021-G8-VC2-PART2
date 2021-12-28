@@ -30,25 +30,27 @@
               <v-row class="pa-0">
                 <v-col cols="12 mt-0">
                   <v-combobox
-                    v-model="getInputSkill"
                     prepend-inner-icon="mdi-checkbox-multiple-marked"
                     :items="skills"
                     label="Skill"
+                    hide-selected
                     :search-input.sync="search"
                     multiple
                     small-chips
                     clearable
-                  ></v-combobox>
-                  <template v-slot:no-data>
+                  >
+                    <template v-slot:no-data>
                     <v-list-item @click="createNewSkill">
                       <v-list-item-content>
                         <v-list-item-title>
                           <strong> ( {{ search }} )</strong> Create
-                          <v-icon class="createNewSkill">mdi-new-box</v-icon>
+                          <v-icon class="createSkill">mdi-new-box</v-icon>
                         </v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
                   </template>
+                  </v-combobox>
+                  
                 </v-col>
               </v-row>
             </v-card-text>
@@ -60,7 +62,7 @@
                 depressed
                 color="primary"
                 text
-                @click="leave = false"
+                @click="cancel"
               >
                 Cancel
               </v-btn>
@@ -98,8 +100,10 @@ export default {
   props: ["skills"],
   data: () => ({
     leave: false,
-    skillId: null,
     search: null,
+    model:'',
+    
+    
   }),
   methods: {
     addSkill() {
@@ -109,7 +113,9 @@ export default {
       this.leave = false;
     },
     createNewSkill() {
+      
       this.$emit("new-skill", this.search);
+
     },
   },
 };
@@ -123,7 +129,7 @@ export default {
   display: flex;
   justify-content: flex-end;
 }
-.createNewSkill {
+.createSkill {
   cursor: pointer;
 }
 </style>
