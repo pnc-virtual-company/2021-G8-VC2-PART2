@@ -22,4 +22,7 @@ class Alumni extends Model
     public function alumni_skill() {
         return $this->hasMany(Alumni_skill::class);
     }
+    public function employment() {
+        return $this->hasMany(Employment::class);
+    }
 }

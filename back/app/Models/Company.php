@@ -13,5 +13,8 @@ class Company extends Model
     {
         return $this->belongsTo(DomainCompany::class);
     }
+    public function employment() {
+        return $this->hasMany(Employment::class);
+    }
 
 }
