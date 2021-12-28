@@ -63,7 +63,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .v-icon,
 .numOfAlumni {
   color: #00a3ff;

@@ -18,4 +18,7 @@ export default {};
 .v-text-field {
   border-radius: 5px;
 }
+.v-text-field.v-text-field--solo:not(.v-text-field--solo-flat) > .v-input__control > .v-input__slot {
+  box-shadow: none;
+}
 </style>

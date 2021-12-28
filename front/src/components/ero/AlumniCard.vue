@@ -46,7 +46,7 @@ export default {
       {
         avatar:
           "https://www.pinkvilla.com/imageresize/blackpink-rose-blinks-truck.jpg?width=752&format=webp&t=pvorg",
-        title: "Sreynit",
+        title: "Ly Seavlong",
         email: "thon@gmail.com",
         position: "Software Developer",
         batch: "2021",
@@ -57,7 +57,7 @@ export default {
       {
         avatar:
           "https://www.pinkvilla.com/imageresize/blackpink-rose-blinks-truck.jpg?width=752&format=webp&t=pvorg",
-        title: "Sreynit",
+        title: "Ly Seavlong",
         email: "thon@gmail.com",
         position: "Software Developer",
         batch: "2021",
@@ -68,7 +68,7 @@ export default {
       {
         avatar:
           "https://www.pinkvilla.com/imageresize/blackpink-rose-blinks-truck.jpg?width=752&format=webp&t=pvorg",
-        title: "Sreynit",
+        title: "Ly Seavlong",
         email: "thon@gmail.com",
         position: "Software Developer",
         batch: "2021",
@@ -79,7 +79,7 @@ export default {
       {
         avatar:
           "https://www.pinkvilla.com/imageresize/blackpink-rose-blinks-truck.jpg?width=752&format=webp&t=pvorg",
-        title: "Sreynit",
+        title: "Ly Seavlong",
         email: "thon@gmail.com",
         position: "Software Developer",
         batch: "2021",
@@ -90,7 +90,7 @@ export default {
       {
         avatar:
           "https://www.pinkvilla.com/imageresize/blackpink-rose-blinks-truck.jpg?width=752&format=webp&t=pvorg",
-        title: "Sreynit",
+        title: "Ly Seavlong",
         email: "thon@gmail.com",
         position: "Software Developer",
         batch: "2021",
@@ -120,5 +120,10 @@ export default {
 }
 .text-title {
   font-size: 18px;
+}
+.v-text-field.v-text-field--solo:not(.v-text-field--solo-flat)
+  > .v-input__control
+  > .v-input__slot {
+  box-shadow: none;
 }
 </style>
