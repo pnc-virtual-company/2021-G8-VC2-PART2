@@ -2,7 +2,7 @@
   <section>
     <div class="row">
       <div class="left">
-        <img src="../../assets/Alumni-Logo.png" alt="" />
+        <img src="../../assets/PN_LogoAlumni.png" alt="" />
       </div>
       <div class="right">
         <img src="../../assets/topright.png" alt="" />
