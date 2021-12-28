@@ -6,13 +6,13 @@
       </v-col>
       <v-col class="add-info">
         <div class="text-center">
+            <!-- Dialog create new employment -->
           <v-dialog v-model="dialog" persistent width="500">
             <template v-slot:activator="{ on, attrs }">
               <v-btn color="white" fab x-small dark elevation="1" v-bind="attrs" v-on="on">
                 <v-icon color="black">mdi-plus</v-icon>
               </v-btn>
             </template>
-            <!-- Dialog create new employment -->
             <v-card>
               <v-card-text v-if="!showAddCompanyForm">
                 <v-card-title>Add Employment</v-card-title>
@@ -21,7 +21,7 @@
                   <v-combobox
                     prepend-inner-icon="mdi-clipboard-account"
                     v-model="position"
-                    :items="items1"
+                    :items="positions"
                     :search-input.sync="search1"
                     hide-selected
                     label="Work Position"
@@ -32,8 +32,7 @@
                       <v-list-item>
                         <v-list-item-content>
                           <v-list-item-title>
-                            No Position matching"
-                            <strong>{{ search1 }}</strong>". Press
+                            <strong>({{ search1 }}) </strong>
                             <kbd>enter</kbd> to create
                           </v-list-item-title>
                         </v-list-item-content>
@@ -52,7 +51,7 @@
                     :rules="[rules.required]"
                   >
                     <template v-slot:no-data>
-                      <v-list-item @click="createCompa">
+                      <v-list-item @click="createCompany">
                         <v-list-item-content>
                           <v-list-item-title>
                             <strong> ( {{ search2 }} )</strong
@@ -71,13 +70,13 @@
                       <v-dialog
                         ref="dialog1"
                         v-model="modal1"
-                        :return-value.sync="date1"
+                        :return-value.sync="startDate"
                         width="290px"
                       >
                         <template v-slot:activator="{ on, attrs }">
                           <v-text-field
-                            v-model="date1"
-                            label="Picker in dialog"
+                            v-model="startDate"
+                            label="Select start date"
                             prepend-inner-icon="mdi-calendar"
                             readonly
                             v-bind="attrs"
@@ -95,13 +94,13 @@
                       <v-dialog
                         ref="dialog2"
                         v-model="modal"
-                        :return-value.sync="date2"
+                        :return-value.sync="endDate"
                         width="290px"
                       >
                         <template v-slot:activator="{ on, attrs }">
                           <v-text-field
-                            v-model="date2"
-                            label="Picker in dialog"
+                            v-model="endDate"
+                            label="Select end date"
                             prepend-inner-icon="mdi-calendar"
                             readonly
                             v-bind="attrs"
@@ -150,7 +149,7 @@
                   <v-text-field
                     prepend-inner-icon="mdi-domain"
                     hide-selected
-                    label="Company"
+                    label="Company name"
                     persistent-hint
                     :rules="[rules.required]"
                   ></v-text-field>
@@ -165,8 +164,8 @@
                   ></v-text-field>
                   <v-select
                   class="mt-3"
-                    :items="items"
-                    label="Select doman"
+                    :items="domains"
+                    label="Select domain"
                     solo
                   ></v-select>
                   <v-card-actions>
@@ -204,7 +203,7 @@
                   color="blue"
                   class="white--text mb-3"
                   @click="dialog = false"
-                >Change</v-btn>
+                >Add</v-btn>
               </v-card-actions>
             </v-card>
             <!-- end tag if no company matching -->
@@ -217,6 +216,7 @@
   </v-card>
 </template>
 <script>
+import axios from "../../../axios-http.js";
 import EmploymentCard from "./EmploymentCard.vue";
 
 export default {
@@ -229,19 +229,21 @@ export default {
       dialog: false,
       dialog1: false,
       dialog2: false,
+      modal1: false,
       date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
         .toISOString()
         .substr(0, 10),
-      date1: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+      startDate: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
         .toISOString()
         .substr(0, 10),
-      date2: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+      endDate: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
         .toISOString()
         .substr(0, 10),
       menu: true,
       modal: false,
       menu2: false,
-      items1: ["Gaming", "Programming", "Vue", "Vuetify"],
+      positions: null,
+      domains: null,
       items2: ["Gaming", "Programming", "Vue", "Vuetify"],
       position: null,
       company: null,
@@ -252,6 +254,9 @@ export default {
       rules: {
         required: (value) => !!value || "Required",
       },
+      companyDataToAdd: {
+        
+      }
     };
   },
   watch: {
@@ -262,13 +267,23 @@ export default {
     },
   },
   methods: {
-    createCompa() {
+    createCompany() {
       this.showAddCompanyForm = true;
     },
     fileChange(e) {
       let file = e.target.files[0];
       this.companyPic = URL.createObjectURL(file);
     },
+  },
+  mounted() {
+    axios.get('workPositions')
+      .then(res => {
+        this.positions = res.data;
+      })
+    axios.get('domain_companies')
+      .then(res => {
+        this.domains = res.data;
+      })
   },
 };
 </script>
