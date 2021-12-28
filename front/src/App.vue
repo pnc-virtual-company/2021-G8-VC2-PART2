@@ -16,6 +16,8 @@
         @submitSecondStep="submitStep2"
         @clearSignInData="clearSignInData"
         @clearErrorMessage="clearErrorMessage"
+        @changeProfile="changeProfile"
+        @changeAlumniInfo="changeAlumniInfo"
       ></router-view>
     </v-main>
   </v-app>
@@ -111,7 +113,14 @@ export default {
     },
     clearErrorMessage() {
       this.error.invalidEmail = null;
-    }
+    },
+    changeProfile(profile) {
+      this.user.profile = profile;
+    },
+    changeAlumniInfo(newEmail, newPhone) {
+      this.user.email = newEmail;
+      this.user.phone = newPhone;
+    },
   },
   mounted() {
     if (localStorage.getItem("userId")) {

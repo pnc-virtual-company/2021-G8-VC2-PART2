@@ -1,5 +1,5 @@
 <template>
-  <nav>
+  <v-app-bar app white elevation="0" color="white">
     <v-navigation-drawer
       v-model="sidebar"
       app
@@ -11,9 +11,10 @@
       <v-list>
         <v-list-item-group
           v-model="group"
-          active-class="deep-purple--text text--accent-4"
+          active-class="blue--text"
         >
           <v-list-item
+            active-class="blue--text"
             v-for="item in menuItems"
             :key="item.title"
             :to="item.path"
@@ -33,25 +34,20 @@
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar flat app height="60px" dense elevation="0">
       <span class="hidden-sm-and-up">
         <v-app-bar-nav-icon @click="sidebar = !sidebar"> </v-app-bar-nav-icon>
       </span>
       <v-toolbar-title>
-        <router-link
-          to=""
-          tag="span"
-          style="cursor: pointer"
-          class="blue--text"
-        >
-          {{ appTitle }}
-        </router-link>
+        <v-img
+          max-width="150"
+          src="../../assets/PN_LogoAlumni.png"
+        ></v-img>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-tabs class="hidden-sm-only d-flex justify-end">
-        <v-tabs-slider color="blue" class="font-weight-bold"></v-tabs-slider>
+      <v-tabs class="d-flex justify-end">
+        <v-tabs-slider color="blue"></v-tabs-slider>
         <v-tab
-          active-class=" blue--text"
+          active-class="blue--text"
           v-for="item in menuItems"
           :key="item.title"
           :to="item.path"
@@ -64,7 +60,7 @@
         <v-spacer></v-spacer>
          <div class="my-2 ml-2 logout ma-2" @click="$emit('signout')">
             <v-btn
-              color="grey"
+              color="warning"
               dark
               elevation="0"
             >
@@ -72,8 +68,7 @@
             </v-btn>
           </div>
       </v-tabs>
-    </v-toolbar>
-  </nav>
+  </v-app-bar>
 </template>
 
 <script>
@@ -102,7 +97,7 @@ export default {
           title: "Manage User",
           path: "/manageuser",
           icon: "mdi-account-multiple",
-          whoCanSee: ["admin"],
+          whoCanSee: ["ero", "admin"],
         },
         {
           title: "Event",
