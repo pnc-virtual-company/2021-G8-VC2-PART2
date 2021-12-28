@@ -12,9 +12,7 @@ class Position extends Model
     [
         'position_name'
     ];
-    public function employment() {
-        return $this->hasMany(Employment::class);
-    }
+   
     
 
 }

@@ -129,10 +129,34 @@ class Usercontroller extends Controller
             }
         }
     }
-    public function getUsers(){
-        return User::latest()->get();
+    // public function getUsers(){
+    //     $users = User::latest()->get();
+    //     $users = User::join('alumnis', 'users.id', '=', 'alumnis.user_id')
+    //             ->get(['users.*', 'alumnis.*']);
+    //     // $alumniSkills = Skill::join('alumni_skills','skills.id', '=' , 'alumni_skills.skill_id')
+    //     //         ->get(['skills.*', 'alumni_skills.*']);
+    //     $alumniSkills = DB::table('skills')
+    //         ->join('alumni_skills', 'skills.alumni_skill_id', '=', 'alumni_skills.id')
+    //         ->select('skills.*', 'alumni_skills.skill_name as SkillName')
+    //         ->get();
+
+    //     $alumnis = Alumni::join('alumni_skills','alumnis.id', '=' , 'alumni_skills.alumni_id')
+    //             ->get(['alumnis.*', 'alumni_skills.*']);
+    //     return response()->json(['user' => $users]);
+
+    // }
+    /*get all EROs*/
+    public function getEROs(){
+        $userRole = User::where('role', "ero")->latest()->get();
+        return response()->json(['Eros'=>$userRole]);
     }
-    
+    /*get all Alumnis*/
+    public function getAlumnis(){
+        $userRole = User::where('role', "alumni")->latest()->get();
+        $users = User::join('alumnis', 'users.id', '=', 'alumnis.user_id')
+                ->get(['users.*', 'alumnis.*']);
+        return response()->json(['Alumnis'=>$userRole,$users]);
+    }
     public function getAUser($id){
         $user = User::findOrFail($id);
         if($user->role === 'alumni') {
