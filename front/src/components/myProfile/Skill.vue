@@ -34,35 +34,46 @@
                     prepend-inner-icon="mdi-checkbox-multiple-marked"
                     :items="skills"
                     label="Skill"
+                    :search-input.sync="search"
                     multiple
-                    clearable
                     small-chips
+                    clearable
                   ></v-combobox>
+                  <template v-slot:no-data>
+                    <v-list-item @click="createNewSkill">
+                      <v-list-item-content>
+                        <v-list-item-title>
+                          <strong> ( {{ search }} )</strong> Create
+                          <v-icon class="createNewSkill">mdi-new-box</v-icon>
+                        </v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </template>
                 </v-col>
               </v-row>
             </v-card-text>
             <v-card-actions class="btn-upload">
-          <v-spacer></v-spacer>
-          <v-btn
-            class="mb-1"
-            small
-            depressed
-            color="primary"
-            text
-            @click="leave = false"
-          >
-            Cancel
-          </v-btn>
-          <v-btn
-            small
-            depressed
-            color="primary"
-            class="white--text mb-1"
-            @click="addSkill"
-          >
-            ADD
-          </v-btn>
-        </v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                class="mb-1"
+                small
+                depressed
+                color="primary"
+                text
+                @click="leave = false"
+              >
+                Cancel
+              </v-btn>
+              <v-btn
+                small
+                depressed
+                color="primary"
+                class="white--text mb-1"
+                @click="addSkill"
+              >
+                ADD
+              </v-btn>
+            </v-card-actions>
           </v-card>
         </v-dialog>
       </v-col>
@@ -71,7 +82,7 @@
     <div class="text-left">
       <v-chip
         class="ma-2"
-        v-for="(skill, index) in added_skill"
+        v-for="(skill, index) in skills"
         :key="index"
         close
         @click:close="removed(index)"
@@ -83,34 +94,24 @@
 </template>
 <script>
 export default {
-  props:["skills"],
+  emits: ["new-skill"],
+  props: ["skills"],
   data: () => ({
     leave: false,
-    added_skill: [],
-    getInputSkill: "",
+    skillId: null,
+    search: null,
   }),
   methods: {
-    removed(index) {
-      this.added_skill.splice(index, 1);
-    },
     addSkill() {
-      if (this.getInputSkill != "") {
-        for (let n in this.getInputSkill) {
-          this.added_skill.push(this.getInputSkill[n]);
-        }
-        for (let s in this.added_skill) {
-          this.skills.push(this.added_skill[s]);
-        }
-        this.leave = false;
-      }
+      this.leave = false;
     },
-    cancel(){
-       this.leave = false;
+    cancel() {
+      this.leave = false;
     },
-    
-    
-  }, 
-  
+    createNewSkill() {
+      this.$emit("new-skill", this.search);
+    },
+  },
 };
 </script>
 <style>
@@ -121,5 +122,8 @@ export default {
 .row-info {
   display: flex;
   justify-content: flex-end;
+}
+.createNewSkill {
+  cursor: pointer;
 }
 </style>
