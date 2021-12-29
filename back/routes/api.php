@@ -15,8 +15,9 @@ Route::get('/signin/{email}', [UserController::class, "signInStep1"]);
 Route::post('/signin/password', [UserController::class, "signInStep2"]);
 Route::post('/signin/completeinfo', [UserController::class, "signInStep2"]);
 
-Route::get('/users',[UserController::class, "getUsers"]);
-Route::get('/users/{id}',[UserController::class, "getAUser"]);
+Route::get('/users/ero',[UserController::class, "getEroUsers"]);
+Route::get('/users/alumni',[UserController::class, "getAlumniUsers"]);
+Route::get('/users/alumni/{id}',[UserController::class, "getAnAlumniUser"]);
 
 // update alumni information
 Route::put('/users/updateinfo/{id}',[UserController::class, "updateAlumniInfo"]);
