@@ -18,9 +18,7 @@ class Employment extends Model
         return $this->belongsTo(Alumni::class);
     }
 
-    public function position() {
-        return $this->belongsTo(Position::class);
-    }
+   
     
     public function company() {
         return $this->belongsTo(Company::class);

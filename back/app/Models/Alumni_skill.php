@@ -16,8 +16,4 @@ class alumni_skill extends Model
     public function alumni() {
         return $this->belongsTo(Alumni::class);
     }
-
-    public function skill() {
-        return $this->belongsTo(Skill::class);
-    }
 }

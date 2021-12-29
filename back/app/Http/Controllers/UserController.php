@@ -129,19 +129,58 @@ class Usercontroller extends Controller
             }
         }
     }
-    public function getUsers(){
-        return User::latest()->get();
+
+    /*get all EROs*/
+    public function getEroUsers() {
+        return User::where('role', "ero")->latest()->get();
     }
-    
-    public function getAUser($id){
-        $user = User::findOrFail($id);
-        if($user->role === 'alumni') {
-            $alumni = User::join('alumnis', 'users.id', '=', 'alumnis.user_id')
-                    ->where('users.id', $id)
-                    ->get(['users.*', 'alumnis.*']);
-            return response()->json(['user' => $alumni[0]]);
+    /*get all Alumnis*/
+    public function getAlumniUsers() {
+        $users = User::join('alumnis', 'users.id', '=', 'alumnis.user_id')
+                ->get(['users.*', 'alumnis.*']);
+        foreach($users as $user) {
+            $skills = DB::table('alumni_skills')
+                        ->select('skillName')
+                        ->where('alumni_id', '=', $user->id)
+                        ->get();
+            $cleanSkillList = [];
+            foreach($skills as $skill) {
+                array_push($cleanSkillList, $skill->skillName);
+            }
+            $user['skills'] = $cleanSkillList;
+            
+            $employmentList = DB::table('employments')
+                            ->join('companies', 'companies.id', '=', 'employments.company_id')
+                            ->where('employments.alumni_id', '=', $user->id)
+                            ->get(['employments.*', 'companies.*']);
+            
+            $user['employments'] = $employmentList;
         }
-        return response()->json(['user' => $user]);
+        return $users;
+    }
+    public function getAnAlumniUser($id){
+        $alumni = DB::table('users')
+                ->join('alumnis', 'users.id', '=', 'alumnis.user_id')
+                ->where('users.id', '=', $id)
+                ->get(['users.*', 'alumnis.*'])->first();
+        $skills = DB::table('alumni_skills')
+                    ->select('skillName')
+                    ->where('alumni_skills.alumni_id', '=', $id)
+                    ->get();
+        $cleanSkillList = [];
+        foreach($skills as $skill) {
+            array_push($cleanSkillList, $skill->skillName);
+        }
+        $alumni->skills = $cleanSkillList;
+        
+        $employmentList = DB::table('employments')
+                        ->join('companies', 'companies.id', '=', 'employments.company_id')
+                        ->where('employments.alumni_id', '=', $id)
+                        ->get(['employments.*', 'companies.*']);
+        
+        $alumni->employments = $employmentList;
+
+        return $alumni;
     }
     
     // update alumni information (email,phone number)
@@ -160,7 +199,8 @@ class Usercontroller extends Controller
         return response()->json(['message' => 'Email updated', 'newEmail' => $request->email, 'newPhone' => $request->phone, 'user' => $userInfo], 200);
     }
     /* upload profile alumni*/
-    public function profilePost(Request $request, $id){
+    public function profilePost(Request $request, $id)
+    {
         $request->validate([
             'profile' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:1999',
         ]);

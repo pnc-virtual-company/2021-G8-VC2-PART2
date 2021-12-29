@@ -16,7 +16,7 @@ class CreateAlumniSkillsTable extends Migration
         Schema::create('alumni_skills', function (Blueprint $table) {
             $table->id();
             $table->foreignId('alumni_id');
-            $table->foreignId('skill_id');
+            $table->string('skillName');
             $table->timestamps();
         });
     }

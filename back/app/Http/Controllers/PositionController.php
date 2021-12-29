@@ -14,7 +14,14 @@ class PositionController extends Controller
      */
     public function getWorkPositions()
     {
-        return Position::latest()->get();
+        $positions = Position::latest()->get();
+        
+        $cleanPositionList = [];
+        foreach($positions as $pos) {
+            array_push($cleanPositionList, $pos->position_name);
+        }
+        
+        return $cleanPositionList;
     }
 
     /**
