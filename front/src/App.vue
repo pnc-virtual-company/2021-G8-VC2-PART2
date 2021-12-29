@@ -55,7 +55,7 @@ export default {
   methods: {
     signOut() {
       localStorage.removeItem("userId");
-      this.user = {role: null};
+      this.user = { role: null };
       this.$router.push("/signin");
     },
     submitStep1(email) {
@@ -81,8 +81,8 @@ export default {
       if (this.signInData.status === "invited") {
         route = "signin/completeinfo";
       }
-      data['status'] = this.signInData.status;
-      data['email'] = this.signInData.email;
+      data["status"] = this.signInData.status;
+      data["email"] = this.signInData.email;
       axios
         .post(route, data)
         .then((res) => {
@@ -125,13 +125,13 @@ export default {
   mounted() {
     if (localStorage.getItem("userId")) {
       let userId = localStorage.getItem("userId");
-      axios.get('users/' + userId)
-      .then(res => {
+      axios.get("users/" + userId).then((res) => {
         this.user = res.data;
-        if(this.$router.path === "/eroview" ||
-           this.$router.path === "/myprofile" ||
-           this.$router.path === "/signin" ||
-           this.$router.path === "/" 
+        if (
+          this.$router.path === "/eroview" ||
+          this.$router.path === "/myprofile" ||
+          this.$router.path === "/signin" ||
+          this.$router.path === "/"
         ) {
           if (this.user.role === "admin" || this.user.role === "ero") {
             this.$router.push("/eroview");
@@ -139,7 +139,7 @@ export default {
             this.$router.push("/myprofile");
           }
         }
-      })
+      });
     }
   },
 };
@@ -157,6 +157,6 @@ export default {
 }
 
 .v-main {
-  background: #E0E8EF;
+  background: #e0e8ef;
 }
 </style>
