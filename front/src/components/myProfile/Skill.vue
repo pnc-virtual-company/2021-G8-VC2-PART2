@@ -4,7 +4,6 @@
       <v-col cols="8" sm="3" md="5">
         <h3>Skills</h3>
       </v-col>
-
       <v-col class="add-info">
         <v-dialog v-model="leave" persistent max-width="400px">
           <template v-slot:activator="{ on, attrs }">
@@ -34,21 +33,23 @@
                     prepend-inner-icon="mdi-checkbox-multiple-marked"
                     :items="skills"
                     label="Skill"
+                    hide-selected
                     :search-input.sync="search"
                     multiple
                     small-chips
                     clearable
-                  ></v-combobox>
-                  <template v-slot:no-data>
+                  >
+                    <template v-slot:no-data >
                     <v-list-item @click="createNewSkill">
                       <v-list-item-content>
                         <v-list-item-title>
                           <strong> ( {{ search }} )</strong> Create
-                          <v-icon class="createNewSkill">mdi-new-box</v-icon>
+                          <v-icon class="createSkill">mdi-new-box</v-icon>
                         </v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
                   </template>
+                  </v-combobox>
                 </v-col>
               </v-row>
             </v-card-text>
@@ -60,7 +61,7 @@
                 depressed
                 color="primary"
                 text
-                @click="leave = false"
+                @click="cancel"
               >
                 Cancel
               </v-btn>
@@ -69,7 +70,7 @@
                 depressed
                 color="primary"
                 class="white--text mb-1"
-                @click="addSkill"
+                @click="addSkillOnCard"
               >
                 ADD
               </v-btn>
@@ -78,11 +79,10 @@
         </v-dialog>
       </v-col>
     </v-row>
-
     <div class="text-left">
       <v-chip
         class="ma-2"
-        v-for="(skill, index) in skills"
+        v-for="(skill, index) in userData.skills"
         :key="index"
         close
         @click:close="removed(index)"
@@ -94,15 +94,24 @@
 </template>
 <script>
 export default {
-  emits: ["new-skill"],
-  props: ["skills"],
+  emits: ["new-skill","alumni-skill","remove-index"],
+  props: ["skills","userData"],
   data: () => ({
     leave: false,
-    skillId: null,
     search: null,
+    model:'',  
+    getInputSkill: [],  
   }),
   methods: {
-    addSkill() {
+    removed(index){
+      this.userData.skills.splice(index,1);
+      // this.$emit("index", index);
+    },
+    addSkillOnCard() {
+      for(let skill of this.getInputSkill){
+          this.userData.skills.push(skill);
+          // this.$emit("alumni-skill",skill);
+      }
       this.leave = false;
     },
     cancel() {
@@ -112,6 +121,7 @@ export default {
       this.$emit("new-skill", this.search);
     },
   },
+  
 };
 </script>
 <style>
@@ -123,7 +133,7 @@ export default {
   display: flex;
   justify-content: flex-end;
 }
-.createNewSkill {
+.createSkill {
   cursor: pointer;
 }
 </style>

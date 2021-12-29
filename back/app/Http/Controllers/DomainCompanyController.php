@@ -14,7 +14,14 @@ class DomainCompanyController extends Controller
      */
     public function getDomainCompanies()
     {
-            return DomainCompany::latest()->get();
+        $domains = DomainCompany::latest()->get();
+
+        $cleanDomainList = [];
+        foreach($domains as $domain) {
+            array_push($cleanDomainList, $domain->domain_name);
+        }
+        
+        return $cleanDomainList;
     }
 
     /**
