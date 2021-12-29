@@ -15,7 +15,7 @@ class CreateCompaniesTable extends Migration
     {
         Schema::create('companies', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('domain_companies_id')->constrained()->onDelete('CASCADE');
+            $table->string('domain_company');
             $table->string('company_name');
             $table->string('location');
             $table->string('logo')->nullable();

@@ -45,16 +45,6 @@ export default {
     return {
     }
   },
-  methods: {
-    submit(emailToInvite, selectedRole) {
-      this.dialog = false;
-      let data = {
-        email: emailToInvite,
-        role: selectedRole
-      }
-      this.$emit('invite', data);
-    }
-  },
 };
 </script>
 
