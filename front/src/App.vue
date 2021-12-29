@@ -7,7 +7,7 @@
     ></navigation-bar>
     <v-main>
       <router-view
-        :userData="alumniData"
+        :userData="user"
         :status="signInData.status"
         :role="signInData.role"
         :invalidEmail="error.invalidEmail"
@@ -45,20 +45,6 @@ export default {
         status: null,
         role: null,
       },
-      alumniData: {
-        id: 1,
-        batch: "2021",
-        email:"sreygnit.doeurm@gmail.com",
-        firstname:"Sreyngit",
-        lastname: "Doeurm",
-        gender: "female",
-        major: "WEB",
-        phone: "2345678",
-        profile: "",
-        role: "alumni",
-        status: "valideted",
-        skills: ["Java","Python", "Red hat"],
-      }
     };
   },
   computed: {
@@ -141,9 +127,7 @@ export default {
       let userId = localStorage.getItem("userId");
       axios.get('users/' + userId)
       .then(res => {
-        this.user = res.data.user;
-        // 
-        console.log(this.user);
+        this.user = res.data;
         if(this.$router.path === "/eroview" ||
            this.$router.path === "/myprofile" ||
            this.$router.path === "/signin" ||
