@@ -63,7 +63,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .v-icon,
 .numOfAlumni {
   color: #00a3ff;
@@ -94,11 +94,6 @@ export default {
   width: 18%;
 }
 .v-sheet.v-card:not(.v-sheet--outlined) {
-  box-shadow: none;
-}
-.v-text-field.v-text-field--solo:not(.v-text-field--solo-flat)
-  > .v-input__control
-  > .v-input__slot {
   box-shadow: none;
 }
 </style>

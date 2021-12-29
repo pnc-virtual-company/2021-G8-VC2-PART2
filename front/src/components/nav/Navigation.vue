@@ -60,8 +60,7 @@
         <v-spacer></v-spacer>
          <div class="my-2 ml-2 logout ma-2" @click="$emit('signout')">
             <v-btn
-              color="warning"
-              dark
+              class="signOutBtn"
               elevation="0"
             >
               Logout
@@ -128,5 +127,8 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.signOutBtn{
+  color: #E0E8EF;
 }
 </style>

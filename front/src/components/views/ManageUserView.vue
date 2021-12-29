@@ -3,32 +3,54 @@
     <v-flex class="d-flex justify-end mt-5">
       <v-dialog v-model="dialog" max-width="500px">
         <template v-slot:activator="{ on, attrs }">
-          <v-btn depressed color="primary invite-btn" v-bind="attrs" v-on="on"> Invite </v-btn>
+          <v-btn depressed color="primary invite-btn" v-bind="attrs" v-on="on">
+            Invite
+          </v-btn>
         </template>
         <v-card>
           <v-card-title>
             <span class="text-h5">Invite People</span>
           </v-card-title>
-          <v-card-text>
-              <v-row class="pa-0">
-                <v-col cols="12 mt-0">
-                  <v-select :items="roles" v-model="selectedRole" label="Select role" solo></v-select>
-                  <v-text-field
-                    prepend-inner-icon="mdi-email"
-                    label="Email"
-                    v-model="emailToInvite"
-                    required
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-          </v-card-text>
           <v-divider></v-divider>
+          <v-card-text>
+            <v-row class="pa-0">
+              <v-col cols="12 mt-0">
+                <v-select
+                  class="mt-5"
+                  prepend-inner-icon="mdi-account-box-outline"
+                  :items="roles"
+                  v-model="selectedRole"
+                  label="Select role"
+                  :rules="[rules.required]"
+                ></v-select>
+                <v-combobox
+                  class="mt-3"
+                  prepend-inner-icon="mdi-email"
+                  label="Email"
+                  v-model="emailToInvite"
+                  small-chips
+                  multiple
+                  clearable
+                  :rules="[rules.required]"
+                ></v-combobox>
+              </v-col>
+            </v-row>
+          </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="dialog = false">
+            <v-btn
+              class="mb-3"
+              color="blue darken-1"
+              text
+              @click="dialog = false"
+            >
               Close
             </v-btn>
-            <v-btn color="blue darken-1" text @click="submit(emailToInvite, selectedRole)">
+            <v-btn
+              class="mb-3"
+              color="primary"
+              @click="submitEmail(inviteEmailList, selectedRole)"
+            >
               Submit
             </v-btn>
           </v-card-actions>
@@ -52,9 +74,13 @@ import axios from "../../axios-http.js";
 export default {
   data: () => ({
     dialog: false,
-    roles: ['ero', 'alumni'],
+    roles: ["ero", "alumni"],
     selectedRole: null,
     emailToInvite: null,
+    inviteEmailList: [],
+    rules: {
+      required: (value) => !!value || "Required",
+    },
     desserts: [
       {
         firstname: "Lyheang",
@@ -109,14 +135,20 @@ export default {
     },
   },
   methods: {
-    submit(emailToInvite, selectedRole) {
+    submitEmail() {
+      this.inviteEmailList.push(this.emailToInvite);
       this.dialog = false;
-      let data = {
-        email: emailToInvite,
-        role: selectedRole
+      for (let invitedEmail of this.inviteEmailList) {
+        for (let email of invitedEmail) {
+          let role = this.selectedRole;
+          let data = {
+            email: email,
+            role: role,
+          };
+          axios.post("invite", data);
+        }
       }
-      axios.post('invite', data);
-    }
+    },
   },
 };
 </script>

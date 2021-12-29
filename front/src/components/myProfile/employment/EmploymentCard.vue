@@ -47,9 +47,8 @@
                     <v-list-item>
                       <v-list-item-content>
                         <v-list-item-title>
-                          No Position matching"
-                          <strong>{{ search1 }}</strong
-                          >". Press <kbd>enter</kbd> to create
+                          <strong>({{ search1 }}) </strong
+                          ><kbd>enter</kbd> to create
                         </v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
