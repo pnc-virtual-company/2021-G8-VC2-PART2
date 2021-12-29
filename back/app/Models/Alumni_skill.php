@@ -10,7 +10,7 @@ class alumni_skill extends Model
     use HasFactory;
     protected $fillable = [
         'alumni_id',
-        'skill_id'
+        'skill_name'
     ];
 
     public function alumni() {
