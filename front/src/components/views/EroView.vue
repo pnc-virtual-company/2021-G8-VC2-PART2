@@ -1,21 +1,15 @@
 <template>
   <section class="eroview">
     <search-filter></search-filter>
-    <alumni-container @invite="invite"></alumni-container>
+    <alumni-container></alumni-container>
   </section>
 </template>
 
 <script>
-import axios from "../../axios-http.js";
 import AlumniContainer from "../ero/AlumniContainer.vue";
 import SearchFilter from '../ero/SearchFilter.vue';
 export default {
   components: { AlumniContainer, SearchFilter },
-  methods: {
-    invite(data) {
-      axios.post('invite', data)
-    }
-  },
 };
 </script>
 
