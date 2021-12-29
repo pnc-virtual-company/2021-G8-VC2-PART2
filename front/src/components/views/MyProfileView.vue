@@ -29,7 +29,6 @@ export default {
   data() {
     return {
       skills: [],
-      lastId: 0,
     };
   },
   methods: {
@@ -41,7 +40,6 @@ export default {
     },
     addNewSkill(skillName) {
       let newSkill = {};
-      newSkill.id = this.lastId + 1,
       newSkill.skill_name = skillName,
         axios.post("skills", newSkill).then((res) => {
           console.log(res.data);
@@ -51,7 +49,6 @@ export default {
       axios.get("skills").then((res) => {
         for (let skill of res.data) {
           this.skills.push(skill.skill_name);
-          this.lastId = skill.id;
         }
       });
     },

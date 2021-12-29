@@ -158,7 +158,7 @@ class Usercontroller extends Controller
         }
         return $users;
     }
-    public function getAnAlumniUser($id){
+    public function getAUser($id){
         $alumni = DB::table('users')
                 ->join('alumnis', 'users.id', '=', 'alumnis.user_id')
                 ->where('users.id', '=', $id)
