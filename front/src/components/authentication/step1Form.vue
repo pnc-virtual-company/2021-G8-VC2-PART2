@@ -25,7 +25,7 @@
             
           </v-col>
         </v-row> -->
-        <v-row class="justify-center">
+        <v-row class="justify-center row-input">
           <v-col md="8" sm="8">
             <v-btn
               :disabled="!valid"
