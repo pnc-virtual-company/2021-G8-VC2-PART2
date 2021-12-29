@@ -9,6 +9,7 @@
       :userData="userData"
       :skills="skills"
       @new-skill="addNewSkill"
+      @add-alumniSkill="addSkillForAlumni"
     >
     </skill-view>
     <employemt-view></employemt-view>
@@ -54,9 +55,20 @@ export default {
         }
       });
     },
+    addSkillForAlumni(skill) {
+      let alumni_skill = {};
+      alumni_skill.alumni_id = this.userData.user_id,
+      alumni_skill.skillName = skill
+      axios.post('alumniskills',alumni_skill).then(res=>{
+        console.log(res.data);
+      })
+      
+    }
   },
   mounted() {
     this.getAllSkills();
+    this.addSkillForAlumni();
+    
   },
 };
 </script>

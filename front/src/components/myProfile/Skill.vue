@@ -94,7 +94,7 @@
 </template>
 <script>
 export default {
-  emits: ["new-skill","alumni-skill","remove-index"],
+  emits: ["new-skill","add-alumniSkill"],
   props: ["skills","userData"],
   data: () => ({
     leave: false,
@@ -109,8 +109,8 @@ export default {
     },
     addSkillOnCard() {
       for(let skill of this.getInputSkill){
-          this.userData.skills.push(skill);
-          // this.$emit("alumni-skill",skill);
+          // this.userData.skills.push(skill);
+          this.$emit("add-alumniSkill",skill);
       }
       this.leave = false;
     },
