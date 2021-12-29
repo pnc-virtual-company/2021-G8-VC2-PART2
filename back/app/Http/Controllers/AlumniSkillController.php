@@ -17,12 +17,12 @@ class AlumniSkillController extends Controller
     {
         $request->validate([
             'alumni_id' => 'required',
-            'skill_name' => 'required',
+            'skillName' => 'required',
         ]);
 
         $alumniskill = new Alumni_skill();
         $alumniskill->alumni_id = $request->alumni_id;
-        $alumniskill->skill_name= $request->skill_name;
+        $alumniskill->skillName= $request->skillName;
 
         $alumniskill->save();
 
