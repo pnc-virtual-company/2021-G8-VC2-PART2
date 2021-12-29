@@ -41,9 +41,7 @@ export default {
     addNewSkill(skillName) {
       let newSkill = {};
       newSkill.skill_name = skillName,
-        axios.post("skills", newSkill).then((res) => {
-          console.log(res.data);
-        });
+        axios.post("skills", newSkill);
     },
     getAllSkills() {
       axios.get("skills").then((res) => {
