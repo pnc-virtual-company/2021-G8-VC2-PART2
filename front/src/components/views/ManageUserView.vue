@@ -19,12 +19,12 @@
       <v-col cols="2">
         <v-card class="card-alumni text-center" width="100px">
           <v-icon color="blue" class="mt-3">mdi-account-check</v-icon>
-          <p v-if="selectedRole === 'Alumni'">Alumni</p>
-          <p v-if="selectedRole === 'ERO'">ERO</p>
-          <p class="numOfAlumni" v-if="selectedRole === 'Alumni'">
+          <p v-if="selectedRole === 'alumni'">Alumni</p>
+          <p v-if="selectedRole === 'ero'">ERO</p>
+          <p class="numOfAlumni" v-if="selectedRole === 'alumni'">
             {{ numberOfalumni }}
           </p>
-          <p class="numOfAlumni" v-if="selectedRole === 'ERO'">
+          <p class="numOfAlumni" v-if="selectedRole === 'ero'">
             {{ numberOferos }}
           </p>
         </v-card>
@@ -33,10 +33,10 @@
         <v-card class="card-alumni text-center" width="100px">
           <v-icon color="blue" class="mt-3">mdi-account-plus</v-icon>
           <p>Invited</p>
-          <p class="numOfAlumni" v-if="selectedRole === 'Alumni'">
+          <p class="numOfAlumni" v-if="selectedRole === 'alumni'">
             {{ numberOfalumniNotValidated }}
           </p>
-          <p class="numOfAlumni" v-if="selectedRole === 'ERO'">
+          <p class="numOfAlumni" v-if="selectedRole === 'ero'">
             {{ numberOferoNotValidated }}
           </p>
         </v-card>
@@ -112,7 +112,7 @@
       </v-col>
     </v-row>
     <!-- End -->
-    <v-card class="card_contain mt-5 mb-5" v-if="selectedRole === 'Alumni'">
+    <v-card class="card_contain mt-5 mb-5" v-if="selectedRole === 'alumni'">
       <v-card
         flat
         class="name-card pa-3"
@@ -154,7 +154,7 @@
         </v-layout>
       </v-card>
     </v-card>
-    <v-card class="card_contain mt-5" v-if="selectedRole === 'ERO'">
+    <v-card class="card_contain mt-5" v-if="selectedRole === 'ero'">
       <v-card
         flat
         class="name-card pa-3"
@@ -230,7 +230,6 @@ export default {
             email: email,
             role: role,
           };
-          console.log(data);
           axios.post("invite", data);
         }
       }
