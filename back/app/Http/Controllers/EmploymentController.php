@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Employment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class EmploymentController extends Controller
 {
@@ -27,17 +28,21 @@ class EmploymentController extends Controller
     {
         $request->validate([
             'startJobDate' => 'required',
-            'endJobDate' => 'required|after:startJobDate',
+            'endJobDate' => 'nullable',
         ]);
         $employment = new Employment();
         $employment->startJobDate = $request->startJobDate;
-        $employment->endJobDate = $request->endJobDate;
         $employment->alumni_id = $request->alumni_id;
-        $employment->position_id = $request->position_id;
+        $employment->workPosition = $request->workPosition;
         $employment->company_id = $request->company_id;
-        
+        $employment->endJobDate = $request->endJobDate;
         $employment->save();
-        return response()->json(['message'=>'Your Employment have been created', 'data'=>$employment ], 201);
+
+        $result = DB::table('employments')
+                ->join('companies', 'companies.id', '=', 'employments.company_id')
+                ->where('employments.id', '=', $employment->id)
+                ->get(['companies.*', 'employments.*']);
+        return response()->json(['message'=>'Your Employment have been created', 'data'=>$result ], 201);
     }
 
     /**
@@ -62,17 +67,22 @@ class EmploymentController extends Controller
     {
         $request->validate([
             'startJobDate' => 'required',
-            'endJobDate' => 'required|after:startJobDate',
+            'endJobDate' => 'nullable',
         ]);
         $employment = Employment::findOrFail($id);
         $employment->startJobDate = $request->startJobDate;
         $employment->endJobDate = $request->endJobDate;
         $employment->alumni_id = $request->alumni_id;
-        $employment->position_id = $request->position_id;
+        $employment->workPosition = $request->workPosition;
         $employment->company_id = $request->company_id;
         
         $employment->save();
-        return response()->json(['message'=>'Your Employment have been updated', 'data'=>$employment ], 200);
+
+        $result = DB::table('employments')
+                ->join('companies', 'companies.id', '=', 'employments.company_id')
+                ->where('employments.id', '=', $employment->id)
+                ->get(['companies.*', 'employments.*']);
+        return response()->json(['message'=>'Your Employment have been updated', 'data'=>$result], 200);
     }
 
     /**

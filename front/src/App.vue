@@ -18,6 +18,11 @@
         @clearErrorMessage="clearErrorMessage"
         @changeProfile="changeProfile"
         @changeAlumniInfo="changeAlumniInfo"
+        @addNewEmployment="addNewEmployment"
+        @updateEmployment="updateEmployment"
+        @deleteEmployment="deleteEmployment"
+        @addSkill="addSkill"
+        @deleteSkill="deleteSkill"
       ></router-view>
     </v-main>
   </v-app>
@@ -121,17 +126,35 @@ export default {
       this.user.email = newEmail;
       this.user.phone = newPhone;
     },
+    addNewEmployment(data) {
+      this.user.employments.unshift(data);
+    },
+    updateEmployment(data) {
+      this.user.employments = this.user.employments.map(obj => data.find(o => o.id === obj.id) || obj);
+    },
+    deleteEmployment(id) {
+      this.user.employments = this.user.employments.filter(emp => emp.id !== id);
+    },
+
+    addSkill(skills) {
+      for(let skill of skills) {
+        this.user.skills.unshift(skill);
+      }
+    },
+    deleteSkill(skill) {
+      this.user.skills = this.user.skills.filter(s => s !== skill);
+    }
   },
   mounted() {
     if (localStorage.getItem("userId")) {
       let userId = localStorage.getItem("userId");
       axios.get("users/" + userId).then((res) => {
         this.user = res.data;
-        if (
-          this.$router.path === "/eroview" ||
-          this.$router.path === "/myprofile" ||
-          this.$router.path === "/signin" ||
-          this.$router.path === "/"
+        this.user.employments = this.user.employments.reverse();
+        if(this.$router.path === "/eroview" ||
+           this.$router.path === "/myprofile" ||
+           this.$router.path === "/signin" ||
+           this.$router.path === "/" 
         ) {
           if (this.user.role === "admin" || this.user.role === "ero") {
             this.$router.push("/eroview");

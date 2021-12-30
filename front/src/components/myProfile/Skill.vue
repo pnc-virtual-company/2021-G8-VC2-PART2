@@ -29,14 +29,14 @@
               <v-row class="pa-0">
                 <v-col cols="12 mt-0">
                   <v-combobox
+                    :items="skills"
                     v-model="getInputSkill"
                     prepend-inner-icon="mdi-checkbox-multiple-marked"
-                    :items="skills"
                     label="Skill"
-                    hide-selected
                     :search-input.sync="search"
                     multiple
                     small-chips
+                    hide-selected
                     clearable
                   >
                     <template v-slot:no-data >
@@ -85,7 +85,7 @@
         v-for="(skill, index) in userData.skills"
         :key="index"
         close
-        @click:close="removed(index)"
+        @click:close="removed(userData.user_id, skill)"
       >
         {{ skill }}
       </v-chip>
@@ -94,7 +94,7 @@
 </template>
 <script>
 export default {
-  emits: ["new-skill","alumni-skill","remove-index"],
+  emits: ["new-skill","add-alumniSkill","userId"],
   props: ["skills","userData"],
   data: () => ({
     leave: false,
@@ -103,22 +103,22 @@ export default {
     getInputSkill: [],  
   }),
   methods: {
-    removed(index){
-      this.userData.skills.splice(index,1);
-      // this.$emit("index", index);
+    removed(alumni_id, skill){
+      this.$emit("deleteSkill",alumni_id, skill);
     },
     addSkillOnCard() {
-      for(let skill of this.getInputSkill){
-          this.userData.skills.push(skill);
-          // this.$emit("alumni-skill",skill);
-      }
+      this.$emit("add-alumniSkill", this.getInputSkill);
       this.leave = false;
+      this.getInputSkill = null;
     },
     cancel() {
       this.leave = false;
+      this.getInputSkill = null;
+      this.search = null;
     },
     createNewSkill() {
       this.$emit("new-skill", this.search);
+      this.search = null;
     },
   },
   

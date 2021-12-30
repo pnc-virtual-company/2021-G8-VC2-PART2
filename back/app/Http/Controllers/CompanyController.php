@@ -14,7 +14,7 @@ class CompanyController extends Controller
      */
     public function getCompanies()
     {
-        return Company::with(['domain_company'])->get();
+        return Company::latest()->get();
     }
 
     /**
@@ -28,14 +28,15 @@ class CompanyController extends Controller
         $request->validate([
             'company_name' => 'required|unique:companies',
             'location' => 'required',
+            'domain_company' => 'required',
             'logo' => 'nullable|image|mimes:jpg,jpeg,png,gif,jfif,svg|max:1999',
         ]);
         $company = new Company();
         $company ->company_name = $request->company_name;
         $company->location = $request->location;
         $company->logo = $request->file('logo')->hashName();
-        $request->file('logo')->store('public/images/logos');
-        $company->domain_companies_id = $request->domain_companies_id;
+        $request->file('logo')->store('public/profiles');
+        $company->domain_company = $request->domain_company;
 
         $company->save();
         return response()->json(['message'=>'Your company have been created', 'data'=>$company ], 201);

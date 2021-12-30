@@ -177,7 +177,7 @@ class Usercontroller extends Controller
             $employmentList = DB::table('employments')
                             ->join('companies', 'companies.id', '=', 'employments.company_id')
                             ->where('employments.alumni_id', '=', $id)
-                            ->get(['employments.*', 'companies.*']);
+                            ->get(['companies.*', 'employments.*']);
             
             $user->employments = $employmentList;
         }

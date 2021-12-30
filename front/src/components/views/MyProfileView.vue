@@ -8,10 +8,17 @@
     <skill-view
       :userData="userData"
       :skills="skills"
+      @deleteSkill="deleteSkill"
       @new-skill="addNewSkill"
+      @add-alumniSkill="addSkillForAlumni"
     >
     </skill-view>
-    <employemt-view></employemt-view>
+    <employemt-view
+      :userData="userData"
+      @addNewEmployment="addNewEmployment"
+      @deleteEmployment="deleteEmployment"
+      @updateEmployment="updateEmployment"
+    ></employemt-view>
   </section>
 </template>
 <script>
@@ -40,8 +47,11 @@ export default {
     },
     addNewSkill(skillName) {
       let newSkill = {};
+      newSkill.id = this.lastId + 1,
       newSkill.skill_name = skillName,
-        axios.post("skills", newSkill);
+        axios.post("skills", newSkill).then((res) => {
+          console.log(res.data);
+        });
     },
     getAllSkills() {
       axios.get("skills").then((res) => {
@@ -49,6 +59,38 @@ export default {
           this.skills.push(skill.skill_name);
         }
       });
+    },
+    addNewEmployment(data) {
+      this.$emit("addNewEmployment", data);
+    },
+    updateEmployment(data) {
+      this.$emit("updateEmployment", data);
+    },
+    deleteEmployment(id) {
+      this.$emit('deleteEmployment', id);
+    },
+    addSkillForAlumni(skills) {
+        let alumni_skills = {
+          alumni_id: this.userData.user_id,
+          skillName: skills
+        };
+        console.log(alumni_skills);
+        axios.post('alumniskills/add',alumni_skills).then(res => {
+          console.log(res.data);
+          this.$emit('addSkill', skills);
+        })
+    },
+    deleteSkill(alumni_id, skill){
+      let dataToDelete = {
+        'alumni_id': alumni_id,
+        'skillName': skill
+      }
+      axios.post("alumniskills/remove", dataToDelete)
+        .then(res => {
+          if(res.data === 1) {
+            this.$emit('deleteSkill', skill);
+          }
+        });
     },
   },
   mounted() {
