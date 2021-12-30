@@ -8,8 +8,16 @@
 <script>
 import AlumniContainer from "../ero/AlumniContainer.vue";
 import SearchFilter from '../ero/SearchFilter.vue';
+import axios from "../../axios-http";
 export default {
   components: { AlumniContainer, SearchFilter },
+  methods: {
+    getAlumnis(){
+      axios.get('users/alumni').then(res=>{
+        console.log(res.data);
+      })
+    }
+  },
 };
 </script>
 

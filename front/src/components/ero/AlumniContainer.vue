@@ -2,54 +2,49 @@
   <section>
     <div class="filter-container">
       <div class="filter">
-        <v-select label="Company" dense solo></v-select>
+        <v-select label="Company" dense solo :items="companies"></v-select>
       </div>
       <div class="filter">
-        <v-select label="Position" dense solo></v-select>
+        <v-select label="Position" dense solo :items="positions"></v-select>
       </div>
       <div class="filter">
-        <v-select label="Batch" dense solo></v-select>
+        <v-select label="Batch" dense solo :items="batches"></v-select>
       </div>
       <div class="filter">
-        <v-select label="Major" dense solo></v-select>
+        <v-select label="Major" dense solo :items="majos"></v-select>
       </div>
       <div class="filter">
-        <v-select label="Domain" dense solo></v-select>
+        <v-select label="Domain" dense solo :items="domains"></v-select>
       </div>
       <!-- <v-btn depressed color="white">
         <v-icon color="error">mdi-close</v-icon>
-      </v-btn> -->
+      </v-btn>-->
     </div>
-    <v-flex class="d-flex">
-      <v-flex class="d-flex">
-        <v-card class="card-alumni mr-4">
-          <v-icon class="mt-3">mdi-account-multiple</v-icon>
-          <p>Alumni</p>
-          <p class="numOfAlumni">200</p>
-        </v-card>
-        <v-card class="card-alumni">
-          <v-icon class="mt-3">mdi-magnify</v-icon>
-          <p>XXX</p>
-          <p class="numOfAlumni">100</p>
-        </v-card>
-      </v-flex>
-    </v-flex>
-    <v-card class="mt-7 pa-4 rounded-lg">
-      <ero-card></ero-card>
+    <v-card class="mt-2 pa-4 rounded-lg">
+      <ero-card
+        v-for="alumni of alumnis"
+        :key="alumni.id"
+        :alumni="alumni"
+      ></ero-card>
     </v-card>
   </section>
 </template>
 
 <script>
 import EroCard from "./AlumniCard.vue";
-
+import axios from "../../axios-http.js";
 export default {
   components: {
     EroCard,
   },
-  data() {
-    return {};
-  },
+  data: () => ({
+    alumnis: null,
+    companies: ["ABA", "WING", "AMK", "AIML", "Canadia", "Slash", "Manulife"],
+    positions:["Web Developer","Mobile Developer","IT Support","IT Security"],
+    batches:["2013","2014","2015","2016","2017","2018","2019","2020","2021","2022"],
+    majos:["SNA","WEB"],
+    domains: ["Bank", "Solution", "Online", "Delivery"],
+  }),
   methods: {
     submit(emailToInvite, selectedRole) {
       this.dialog = false;
@@ -59,21 +54,19 @@ export default {
       };
       this.$emit("invite", data);
     },
+    getExploreAlumniData() {
+      axios.get('users/alumni').then(res=>{
+      this.alumnis = res.data;
+    })
+    }
+  },
+  mounted() {
+    this.getExploreAlumniData();
   },
 };
 </script>
 
 <style>
-.v-icon,
-.numOfAlumni {
-  color: #00a3ff;
-}
-
-.card-alumni {
-  text-align: center;
-  width: 110px;
-  height: 110px;
-}
 .v-sheet.v-card {
   border-radius: 5px;
 }

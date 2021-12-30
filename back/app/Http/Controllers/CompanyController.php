@@ -26,16 +26,17 @@ class CompanyController extends Controller
     public function createCompany(Request $request)
     {
         $request->validate([
-            'company_name' => 'required|unique:companies',
+            'company_name' => 'required',
             'location' => 'required',
             'logo' => 'nullable|image|mimes:jpg,jpeg,png,gif,jfif,svg|max:1999',
+            'domain_company'=>'required'
         ]);
         $company = new Company();
         $company ->company_name = $request->company_name;
         $company->location = $request->location;
         $company->logo = $request->file('logo')->hashName();
         $request->file('logo')->store('public/images/logos');
-        $company->domain_companies_id = $request->domain_companies_id;
+        $company->domain_company = $request->domain_company;
 
         $company->save();
         return response()->json(['message'=>'Your company have been created', 'data'=>$company ], 201);

@@ -14,7 +14,7 @@ class EmploymentController extends Controller
      */
     public function getEmployments()
     {
-        return Employment::with(['alumni','company','position'])->get();
+        return Employment::with(['alumni','company'])->latest()->get();
     }
 
     /**
@@ -33,7 +33,7 @@ class EmploymentController extends Controller
         $employment->startJobDate = $request->startJobDate;
         $employment->endJobDate = $request->endJobDate;
         $employment->alumni_id = $request->alumni_id;
-        $employment->position_id = $request->position_id;
+        $employment->workPosition = $request->workPosition;
         $employment->company_id = $request->company_id;
         
         $employment->save();
@@ -68,7 +68,7 @@ class EmploymentController extends Controller
         $employment->startJobDate = $request->startJobDate;
         $employment->endJobDate = $request->endJobDate;
         $employment->alumni_id = $request->alumni_id;
-        $employment->position_id = $request->position_id;
+        $employment->workPosition = $request->workPosition;
         $employment->company_id = $request->company_id;
         
         $employment->save();
