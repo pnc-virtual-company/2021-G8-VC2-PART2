@@ -18,6 +18,9 @@
         @clearErrorMessage="clearErrorMessage"
         @changeProfile="changeProfile"
         @changeAlumniInfo="changeAlumniInfo"
+        @addNewEmployment="addNewEmployment"
+        @updateEmployment="updateEmployment"
+        @deleteEmployment="deleteEmployment"
       ></router-view>
     </v-main>
   </v-app>
@@ -121,6 +124,15 @@ export default {
       this.user.email = newEmail;
       this.user.phone = newPhone;
     },
+    addNewEmployment(data) {
+      this.user.employments.unshift(data);
+    },
+    updateEmployment(data) {
+      this.user.employments = this.user.employments.map(obj => data.find(o => o.id === obj.id) || obj);
+    },
+    deleteEmployment(id) {
+      this.user.employments = this.user.employments.filter(emp => emp.id !== id);
+    }
   },
   mounted() {
     if (localStorage.getItem("userId")) {
@@ -128,6 +140,7 @@ export default {
       axios.get('users/' + userId)
       .then(res => {
         this.user = res.data;
+        this.user.employments = this.user.employments.reverse();
         if(this.$router.path === "/eroview" ||
            this.$router.path === "/myprofile" ||
            this.$router.path === "/signin" ||

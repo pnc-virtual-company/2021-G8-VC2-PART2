@@ -11,7 +11,12 @@
       @new-skill="addNewSkill"
     >
     </skill-view>
-    <employemt-view></employemt-view>
+    <employemt-view
+      :userData="userData"
+      @addNewEmployment="addNewEmployment"
+      @deleteEmployment="deleteEmployment"
+      @updateEmployment="updateEmployment"
+    ></employemt-view>
   </section>
 </template>
 <script>
@@ -49,6 +54,15 @@ export default {
           this.skills.push(skill.skill_name);
         }
       });
+    },
+    addNewEmployment(data) {
+      this.$emit("addNewEmployment", data);
+    },
+    updateEmployment(data) {
+      this.$emit("updateEmployment", data);
+    },
+    deleteEmployment(id) {
+      this.$emit('deleteEmployment', id);
     },
   },
   mounted() {
