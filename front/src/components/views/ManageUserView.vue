@@ -29,7 +29,7 @@
           </p>
         </v-card>
       </v-col>
-      <v-col cols="5">
+      <v-col cols="2">
         <v-card class="card-alumni text-center" width="100px">
           <v-icon color="blue" class="mt-3">mdi-account-plus</v-icon>
           <p>Invited</p>
@@ -41,7 +41,8 @@
           </p>
         </v-card>
       </v-col>
-      <v-col cols="3">
+      <v-col cols="4"></v-col>
+      <v-col cols="2">
         <v-select
           label="Role"
           dense
@@ -75,7 +76,7 @@
                       class="mt-5"
                       prepend-inner-icon="mdi-account-box-outline"
                       :items="roles"
-                      v-model="selectedRole"
+                      v-model="selectedRoleForInvite"
                       label="Select role"
                       :rules="[rules.required]"
                     ></v-select>
@@ -101,7 +102,7 @@
                 <v-btn
                   color="primary"
                   text
-                  @click="submitEmail(inviteEmailList, selectedRole)"
+                  @click="submitEmail(inviteEmailList, selectedRoleForInvite)"
                 >
                   Submit
                 </v-btn>
@@ -204,6 +205,7 @@ export default {
       numberOferoNotValidated: 0,
       numberOferos: 0,
       selectedRole: "alumni",
+      selectedRoleForInvite: "",
       emailToInvite: null,
       inviteEmailList: [],
       newAlumniData: null,
