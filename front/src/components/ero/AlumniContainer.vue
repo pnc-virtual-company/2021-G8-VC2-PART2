@@ -80,6 +80,7 @@ export default {
         this.majors = res.data;
         for (let major of this.majors) {
           this.majorLists.push(major.major);
+          console.log(this.majorLists)
         }
       });
     },
