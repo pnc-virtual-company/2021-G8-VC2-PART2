@@ -70,7 +70,7 @@ let authenticationGuard = (to, from, next) => {
         let userData = null;
         axios.get('users/' + userId)
         .then(res => {
-          userData = res.data.user;
+          userData = res.data;
           if (userData.role === 'alumni') {
             next();
           } else {
@@ -83,7 +83,7 @@ let authenticationGuard = (to, from, next) => {
           let userData = null;
           axios.get('users/' + userId)
           .then(res => {
-            userData = res.data.user;
+            userData = res.data;
             if (userData.role === 'ero' || userData.role === 'admin') {
               next();
             } else {
@@ -100,7 +100,7 @@ let authenticationGuard = (to, from, next) => {
       let userData = null;
       axios.get('users/' + userId)
       .then(res => {
-        userData = res.data.user;
+        userData = res.data;
         if (userData.role === 'ero' || userData.role === 'admin') {
           next("/eroview");
         } else {
