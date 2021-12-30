@@ -2,7 +2,7 @@
   <section>
     <div class="filter-container">
       <div class="filter">
-        <v-select label="Company" dense solo :items="companies"></v-select>
+        <v-select label="Company" dense solo :items="companyLists"></v-select>
       </div>
       <div class="filter">
         <v-select label="Position" dense solo :items="positions"></v-select>
@@ -11,7 +11,7 @@
         <v-select label="Batch" dense solo :items="batches"></v-select>
       </div>
       <div class="filter">
-        <v-select label="Major" dense solo :items="majos"></v-select>
+        <v-select label="Major" dense solo :items="majorLists"></v-select>
       </div>
       <div class="filter">
         <v-select label="Domain" dense solo :items="domains"></v-select>
@@ -21,11 +21,7 @@
       </v-btn>-->
     </div>
     <v-card class="mt-2 pa-4 rounded-lg">
-      <ero-card
-        v-for="alumni of alumnis"
-        :key="alumni.id"
-        :alumni="alumni"
-      ></ero-card>
+      <ero-card v-for="alumni of alumnis" :key="alumni.id" :alumni="alumni"></ero-card>
     </v-card>
   </section>
 </template>
@@ -39,11 +35,15 @@ export default {
   },
   data: () => ({
     alumnis: null,
-    companies: ["ABA", "WING", "AMK", "AIML", "Canadia", "Slash", "Manulife"],
-    positions:["Web Developer","Mobile Developer","IT Support","IT Security"],
-    batches:["2013","2014","2015","2016","2017","2018","2019","2020","2021","2022"],
-    majos:["SNA","WEB"],
-    domains: ["Bank", "Solution", "Online", "Delivery"],
+    companies: [],
+    companyLists: [],
+    positions: [],
+    batches: [],
+    majors: [],
+    majorLists: [],
+    domains: [],
+    countriesCities: [],
+    countriesCitiesInitial: [],
   }),
   methods: {
     submit(emailToInvite, selectedRole) {
@@ -54,15 +54,69 @@ export default {
       };
       this.$emit("invite", data);
     },
+    /*get companies*/
+    getCompanies() {
+      axios.get("companies").then((res) => {
+        this.companies = res.data;
+        for (let company of this.companies) {
+          this.companyLists.push(company.company_name);
+        }
+      });
+    },
+    /*get positions*/
+    getPositions() {
+      axios.get("workPositions").then((res) => {
+        this.positions = res.data;
+      });
+    },
+    /*get batches*/
+    getBatches() {
+      axios.get("batches").then((res) => {
+        this.batches = res.data;
+      });
+    },
+    /* get all of explore alumni */
     getExploreAlumniData() {
-      axios.get('users/alumni').then(res=>{
-      this.alumnis = res.data;
-    })
-    }
+      axios.get("users/alumni").then((res) => {
+        this.alumnis = res.data;
+        this.majors = res.data;
+        for (let major of this.majors) {
+          this.majorLists.push(major.major);
+        }
+      });
+    },
+    /*get all domain companies*/
+    getDomain() {
+      axios.get("domain_companies").then((res) => {
+        this.domains = res.data;
+      });
+    },
   },
   mounted() {
     this.getExploreAlumniData();
+    this.getCompanies();
+    this.getPositions();
+    this.getBatches();
+    this.getDomain();
   },
+  watch: {
+    searchKey: function(key) {
+      if (key === "") {
+        this.countriesCities = [];
+      } else {
+        this.countriesCities = [];
+        for (let countryCity of this.countriesCitiesInitial) {
+          if (
+            countryCity.city.toLowerCase().includes(key.toLowerCase()) ||
+            countryCity.country.toLowerCase().includes(key.toLowerCase())
+          ) {
+            this.countriesCities.push(countryCity);
+            this.cityListDisplayed = true;
+          }
+        }
+      }
+    },
+  }
 };
 </script>
 

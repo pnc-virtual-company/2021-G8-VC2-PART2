@@ -14,7 +14,7 @@ class CompanyController extends Controller
      */
     public function getCompanies()
     {
-        return Company::with(['domain_company'])->get();
+        return Company::latest()->get();
     }
 
     /**
