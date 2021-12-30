@@ -13,6 +13,16 @@ class alumni_skill extends Model
         'skill_name'
     ];
 
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
+    
     public function alumni() {
         return $this->belongsTo(Alumni::class);
     }
