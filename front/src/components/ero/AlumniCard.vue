@@ -1,69 +1,53 @@
 <template>
   <section>
-    <v-card
-      v-for="(item, index) in items"
-      :key="index"
-      class="ma-0 pa-2 elevation-0 rounded-lg"
-    >
+    <v-card class="ma-0 pa-2 elevation-0 rounded-lg">
       <v-row>
         <v-col>
           <v-list-item class="ma-0 pa-0">
-            <v-avatar class="mr-3" size="70">
-              <img :src="item.avatar" alt="" />
+            <v-avatar class="mr-3 mb-4" size="70">
+              <img :src="imageUrl+alumni.profile" alt />
             </v-avatar>
             <v-list-item-title>
-              <v-list-item-title>{{ item.title }}</v-list-item-title>
-              <small>{{ item.subtitle }}</small>
+              <v-flex class="d-flex mt-2">
+                <v-list-item-title class="text-title">
+                  {{
+                  alumni.firstname
+                  }} {{alumni.lastname}}
+                </v-list-item-title>
+                <v-list-item-title
+                  class="text-title"
+                  v-if="alumni.employments.length > 0"
+                >{{ alumni.employments[0].workPosition }}</v-list-item-title>
+              </v-flex>
+              <v-flex class="d-flex mt-2">
+                <v-list-item-subtitle class="text mt-2">
+                  {{
+                  alumni.major
+                  }} {{ alumni.batch }}
+                </v-list-item-subtitle>
+                <v-list-item-subtitle class="text" v-if="alumni.employments.length > 0">
+                  <v-avatar size="30">
+                    <v-img :src="logoUrl+alumni.employments[0].logo"></v-img>
+                  </v-avatar>
+                  {{ alumni.employments[0].company_name }}
+                </v-list-item-subtitle>
+              </v-flex>
               <br />
             </v-list-item-title>
           </v-list-item>
-        </v-col>
-        <v-col cols-4 class="option mt-0">
-          <div class="mr-2">
-            <v-icon size="20px">mdi-dots-horizontal</v-icon>
-          </div>
+          <v-divider></v-divider>
         </v-col>
       </v-row>
-      <v-divider class="mt-2"></v-divider>
     </v-card>
   </section>
 </template>
 
 <script>
 export default {
+  props: ["alumni"],
   data: () => ({
-    items: [
-      {
-        avatar:
-          "https://cdn.icon-icons.com/icons2/1879/PNG/512/iconfinder-3-avatar-2754579_120516.png",
-        title: "Thon Theng",
-        subtitle: "thon@gmail.com",
-      },
-      {
-        avatar:
-          "https://cdn.icon-icons.com/icons2/1879/PNG/512/iconfinder-3-avatar-2754579_120516.png",
-        title: "Thon Theng",
-        subtitle: "thon@gmail.com",
-      },
-      {
-        avatar:
-          "https://cdn.icon-icons.com/icons2/1879/PNG/512/iconfinder-3-avatar-2754579_120516.png",
-        title: "Thon Theng",
-        subtitle: "thon@gmail.com",
-      },
-      {
-        avatar:
-          "https://cdn.icon-icons.com/icons2/1879/PNG/512/iconfinder-3-avatar-2754579_120516.png",
-        title: "Thon Theng",
-        subtitle: "thon@gmail.com",
-      },
-      {
-        avatar:
-          "https://cdn.icon-icons.com/icons2/1879/PNG/512/iconfinder-3-avatar-2754579_120516.png",
-        title: "Thon Theng",
-        subtitle: "thon@gmail.com",
-      },
-    ],
+    imageUrl: "http://127.0.0.1:8000/storage/profiles/",
+    logoUrl: "http://127.0.0.1:8000/storage/images/logos/",
   }),
 };
 </script>
@@ -79,5 +63,16 @@ export default {
 .v-card {
   cursor: pointer;
   border-radius: 10px;
+}
+.text {
+  font-size: 13px;
+}
+.text-title {
+  font-size: 18px;
+}
+.v-text-field.v-text-field--solo:not(.v-text-field--solo-flat)
+  > .v-input__control
+  > .v-input__slot {
+  box-shadow: none;
 }
 </style>

@@ -15,7 +15,7 @@ class EmploymentController extends Controller
      */
     public function getEmployments()
     {
-        return Employment::with(['alumni','company','position'])->get();
+        return Employment::with(['alumni','company'])->latest()->get();
     }
 
     /**

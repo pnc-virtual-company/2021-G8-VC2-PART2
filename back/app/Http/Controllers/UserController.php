@@ -99,9 +99,9 @@ class Usercontroller extends Controller
                 $user->status = 'validated';
                 $user->save();
 
-                $defaultImg = 'male.jpg';
-                if($request->gender == 'female') {
-                    $request->$defaultImg = "female.jpg";
+                $defaultImg = 'female.jpg';
+                if($request->gender !== 'Female') {
+                    $defaultImg = "male.jpg";
                 }
 
                 $alumni = Alumni::where('user_id', $user->id)->update([

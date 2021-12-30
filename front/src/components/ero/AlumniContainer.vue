@@ -2,65 +2,109 @@
   <section>
     <div class="filter-container">
       <div class="filter">
-        <v-select label="Company" dense solo></v-select>
+        <v-select label="Company" dense solo :items="companyLists"></v-select>
       </div>
       <div class="filter">
-        <v-select label="Position" dense solo></v-select>
+        <v-select label="Position" dense solo :items="positions"></v-select>
       </div>
       <div class="filter">
-        <v-select label="Batch" dense solo></v-select>
+        <v-select label="Batch" dense solo :items="batches"></v-select>
       </div>
       <div class="filter">
-        <v-select label="Major" dense solo></v-select>
+        <v-select label="Major" dense solo :items="majorLists"></v-select>
       </div>
+      <div class="filter">
+        <v-select label="Domain" dense solo :items="domains"></v-select>
+      </div>
+      <!-- <v-btn depressed color="white">
+        <v-icon color="error">mdi-close</v-icon>
+      </v-btn>-->
     </div>
-    <v-flex class="d-flex">
-      <v-flex class="d-flex">
-        <v-card class="card-alumni mr-5">
-          <v-icon class="mt-4">mdi-account</v-icon>
-          <p>Alumni</p>
-          <p class="numOfAlumni">200</p>
-        </v-card>
-        <v-card class="card-alumni">
-          <v-icon class="mt-4">mdi-account-multiple-plus</v-icon>
-          <p>Invited</p>
-          <p class="numOfAlumni">100</p>
-        </v-card>
-      </v-flex>
-    </v-flex>
-    <v-card class="mt-7 mb-4 pa-4 rounded-lg">
-      <ero-card></ero-card>
+    <v-card class="mt-2 pa-4 rounded-lg">
+      <ero-card v-for="alumni of alumnis" :key="alumni.id" :alumni="alumni"></ero-card>
     </v-card>
   </section>
 </template>
 
 <script>
 import EroCard from "./AlumniCard.vue";
-
+import axios from "../../axios-http.js";
 export default {
   components: {
     EroCard,
   },
-  data() {
-    return {
-    }
+  data: () => ({
+    alumnis: null,
+    companies: [],
+    companyLists: [],
+    positions: [],
+    batches: [],
+    majors: [],
+    majorLists: [],
+    domains: [],
+  }),
+  methods: {
+    submit(emailToInvite, selectedRole) {
+      this.dialog = false;
+      let data = {
+        email: emailToInvite,
+        role: selectedRole,
+      };
+      this.$emit("invite", data);
+    },
+    /*get companies*/
+    getCompanies() {
+      axios.get("companies").then((res) => {
+        this.companies = res.data;
+        for (let company of this.companies) {
+          this.companyLists.push(company.company_name);
+        }
+      });
+    },
+    /*get positions*/
+    getPositions() {
+      axios.get("workPositions").then((res) => {
+        this.positions = res.data;
+      });
+    },
+    /*get batches*/
+    getBatches() {
+      axios.get("batches").then((res) => {
+        this.batches = res.data;
+      });
+    },
+    /* get all of explore alumni */
+    getExploreAlumniData() {
+      axios.get("users/alumni").then((res) => {
+        this.alumnis = res.data;
+        this.majors = res.data;
+        for (let major of this.majors) {
+          this.majorLists.push(major.major);
+          console.log(this.majorLists)
+        }
+      });
+    },
+    /*get all domain companies*/
+    getDomain() {
+      axios.get("domain_companies").then((res) => {
+        this.domains = res.data;
+      });
+    },
+  },
+  mounted() {
+    this.getExploreAlumniData();
+    this.getCompanies();
+    this.getPositions();
+    this.getBatches();
+    this.getDomain();
   },
 };
 </script>
 
-<style scoped>
-.v-icon,
-.numOfAlumni {
-  color: #00a3ff;
+<style>
+.v-sheet.v-card {
+  border-radius: 5px;
 }
-
-.card-alumni {
-  text-align: center;
-  width: 120px;
-  height: 120px;
-  border-radius: 10px;
-}
-
 .invite-btn {
   border-radius: 5px;
 }
@@ -75,6 +119,9 @@ export default {
 }
 
 .filter {
-  width: 23%;
+  width: 18%;
+}
+.v-sheet.v-card:not(.v-sheet--outlined) {
+  box-shadow: none;
 }
 </style>

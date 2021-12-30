@@ -20,12 +20,7 @@
             <small v-if="invalidEmail !== null" class="red--text">{{ invalidEmail }}</small>
           </v-col>
         </v-row>
-        <!-- <v-row class="justify-center">
-          <v-col md="8" sm="8">
-            
-          </v-col>
-        </v-row> -->
-        <v-row class="justify-center">
+        <v-row class="justify-center row-input">
           <v-col md="8" sm="8">
             <v-btn
               :disabled="!valid"

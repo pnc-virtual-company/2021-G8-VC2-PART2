@@ -3,7 +3,7 @@
     <v-text-field
       class="mt-5"
       prepend-inner-icon="mdi-magnify"
-      append-icon="mdi-close"
+      clearable
       placeholder="Search"
       solo
     ></v-text-field>

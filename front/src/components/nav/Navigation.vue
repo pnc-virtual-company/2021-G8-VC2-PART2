@@ -153,4 +153,7 @@ export default {
 .v-dialog {
   border-radius: 10px;
 }
+.signOutBtn{
+  color: #E0E8EF;
+}
 </style>
