@@ -42,8 +42,6 @@ export default {
     majors: [],
     majorLists: [],
     domains: [],
-    countriesCities: [],
-    countriesCitiesInitial: [],
   }),
   methods: {
     submit(emailToInvite, selectedRole) {
@@ -99,24 +97,6 @@ export default {
     this.getBatches();
     this.getDomain();
   },
-  watch: {
-    searchKey: function(key) {
-      if (key === "") {
-        this.countriesCities = [];
-      } else {
-        this.countriesCities = [];
-        for (let countryCity of this.countriesCitiesInitial) {
-          if (
-            countryCity.city.toLowerCase().includes(key.toLowerCase()) ||
-            countryCity.country.toLowerCase().includes(key.toLowerCase())
-          ) {
-            this.countriesCities.push(countryCity);
-            this.cityListDisplayed = true;
-          }
-        }
-      }
-    },
-  }
 };
 </script>
 
