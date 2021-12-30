@@ -15,6 +15,7 @@
             <v-text-field
               label="Email"
               type="email"
+              clearable
               prepend-inner-icon="mdi-email"
               v-model="newEmail"
               :rules="[rules.required, rules.emailRules]"

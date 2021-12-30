@@ -8,7 +8,7 @@
         <p v-if="status === 'invited'">COMPLETE INFORMATION</p>
         <p v-else>INPUT PASSWORD</p>
       </div>
-      <v-form class="pa-10" ref="form" v-model="valid" lazy-validation>
+      <v-form class="pa-0" ref="form" v-model="valid" lazy-validation>
         <v-row class="justify-center row-input" v-if="status === 'invited'">
           <v-col md="4" sm="5">
             <v-text-field

@@ -1,7 +1,7 @@
 <template>
   <section class="manageuser">
     <v-row class="mt-5">
-      <v-col cols="8">
+      <v-col cols="12">
         <v-text-field
          v-model="search"
           prepend-inner-icon="mdi-magnify"
@@ -11,12 +11,32 @@
           clearable
           single-line
           solo
+          height="20px"
         ></v-text-field>
       </v-col>
+    </v-row>
+    <v-row>
       <v-col cols="2">
-        <div class="filter">
-          <v-select label="Role" dense solo :items="roles"></v-select>
-        </div>
+        <v-card class="card-alumni">
+          <v-icon color="blue" class="mt-3">mdi-account-check</v-icon>
+          <p v-if="selectedRole === 'Alumni'">Alumni</p>
+          <p v-if="selectedRole === 'ERO'">ERO</p>
+          <p class="numOfAlumni" v-if="selectedRole === 'Alumni'">{{numberOfalumni}}</p>
+          <p class="numOfAlumni" v-if="selectedRole === 'ERO'">{{numberOferos}}</p>
+        </v-card>
+      </v-col>
+      <v-col cols="6">
+        <v-card class="card-alumni">
+          <v-icon color="blue" class="mt-3">mdi-account-plus</v-icon>
+          <p>Invited</p>
+          <p class="numOfAlumni" v-if="selectedRole === 'Alumni'">{{numberOfalumniNotValidated}}</p>
+          <p class="numOfAlumni" v-if="selectedRole === 'ERO'">{{numberOferoNotValidated}}</p>
+        </v-card>
+      </v-col>
+      <v-col cols="2">
+        <v-flex class="d-flex justify-end">
+          <v-select label="Role" dense solo :items="roles" v-model="selectedRole"></v-select>
+        </v-flex>
       </v-col>
       <v-col cols="2">
         <v-flex class="d-flex justify-end">
@@ -25,7 +45,7 @@
               <v-btn
                 class="white--text"
                 depressed
-                color="blue invite-btn"
+                color="warning invite-btn"
                 v-bind="attrs"
                 v-on="on"
               >
@@ -74,28 +94,54 @@
       </v-col>
     </v-row>
     <!-- End -->
-    <v-card class="card_contain mt-5">
-      <v-card flat class="name-card pa-3" v-for="user in searchFilter" :key="user.id" :search="search">
-        <v-layout row wrap :class="`pa-2 user ${user.major}`">
+    <v-card class="card_contain mt-5 mb-5" v-if="selectedRole === 'Alumni'">
+      <v-card flat class="name-card pa-3" v-for="user in alumnis" :key="user.id" :search="search">
+        <v-layout row wrap class="border-left" :class="`pa-2 user ${user.major}`">
           <v-flex xs6 md2 sm4>
-            <div class="caption grey--text">First name</div>
-            <div>{{ user.firstname }}</div>
+            <div class="caption grey--text">Name</div>
+            <div v-if="user.status == 'invited'">Empty</div>
+            <div v-else>{{ user.firstname }}{{" "}}{{ user.lastname }}</div>
           </v-flex>
-          <v-flex xs6 md3 sm4>
-            <div class="caption grey--text">Last name</div>
-            <div>{{ user.lastname }}</div>
+          <v-flex xs6 md5 sm4>
+            <div class="caption grey--text">Email</div>
+            <div>{{ user.email }}</div>
           </v-flex>
           <v-flex xs6 md2 sm4>
             <div class="caption grey--text">Gender</div>
-            <div>{{ user.gender }}</div>
-          </v-flex>
-          <v-flex xs6 md2 sm4>
-            <div class="caption grey--text">Batch</div>
-            <div>{{ user.batch }}</div>
+            <div v-if="user.status == 'invited'">Empty</div>
+            <div v-else>{{ user.gender }}</div>
           </v-flex>
           <v-flex xs6 md2 sm4>
             <div class="caption grey--text">Major</div>
-            <div :class="`major ${user.major}`">{{ user.major }}</div>
+            <div v-if="user.status == 'invited'">Empty</div>
+            <div :class="`major ${user.major}`" v-else>{{ user.major }}{{" "}}{{ user.batch }}</div>
+          </v-flex>
+          <v-flex xs6 md1 sm4>
+            <div class="caption grey--text">Action</div>
+            <v-icon>mdi-delete</v-icon>
+          </v-flex>
+        </v-layout>
+      </v-card>
+    </v-card>
+    <v-card class="card_contain mt-5" v-if="selectedRole === 'ERO'">
+      <v-card flat class="name-card pa-3" v-for="user in eros" :key="user.id" :search="search">
+        <v-layout row wrap :class="`pa-2 user ${user.status}`">
+          <v-flex xs6 md1 sm2>
+            <div class="caption grey--text">ID</div>
+            <div>{{ user.id }}</div>
+          </v-flex>
+          <v-flex xs6 md2 sm4>
+            <div class="caption grey--text">Name</div>
+            <div v-if="user.status == 'invited'">Empty</div>
+            <div v-else>{{ user.firstname }}{{" "}}{{ user.lastname }}</div>
+          </v-flex>
+          <v-flex xs6 md6 sm4>
+            <div class="caption grey--text">Email</div>
+            <div>{{ user.email }}</div>
+          </v-flex>
+          <v-flex xs6 md2 sm4>
+            <div class="caption grey--text">Status</div>
+            <div :class="`ero ${user.status}`">{{ user.status }}</div>
           </v-flex>
           <v-flex xs6 md1 sm4>
             <div class="caption grey--text">Action</div>
@@ -107,64 +153,27 @@
   </section>
 </template>
 <script>
+import axios from "../../axios-http.js";
 export default {
   data() {
     return {
       roles: ["ERO", "Alumni"],
       dialog: false,
       search: '',
-      users: [
-        {
-          id: 1,
-          firstname: "Lyheang",
-          lastname: "Chhem",
-          batch: "2018",
-          major: "WEB",
-          roles: "ERO",
-          gender: "Male",
-        },
-        {
-          id: 2,
-          firstname: "Thon",
-          lastname: "Theng",
-          batch: "2021",
-          major: "SNA",
-          remove: "remove",
-          gender: "Female",
-        },
-        {
-          id: 3,
-          firstname: "Kunthy",
-          lastname: "Sen",
-          batch: "2020",
-          major: "SNA",
-          gender: "Male",
-        },
-        {
-          id: 4,
-          firstname: "Sreyngit",
-          lastname: "Doeurm",
-          batch: "2019",
-          major: "WEB",
-          gender: "Female",
-        },
-        {
-          id: 5,
-          firstname: "Lyhuoy",
-          lastname: "In",
-          batch: "2023",
-          major: "SNA",
-          gender: "Male",
-        },
-      ],
+      eros: null,
+      alumnis: null,
+      numberOfalumni: 0,
+      numberOfalumniNotValidated: 0,
+      numberOferoNotValidated: 0,
+      numberOferos: 0,
+      selectedRole: 'Alumni',
+      newAlumniData: null
     };
   },
   computed: {
-    searchFilter(){
-      return this.users.filter((user)=>{
-        return user.firstname.toLowerCase().match(this.search.toLowerCase()) 
-        || user.lastname.match(this.search) || user.batch.match(this.search) 
-        || user.gender.match(this.search) || user.major.toLowerCase().match(this.search.toLowerCase());
+    searchAlumni(){
+      return this.newAlumniData.filter((user)=>{
+        return user.firstname.toLowerCase().match(this.search.toLowerCase());
       })
     }
   },
@@ -178,11 +187,26 @@ export default {
       this.$emit('invite', data);
     }
   },
+  mounted() {
+    axios.get('/users/ero')
+    .then(res => {
+      this.eros = res.data;
+      this.numberOferos = this.eros.length;
+      this.numberOferoNotValidated = this.eros.filter(user => user.status == "invited").length;
+    })
+    axios.get('/users/alumni')
+    .then(res => {
+      this.alumnis = res.data;
+      this.numberOfalumni = this.alumnis.length;
+      this.newAlumniData = this.alumnis;
+      this.numberOfalumniNotValidated = this.alumnis.filter(user => user.status == "invited").length;
+    })
+  },
 };
 </script>
 <style scoped>
 .manageuser {
-  width: 60%;
+  width: 50%;
   margin: auto;
   background: none;
   color: white;
@@ -190,16 +214,31 @@ export default {
 .name-card:hover {
   background: rgb(245, 245, 245);
 }
-.user.WEB {
+.user.WEP {
   border-left: 4px solid #00a3ff;
 }
 .user.SNA {
   border-left: 4px solid #FF9800;
 }
-.major.WEB {
+.user.invited {
+  border-left: 4px solid #00a3ff;
+}
+.user.validated {
+  border-left: 4px solid #FF9800;
+}
+.ero.invited {
+  color: #00a3ff;
+}
+.ero.validated {
+  color: #FF9800;
+}
+.major.WEP {
   color: #00a3ff;
 }
 .major.SNA {
   color: #FF9800;
+}
+.border-left {
+  border-left: 4px solid #ff5858;
 }
 </style>

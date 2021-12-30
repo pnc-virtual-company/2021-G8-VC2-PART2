@@ -44,7 +44,7 @@
         ></v-img>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-tabs class="d-flex justify-end">
+      <v-tabs class="hidden-sm-and-up d-flex justify-end">
         <v-tabs-slider color="blue"></v-tabs-slider>
         <v-tab
           active-class="blue--text"
@@ -60,8 +60,7 @@
         <v-spacer></v-spacer>
          <div class="my-2 ml-2 logout ma-2" @click="$emit('signout')">
             <v-btn
-              color="warning"
-              dark
+              class="signOutBtn"
               elevation="0"
             >
               Logout
@@ -97,7 +96,7 @@ export default {
           title: "Manage User",
           path: "/manageuser",
           icon: "mdi-account-multiple",
-          whoCanSee: ["admin"],
+          whoCanSee: ["ero", "admin"],
         },
         {
           title: "Event",
@@ -128,5 +127,8 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.signOutBtn{
+  color: #E0E8EF;
 }
 </style>

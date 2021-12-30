@@ -47,9 +47,8 @@
                     <v-list-item>
                       <v-list-item-content>
                         <v-list-item-title>
-                          No Position matching"
-                          <strong>{{ search1 }}</strong
-                          >". Press <kbd>enter</kbd> to create
+                          <strong>({{ search1 }}) </strong
+                          ><kbd>enter</kbd> to create
                         </v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
@@ -231,7 +230,7 @@
       <v-row>
         <v-col>
           <v-list-item class="ma-0 pa-0">
-            <v-avatar class="mr-3" size="50px">
+            <v-avatar class="mr-3" size="50">
               <img
                 src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Circle-icons-profile.svg/1024px-Circle-icons-profile.svg.png"
                 alt=""

@@ -19,7 +19,7 @@ class CreateEmploymentsTable extends Migration
             $table->date('endJobDate');
             $table->foreignId('alumni_id');
             $table->foreignId('company_id');
-            $table->foreignId('position_id');
+            $table->string('workPosition');
             $table->timestamps();
         });
     }

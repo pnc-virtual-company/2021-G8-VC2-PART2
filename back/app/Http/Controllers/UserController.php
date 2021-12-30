@@ -121,27 +121,68 @@ class Usercontroller extends Controller
                 if(!Hash::check($request->password, $user->password)){
                     return response()->json(['message' => 'Unauthorized'], 401);
                 } else {
-                    $alumni = User::join('alumnis', 'users.id', '=', 'alumnis.user_id')
-                    ->where('users.id', $user->id)
-                    ->get(['users.*', 'alumnis.*']);
-                    return response()->json(['message' => 'Successfully', 'user' => $alumni[0]], 200);
+                    $alumni = $this->getAUser($user->id);
+                    return response()->json(['message' => 'Successfully', 'user' => $alumni], 200);
                 }
             }
         }
     }
-    public function getUsers(){
-        return User::latest()->get();
+
+    /*get all EROs*/
+    public function getEroUsers() {
+        return User::where('role', "ero")->latest()->get();
     }
-    
+    /*get all Alumnis*/
+    public function getAlumniUsers() {
+        $users = User::join('alumnis', 'users.id', '=', 'alumnis.user_id')
+                ->get(['users.*', 'alumnis.*']);
+        foreach($users as $user) {
+            $skills = DB::table('alumni_skills')
+                        ->select('skillName')
+                        ->where('alumni_id', '=', $user->id)
+                        ->get();
+            $cleanSkillList = [];
+            foreach($skills as $skill) {
+                array_push($cleanSkillList, $skill->skillName);
+            }
+            $user['skills'] = $cleanSkillList;
+            
+            $employmentList = DB::table('employments')
+                            ->join('companies', 'companies.id', '=', 'employments.company_id')
+                            ->where('employments.alumni_id', '=', $user->id)
+                            ->get(['employments.*', 'companies.*']);
+            
+            $user['employments'] = $employmentList;
+        }
+        return $users;
+    }
     public function getAUser($id){
         $user = User::findOrFail($id);
-        if($user->role === 'alumni') {
-            $alumni = User::join('alumnis', 'users.id', '=', 'alumnis.user_id')
-                    ->where('users.id', $id)
-                    ->get(['users.*', 'alumnis.*']);
-            return response()->json(['user' => $alumni[0]]);
+
+        if($user->role == 'alumni') {
+            $user = DB::table('users')
+                    ->join('alumnis', 'users.id', '=', 'alumnis.user_id')
+                    ->where('users.id', '=', $id)
+                    ->get(['users.*', 'alumnis.*'])->first();
+            $skills = DB::table('alumni_skills')
+                        ->select('skillName')
+                        ->where('alumni_skills.alumni_id', '=', $id)
+                        ->get();
+            $cleanSkillList = [];
+            foreach($skills as $skill) {
+                array_push($cleanSkillList, $skill->skillName);
+            }
+            $user->skills = $cleanSkillList;
+            
+            $employmentList = DB::table('employments')
+                            ->join('companies', 'companies.id', '=', 'employments.company_id')
+                            ->where('employments.alumni_id', '=', $id)
+                            ->get(['employments.*', 'companies.*']);
+            
+            $user->employments = $employmentList;
         }
-        return response()->json(['user' => $user]);
+
+        return $user;
     }
     
     // update alumni information (email,phone number)
@@ -160,7 +201,8 @@ class Usercontroller extends Controller
         return response()->json(['message' => 'Email updated', 'newEmail' => $request->email, 'newPhone' => $request->phone, 'user' => $userInfo], 200);
     }
     /* upload profile alumni*/
-    public function profilePost(Request $request, $id){
+    public function profilePost(Request $request, $id)
+    {
         $request->validate([
             'profile' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:1999',
         ]);

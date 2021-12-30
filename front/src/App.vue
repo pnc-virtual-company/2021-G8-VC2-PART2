@@ -127,7 +127,7 @@ export default {
       let userId = localStorage.getItem("userId");
       axios.get('users/' + userId)
       .then(res => {
-        this.user = res.data.user;
+        this.user = res.data;
         if(this.$router.path === "/eroview" ||
            this.$router.path === "/myprofile" ||
            this.$router.path === "/signin" ||
