@@ -17,7 +17,7 @@
     </v-row>
     <v-row>
       <v-col cols="2">
-        <v-card class="card-alumni">
+        <v-card class="card-alumni text-center" width="100px">
           <v-icon color="blue" class="mt-3">mdi-account-check</v-icon>
           <p v-if="selectedRole === 'Alumni'">Alumni</p>
           <p v-if="selectedRole === 'ERO'">ERO</p>
@@ -26,7 +26,7 @@
         </v-card>
       </v-col>
       <v-col cols="6">
-        <v-card class="card-alumni">
+        <v-card class="card-alumni text-center" width="100px">
           <v-icon color="blue" class="mt-3">mdi-account-plus</v-icon>
           <p>Invited</p>
           <p class="numOfAlumni" v-if="selectedRole === 'Alumni'">{{numberOfalumniNotValidated}}</p>
