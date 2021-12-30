@@ -9,6 +9,7 @@
       :userData="userData"
       :skills="skills"
       @new-skill="addNewSkill"
+      @add-alumniSkill="addSkillForAlumni"
     >
     </skill-view>
     <employemt-view
@@ -34,6 +35,7 @@ export default {
   data() {
     return {
       skills: [],
+      lastId: 0,
     };
   },
   methods: {
@@ -45,8 +47,11 @@ export default {
     },
     addNewSkill(skillName) {
       let newSkill = {};
+      newSkill.id = this.lastId + 1,
       newSkill.skill_name = skillName,
-        axios.post("skills", newSkill);
+        axios.post("skills", newSkill).then((res) => {
+          console.log(res.data);
+        });
     },
     getAllSkills() {
       axios.get("skills").then((res) => {
@@ -64,9 +69,20 @@ export default {
     deleteEmployment(id) {
       this.$emit('deleteEmployment', id);
     },
+    addSkillForAlumni(skill) {
+      let alumni_skill = {};
+      alumni_skill.alumni_id = this.userData.user_id,
+      alumni_skill.skillName = skill
+      axios.post('alumniskills',alumni_skill).then(res=>{
+        console.log(res.data);
+      })
+      
+    }
   },
   mounted() {
     this.getAllSkills();
+    this.addSkillForAlumni();
+    
   },
 };
 </script>
