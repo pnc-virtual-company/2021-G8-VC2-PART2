@@ -41,8 +41,9 @@
           </p>
         </v-card>
       </v-col>
-      <v-col cols="4"></v-col>
-      <v-col cols="2">
+      <v-col cols="6" v-if="userEro.role === 'ero'"></v-col>
+      <v-col cols="3" v-if="userEro.role === 'admin'"></v-col>
+      <v-col cols="3" v-if="userEro.role === 'admin'">
         <v-select
           label="Role"
           dense
@@ -73,6 +74,7 @@
                 <v-row class="pa-0">
                   <v-col cols="12 mt-0">
                     <v-select
+                      v-if="userEro.role === 'admin'"
                       class="mt-5"
                       prepend-inner-icon="mdi-account-box-outline"
                       :items="roles"
@@ -84,7 +86,7 @@
                       class="mt-3"
                       prepend-inner-icon="mdi-email"
                       label="Email"
-                      v-model="emailToInvite"
+                      v-model="inviteEmailList"
                       small-chips
                       multiple
                       clearable
@@ -193,6 +195,7 @@
 <script>
 import axios from "../../axios-http.js";
 export default {
+  props: ['userEro'],
   data() {
     return {
       roles: ["ero", "alumni"],
@@ -205,8 +208,7 @@ export default {
       numberOferoNotValidated: 0,
       numberOferos: 0,
       selectedRole: "alumni",
-      selectedRoleForInvite: "",
-      emailToInvite: null,
+      selectedRoleForInvite: "alumni",
       inviteEmailList: [],
       newAlumniData: null,
       rules: {
@@ -223,19 +225,27 @@ export default {
   },
   methods: {
     submitEmail() {
-      this.inviteEmailList.push(this.emailToInvite);
-      this.dialog = false;
       for (let invitedEmail of this.inviteEmailList) {
-        for (let email of invitedEmail) {
-          let role = this.selectedRole;
-          let data = {
-            email: email,
-            role: role,
-          };
-          axios.post("invite", data);
+        let data = {
+          email: invitedEmail,
+          role: this.selectedRoleForInvite,
+        };
+        console.log(data);
+        axios.post("invite", data)
+        .then((res) => {
+          this.dialog = false;
+          console.log(res.data)
+        });
         }
+    }
+  },
+  watch: {
+    dialog: function (val) {
+      if (!val) {
+        this.inviteEmailList = [];
+        this.selectedRoleForInvite = 'alumni';
       }
-    },
+    }
   },
   mounted() {
     axios.get("/users/ero").then((res) => {

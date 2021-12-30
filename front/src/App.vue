@@ -8,6 +8,7 @@
     <v-main>
       <router-view
         :userData="user"
+        :userEro="user"
         :status="signInData.status"
         :role="signInData.role"
         :invalidEmail="error.invalidEmail"
@@ -150,7 +151,9 @@ export default {
       let userId = localStorage.getItem("userId");
       axios.get("users/" + userId).then((res) => {
         this.user = res.data;
-        this.user.employments = this.user.employments.reverse();
+        if(this.user.role === 'alumni') {
+          this.user.employments = this.user.employments.reverse();
+        }
         if(this.$router.path === "/eroview" ||
            this.$router.path === "/myprofile" ||
            this.$router.path === "/signin" ||

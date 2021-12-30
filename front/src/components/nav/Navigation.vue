@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar app white elevation="0" color="white">
+  <v-app-bar app white elevation="1" color="white">
     <!-- alert when logout -->
     <v-dialog
       persistent

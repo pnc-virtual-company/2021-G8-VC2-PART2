@@ -1,7 +1,8 @@
 <template>
   <section class="eroview">
     <search-filter></search-filter>
-    <alumni-container></alumni-container>
+    <alumni-container
+    ></alumni-container>
   </section>
 </template>
 
