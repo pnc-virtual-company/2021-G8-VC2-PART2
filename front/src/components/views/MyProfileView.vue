@@ -8,6 +8,7 @@
     <skill-view
       :userData="userData"
       :skills="skills"
+      @userId="deleteSkillForAlumni"
       @new-skill="addNewSkill"
       @add-alumniSkill="addSkillForAlumni"
     >
@@ -30,7 +31,6 @@ export default {
   data() {
     return {
       skills: [],
-      lastId: 0,
     };
   },
   methods: {
@@ -62,13 +62,13 @@ export default {
       axios.post('alumniskills',alumni_skill).then(res=>{
         console.log(res.data);
       })
-      
+    },
+    deleteSkillForAlumni(userId){
+      axios.post("alumniskills/"+userId, {_method: "post"});
     }
   },
   mounted() {
     this.getAllSkills();
-    this.addSkillForAlumni();
-    
   },
 };
 </script>
