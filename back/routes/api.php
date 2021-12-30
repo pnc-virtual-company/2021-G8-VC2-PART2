@@ -48,8 +48,8 @@ Route::post('/skills',[SkillController::class, "createSkill"]);
 Route::put('/skills/{id}',[SkillController::class, "updateSkill"]);
 Route::delete('/skills/{id}',[SkillController::class, "destroy"]);
 //alumni skill
-Route::post('/alumniskills', [AlumniSkillController::class ,'createAlumniSkill']);
-Route::post('/alumniskills/{id}', [AlumniSkillController::class ,'deleteAlumniSkill']);
+Route::post('/alumniskills/add', [AlumniSkillController::class ,'createAlumniSkill']);
+Route::post('/alumniskills/remove', [AlumniSkillController::class ,'deleteAlumniSkill']);
 
 
 //Route for position

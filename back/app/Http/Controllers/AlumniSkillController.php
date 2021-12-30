@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Alumni_skill;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AlumniSkillController extends Controller
 {
@@ -19,12 +20,14 @@ class AlumniSkillController extends Controller
             'alumni_id' => 'required',
             'skillName' => 'required',
         ]);
-
-        $alumniskill = new Alumni_skill();
-        $alumniskill->alumni_id = $request->alumni_id;
-        $alumniskill->skillName= $request->skillName;
-
-        $alumniskill->save();
+        $skills = $request->skillName;
+        foreach($skills as $skill) {
+            $alumniskill = new Alumni_skill();
+            $alumniskill->alumni_id = $request->alumni_id;
+            $alumniskill->skillName= $skill;
+    
+            $alumniskill->save();
+        };
 
         return response()->json(['message' => 'Alumni skill',  'alumniSKill' => Alumni_skill::with(['alumni'])->latest()->first()], 201);
     }
@@ -36,7 +39,7 @@ class AlumniSkillController extends Controller
      */
     public function deleteAlumniSkill(Request $request)
     {
-        $alumniSkill = Alumni_skill::select('id')->where('alumni_id', '=', $request->alumni_id)->get();
-        return Alumni_skill::destroy($alumniSkill[0]->id);
+        $alumniSkillId = Alumni_skill::select('id')->where('alumni_id', '=', $request->alumni_id)->where('skillName', '=', $request->skillName)->get();
+        return Alumni_skill::destroy($alumniSkillId[0]->id);
     }
 }

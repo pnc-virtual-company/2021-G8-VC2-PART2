@@ -85,7 +85,7 @@
         v-for="(skill, index) in userData.skills"
         :key="index"
         close
-        @click:close="removed(userData.user_id)"
+        @click:close="removed(userData.user_id, skill)"
       >
         {{ skill }}
       </v-chip>
@@ -103,13 +103,11 @@ export default {
     getInputSkill: [],  
   }),
   methods: {
-    removed(userId){
-      this.$emit("userId",userId);
+    removed(alumni_id, skill){
+      this.$emit("deleteSkill",alumni_id, skill);
     },
     addSkillOnCard() {
-      for(let skill of this.getInputSkill){
-          this.$emit("add-alumniSkill",skill);
-      }
+      this.$emit("add-alumniSkill", this.getInputSkill);
       this.leave = false;
       this.getInputSkill = null;
     },
@@ -121,7 +119,6 @@ export default {
     createNewSkill() {
       this.$emit("new-skill", this.search);
       this.search = null;
-      
     },
   },
   

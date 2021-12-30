@@ -21,6 +21,8 @@
         @addNewEmployment="addNewEmployment"
         @updateEmployment="updateEmployment"
         @deleteEmployment="deleteEmployment"
+        @addSkill="addSkill"
+        @deleteSkill="deleteSkill"
       ></router-view>
     </v-main>
   </v-app>
@@ -132,6 +134,15 @@ export default {
     },
     deleteEmployment(id) {
       this.user.employments = this.user.employments.filter(emp => emp.id !== id);
+    },
+
+    addSkill(skills) {
+      for(let skill of skills) {
+        this.user.skills.unshift(skill);
+      }
+    },
+    deleteSkill(skill) {
+      this.user.skills = this.user.skills.filter(s => s !== skill);
     }
   },
   mounted() {
