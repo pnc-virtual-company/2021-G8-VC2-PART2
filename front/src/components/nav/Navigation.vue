@@ -44,7 +44,7 @@
         ></v-img>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-tabs class="d-flex justify-end">
+      <v-tabs class="hidden-sm-and-up d-flex justify-end">
         <v-tabs-slider color="blue"></v-tabs-slider>
         <v-tab
           active-class="blue--text"
