@@ -79,7 +79,7 @@
         <v-btn color="warning" dark elevation="0"> Logout </v-btn>
       </div> -->
       <div class="my-2 ml-2 logout ma-2" @click="dialog = true">
-        <v-btn color="warning" dark elevation="0"> Logout </v-btn>
+        <v-btn elevation="0"> Logout </v-btn>
       </div>
     </v-tabs>
   </v-app-bar>

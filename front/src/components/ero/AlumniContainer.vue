@@ -11,7 +11,7 @@
         <v-select label="Batch" dense solo :items="batches"></v-select>
       </div>
       <div class="filter">
-        <v-select label="Major" dense solo :items="majorLists"></v-select>
+        <v-select label="Major" dense solo :items="majors"></v-select>
       </div>
       <div class="filter">
         <v-select label="Domain" dense solo :items="domains"></v-select>
@@ -39,8 +39,7 @@ export default {
     companyLists: [],
     positions: [],
     batches: [],
-    majors: [],
-    majorLists: [],
+    majors: ["SNA","WEP"],
     domains: [],
   }),
   methods: {
@@ -77,11 +76,6 @@ export default {
     getExploreAlumniData() {
       axios.get("users/alumni").then((res) => {
         this.alumnis = res.data;
-        this.majors = res.data;
-        for (let major of this.majors) {
-          this.majorLists.push(major.major);
-          console.log(this.majorLists)
-        }
       });
     },
     /*get all domain companies*/
