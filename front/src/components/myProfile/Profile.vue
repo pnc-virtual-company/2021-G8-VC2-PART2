@@ -58,7 +58,7 @@
     <!-- end edit info -->
     <v-row>
       <v-col cols="8" sm="3" md="5">
-        <v-avatar size="80px">
+        <v-avatar size="100px">
           <img
             :src="imageUrl + userData.profile"
             alt=""
@@ -296,8 +296,8 @@ input[type="file"] {
 }
 .img {
   position: absolute;
-  top: 60px;
-  left: 75px;
+  top: 80px;
+  left: 90px;
 }
 
 .edit-info {
