@@ -59,10 +59,10 @@
     <v-row>
       <v-col cols="8" sm="3" md="5">
         <v-avatar size="100px">
-          <img
+          <v-img
             :src="imageUrl + userData.profile"
             alt=""
-          />
+          ></v-img>
         </v-avatar>
         <div class="img mr-3">
           <div class="text-center">

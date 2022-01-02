@@ -61,7 +61,7 @@
       <v-img max-width="150" src="../../assets/PN_LogoAlumni.png"></v-img>
     </v-toolbar-title>
     <v-spacer></v-spacer>
-    <v-tabs class="d-flex justify-end">
+    <!-- <v-tabs class="d-flex justify-end">
       <v-tabs-slider color="blue"></v-tabs-slider>
       <v-tab
         active-class="blue--text"
@@ -75,13 +75,41 @@
         {{ item.title }}
       </v-tab>
       <v-spacer></v-spacer>
-      <!-- <div class="my-2 ml-2 logout ma-2" @click="$emit('signout')">
-        <v-btn color="warning" dark elevation="0"> Logout </v-btn>
-      </div> -->
       <div class="my-2 ml-2 logout ma-2" @click="dialog = true">
         <v-btn elevation="0"> Logout </v-btn>
       </div>
-    </v-tabs>
+    </v-tabs> -->
+    <!-- <v-list flat>
+      <v-list-item-group>
+        <v-list-item>
+          <v-list-item-content>
+            <v-icon>mdi-account</v-icon>
+            <v-list-item-subtitle>
+              My profile
+            </v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list-item-group>
+    </v-list> -->
+      <v-toolbar-items class="hidden-xs-only">
+        <v-btn
+          text
+          active-class="blue--text" 
+          v-for="item in menuItems"
+          :key="item.title"
+          :to="item.path">
+          <v-list-item-content class="text-center">
+            <v-icon size="30">{{item.icon}}</v-icon>
+            <v-list-item-subtitle active-class="blue--text"  size="15px">
+              {{item.title}}
+            </v-list-item-subtitle>
+          </v-list-item-content>
+        </v-btn>
+        <v-spacer></v-spacer>
+        <div class="my-2 ml-2 logout" @click="dialog = true">
+          <v-btn elevation="0"> Logout </v-btn>
+        </div>
+      </v-toolbar-items> 
   </v-app-bar>
 </template>
 
@@ -103,19 +131,19 @@ export default {
       menuItems: [],
       allMenuItems: [
         {
-          title: "My Profile",
+          title: "Profile",
           path: "/myprofile",
           icon: "mdi-account",
           whoCanSee: ["alumni"],
         },
         {
-          title: "Explore Alumi",
+          title: "Explore",
           path: "/eroview",
           icon: "mdi-account-search",
           whoCanSee: ["ero", "admin"],
         },
         {
-          title: "Manage User",
+          title: "Manage",
           path: "/manageuser",
           icon: "mdi-account-multiple",
           whoCanSee: ["ero", "admin"],

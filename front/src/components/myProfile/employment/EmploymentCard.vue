@@ -13,7 +13,6 @@
             >Are you sure want to delete this record?</v-card-title
           >
           <v-divider></v-divider>
-
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn
@@ -39,8 +38,8 @@
       <v-row>
         <v-col>
           <v-list-item class="ma-0 pa-0">
-            <v-avatar class="mr-3" size="50px">
-              <img :src="imageUrl + employment.logo" alt="Company Logo" />
+            <v-avatar class="mr-5" size="70px">
+              <v-img :src="imageUrl + employment.logo" alt=""></v-img>
             </v-avatar>
             <v-list-item-title>
               <v-flex class="d-flex">
@@ -71,12 +70,11 @@
                     </v-speed-dial>
                   </v-card-actions>
               </v-flex>
-              <small>{{ employment.company_name }}</small>
-              <br />
-              <small
+              <v-list-item-subtitle>{{ employment.company_name }}</v-list-item-subtitle>
+              <v-list-item-subtitle
                 >{{ getStartJobDate }} - {{ getEndJobDate }}.
-                {{ employment.location }}</small
-              >
+                {{ employment.location }}
+              </v-list-item-subtitle>
             </v-list-item-title>
           </v-list-item>
         </v-col>
