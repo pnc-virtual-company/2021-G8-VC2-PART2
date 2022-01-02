@@ -92,6 +92,7 @@
         :key="index"
         close
         @click:close="removed(userData.user_id, skill)"
+
       >
         {{ skill }}
       </v-chip>

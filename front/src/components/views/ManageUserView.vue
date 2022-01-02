@@ -2,6 +2,17 @@
   <section class="manageuser">
     <v-row class="mt-5">
       <v-col cols="12">
+        <v-alert
+          v-model="alert"
+          dismissible
+          color="cyan"
+          border="left"
+          elevation="3"
+          colored-border
+        >
+          You've invited <strong>{{ numberOfalumniInvited }}</strong> new alumni
+          updates on your data!.
+        </v-alert>
         <v-text-field
           v-model="search"
           prepend-inner-icon="mdi-magnify"
@@ -84,6 +95,7 @@
                     ></v-select>
                     <v-combobox
                       class="mt-3"
+                      type="email"
                       prepend-inner-icon="mdi-email"
                       label="Email"
                       v-model="inviteEmailList"
@@ -195,10 +207,11 @@
 <script>
 import axios from "../../axios-http.js";
 export default {
-  props: ['userEro'],
+  props: ["userEro"],
   data() {
     return {
       roles: ["ero", "alumni"],
+      alert: false,
       dialog: false,
       search: "",
       eros: null,
@@ -211,6 +224,7 @@ export default {
       selectedRoleForInvite: "alumni",
       inviteEmailList: [],
       newAlumniData: null,
+      numberOfalumniInvited: 0,
       rules: {
         required: (value) => !!value || "Required",
       },
@@ -225,27 +239,33 @@ export default {
   },
   methods: {
     submitEmail() {
+      this.numberOfalumniInvited += this.inviteEmailList.length;
       for (let invitedEmail of this.inviteEmailList) {
         let data = {
           email: invitedEmail,
           role: this.selectedRoleForInvite,
         };
         console.log(data);
-        axios.post("invite", data)
-        .then((res) => {
+        axios.post("invite", data).then((res) => {
           this.dialog = false;
-          console.log(res.data)
+          console.log(res.data);
         });
-        }
-    }
+      }
+      this.alert = true;
+      this.dialog = false;
+      setTimeout(() => {
+        this.alert = false;
+        this.numberOfalumniInvited = 0;
+      }, 3000);
+    },
   },
   watch: {
     dialog: function (val) {
       if (!val) {
         this.inviteEmailList = [];
-        this.selectedRoleForInvite = 'alumni';
+        this.selectedRoleForInvite = "alumni";
       }
-    }
+    },
   },
   mounted() {
     axios.get("/users/ero").then((res) => {
