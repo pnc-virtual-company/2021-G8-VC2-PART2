@@ -174,7 +174,7 @@ export default {
 <style>
 @import url("http://fonts.cdnfonts.com/css/sf-ui-display");
 * {
-  font-family: "SF UI Display 100", sans-serif;
+  font-family: sans-serif;
   color: #4d4d4d;
 }
 .container {
