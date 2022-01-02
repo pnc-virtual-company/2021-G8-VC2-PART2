@@ -2,21 +2,17 @@
 
 ## BACK
 
-- On php MyAdmin, create a new database : tasks_db
-
+- On php MyAdmin, create a new database : alumni_db
+- Import database name(alumni_db) on your database (if you want our data)
 - Go to /back
 - Copy the .env.example to .env
-
 - on .env file, update the database name :
-  DB_DATABASE=tasks_db
-
+  DB_DATABASE=alumni_db
 - Launch composer install
 - Launch npm install
 - Launch php artisan migrate
-
 - Launch php artisan key:generate
 - Launch php artisan storage:link ( to allow the image folder to be public)
-
 - Launch php artisan serve
 
 ## FRONT
@@ -24,31 +20,36 @@
 - Go to /front
 - Launch npm install
 - Run npm run serve to launch on developpment mode
-
+- Run npm i --save axios to install and progress axios on project
 # RUN PROJECT ON PRODUCTION
 
 ## First time :
 
-    - Clone project
+```
+- Clone project
 
-    - On php MyAdmin, create a  new database : tasks_db
+- On php MyAdmin, create a  new database : alumni_db
+- Import database name(alumni_db) on your database (if you want our data)
 
-    - Go to /back
-    - Copy the .env.example to .env
-    - on  .env file, update the database name :
-    	DB_DATABASE=tasks_db
+- Go to /back
+- Copy the .env.example to .env
+- on  .env file, update the database name :
+	DB_DATABASE=alumni_db
 
-    - Launch  composer install
-    - Launch  npm install
-    - Launch php artisan migrate
-    - Launch  php artisan key:generate
+- Launch  composer install
+- Launch  npm install
+- Launch php artisan migrate
+- Launch  php artisan key:generate
 
-    - Go to /front
-    - Launch  npm install
+- Go to /front
+- Launch  npm install
+```
 
 ## Other times :
 
-    - git pull
+```
+- git pull
 
-    - Go to /front
-    - Run npm run build
+- Go to /front
+- Run npm run build
+```
