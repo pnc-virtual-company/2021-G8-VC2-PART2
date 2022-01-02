@@ -14,55 +14,12 @@ class SkillController extends Controller
      */
     public function getSkills()
     {
-        return Skill::latest()->get();
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function createSkill(Request $request)
-    {
-        $request->validate([
-            'skill_name' => 'required|unique:skills',
-        ]);
-        $skill = new Skill();
-        $skill->skill_name = $request->skill_name;
-
-        $skill->save();
-        return response()->json(['message'=>'Your skill have been created', 'data'=>$skill ], 201);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function showOneSkill($id)
-    {
-        return Skill::findOrFail($id);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function updateSkill(Request $request, $id)
-    {
-        $request->validate([
-            'skill_name' => 'required',
-        ]);
-        $skill = Skill::findOrFail($id);
-        $skill->skill_name = $request->skill_name;
-
-        $skill->save();
-        return response()->json(['massage'=>'Your skill have been updated', 'data'=> $skill], 200);
+        $skills = Skill::latest()->get();
+        $cleanSkills = [];
+        foreach($skills as $skill) {
+            array_push($cleanSkills, $skill->skill_name);
+        }
+        return $cleanSkills;
     }
 
     /**

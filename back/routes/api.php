@@ -42,10 +42,6 @@ Route::delete('/companies/{id}',[CompanyController::class, "destroy"]);
 //Route for skill
 
 Route::get('/skills',[SkillController::class, "getSkills"]);
-Route::get('/skills/{id}',[SkillController::class, "showOneSkill"]);
-
-Route::post('/skills',[SkillController::class, "createSkill"]);
-Route::put('/skills/{id}',[SkillController::class, "updateSkill"]);
 Route::delete('/skills/{id}',[SkillController::class, "destroy"]);
 //alumni skill
 Route::post('/alumniskills/add', [AlumniSkillController::class ,'createAlumniSkill']);
