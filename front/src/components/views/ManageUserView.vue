@@ -246,10 +246,10 @@ export default {
           role: this.selectedRoleForInvite,
         };
         console.log(data);
-        // axios.post("invite", data).then((res) => {
-        //   this.dialog = false;
-        //   console.log(res.data);
-        // });
+        axios.post("invite", data).then((res) => {
+          this.dialog = false;
+          console.log(res.data);
+        });
       }
       this.alert = true;
       this.dialog = false;
