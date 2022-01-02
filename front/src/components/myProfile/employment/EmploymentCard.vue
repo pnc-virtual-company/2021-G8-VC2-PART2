@@ -48,35 +48,29 @@
                   employment.workPosition
                 }}</v-list-item-title>
                 <v-menu bottom left>
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-btn icon v-bind="attrs" v-on="on">
-                      <v-icon>mdi-dots-vertical</v-icon>
-                    </v-btn>
-                  </template>
-
-                  <v-list>
-                    <v-list-item>
-                      <div>
-                        <small class="options1" @click="showForm(employment.id)">
-                          <v-icon color="primary">mdi-pencil-circle</v-icon>
-                          EDIT
-                        </small>
-                        <br />
-                        <v-divider></v-divider>
-                        <small
-                          class="options2"
-                          color="red"
-                          @click="confirmDeleteialog = true"
-                        >
-                          <v-icon color="red">mdi-delete-circle</v-icon>
-                          DELETE
-                        </small>
-                      </div>
-                    </v-list-item>
-                  </v-list>
                 </v-menu>
+                  <v-card-actions>
+                    <v-speed-dial :direction="direction">
+                      <template v-slot:activator>
+                        <v-btn
+                          icon
+                          fab
+                          small
+                          color="grey"
+                          dark
+                        >
+                          <v-icon>mdi-dots-horizontal</v-icon>
+                        </v-btn>
+                      </template>
+                      <v-btn fab dark small color="grey" @click="confirmDeleteialog = true">
+                        <v-icon>mdi-delete</v-icon>
+                      </v-btn>
+                      <v-btn fab dark small color="grey" @click="showForm(employment.id)">
+                        <v-icon>mdi-pencil</v-icon>
+                      </v-btn>
+                    </v-speed-dial>
+                  </v-card-actions>
               </v-flex>
-
               <small>{{ employment.company_name }}</small>
               <br />
               <small
@@ -97,6 +91,7 @@ import axios from "../../../axios-http.js";
 export default {
   props: ["employment"],
   data: () => ({
+    direction: "left",
     imageUrl: "http://127.0.0.1:8000/storage/profiles/",
     confirmDeleteialog: false,
     options: {
@@ -141,8 +136,8 @@ export default {
       });
     },
     showForm(id) {
-      this.$emit('showEditForm', id);
-    }
+      this.$emit("showEditForm", id);
+    },
   },
 };
 </script>
