@@ -212,5 +212,15 @@ class Usercontroller extends Controller
         
         return response()->json(['message'=>'Your profile have been uploaded',"profile" => $request->profile->hashName()],200);
     }
+    // remove user 
+    public function removeEroUser(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        if($user->role === 'admin'){
+            if($request->role === 'ero'){
+                User::destroy($request->id);
+            }
+        }
+    }
 
 }
