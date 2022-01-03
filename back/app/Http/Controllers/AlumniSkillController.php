@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Skill;
 use App\Models\Alumni_skill;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -16,20 +17,23 @@ class AlumniSkillController extends Controller
      */
     public function createAlumniSKill(Request $request)
     {
-        $request->validate([
-            'alumni_id' => 'required',
-            'skillName' => 'required',
-        ]);
-        $skills = $request->skillName;
-        foreach($skills as $skill) {
+        $validSkills = $request->validSkills;
+        foreach($validSkills as $validSkill) {
             $alumniskill = new Alumni_skill();
             $alumniskill->alumni_id = $request->alumni_id;
-            $alumniskill->skillName= $skill;
+            $alumniskill->skillName = $validSkill;
     
             $alumniskill->save();
         };
+        $notExistSkills = $request->notExistSkills;
+        foreach($notExistSkills as $notExistSkill) {
+            $skill = new Skill();
+            $skill->skill_name = $notExistSkill;
+    
+            $skill->save();
+        };
 
-        return response()->json(['message' => 'Alumni skill',  'alumniSKill' => Alumni_skill::with(['alumni'])->latest()->first()], 201);
+        return response()->json(['message' => 'Alumni skill',  'skills' => $request->validSkills], 201);
     }
     /**
      * Remove the specified resource from storage.

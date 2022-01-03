@@ -7,10 +7,8 @@
     ></profile>
     <skill-view
       :userData="userData"
-      :skills="skills"
       @deleteSkill="deleteSkill"
-      @new-skill="addNewSkill"
-      @add-alumniSkill="addSkillForAlumni"
+      @addSkills="addSkills"
     >
     </skill-view>
     <employemt-view
@@ -22,10 +20,10 @@
   </section>
 </template>
 <script>
+import axios from "../../axios-http";
 import Profile from "../myProfile/Profile.vue";
 import Skill from "../myProfile/Skill.vue";
 import EmploymentView from "../myProfile/employment/EmploymentView.vue";
-import axios from "../../axios-http";
 export default {
   props: ["userData"],
   components: {
@@ -33,32 +31,12 @@ export default {
     "employemt-view": EmploymentView,
     "skill-view": Skill,
   },
-  data() {
-    return {
-      skills: [],
-    };
-  },
   methods: {
     changeProfile(profile) {
       this.$emit("changeProfile", profile);
     },
     changeAlumniInfo(newEmail, newPhone) {
       this.$emit("changeAlumniInfo", newEmail, newPhone);
-    },
-    addNewSkill(skillName) {
-      let newSkill = {};
-      newSkill.id = this.lastId + 1,
-      newSkill.skill_name = skillName,
-        axios.post("skills", newSkill).then((res) => {
-          console.log(res.data);
-        });
-    },
-    getAllSkills() {
-      axios.get("skills").then((res) => {
-        for (let skill of res.data) {
-          this.skills.push(skill.skill_name);
-        }
-      });
     },
     addNewEmployment(data) {
       this.$emit("addNewEmployment", data);
@@ -68,17 +46,6 @@ export default {
     },
     deleteEmployment(id) {
       this.$emit('deleteEmployment', id);
-    },
-    addSkillForAlumni(skills) {
-        let alumni_skills = {
-          alumni_id: this.userData.user_id,
-          skillName: skills
-        };
-        console.log(alumni_skills);
-        axios.post('alumniskills/add',alumni_skills).then(res => {
-          console.log(res.data);
-          this.$emit('addSkill', skills);
-        })
     },
     deleteSkill(alumni_id, skill){
       let dataToDelete = {
@@ -92,9 +59,9 @@ export default {
           }
         });
     },
-  },
-  mounted() {
-    this.getAllSkills();
+    addSkills(data) {
+      this.$emit('addSkills', data);
+    }
   },
 };
 </script>
