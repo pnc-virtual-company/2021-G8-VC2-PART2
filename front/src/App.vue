@@ -8,6 +8,7 @@
     <v-main>
       <router-view
         :userData="user"
+        :userEro="user"
         :status="signInData.status"
         :role="signInData.role"
         :invalidEmail="error.invalidEmail"
@@ -18,6 +19,12 @@
         @clearErrorMessage="clearErrorMessage"
         @changeProfile="changeProfile"
         @changeAlumniInfo="changeAlumniInfo"
+        @addNewEmployment="addNewEmployment"
+        @updateEmployment="updateEmployment"
+        @deleteEmployment="deleteEmployment"
+        @addSkills="addSkills"
+
+        @deleteSkill="deleteSkill"
       ></router-view>
     </v-main>
   </v-app>
@@ -55,7 +62,7 @@ export default {
   methods: {
     signOut() {
       localStorage.removeItem("userId");
-      this.user = {role: null};
+      this.user = { role: null };
       this.$router.push("/signin");
     },
     submitStep1(email) {
@@ -81,8 +88,8 @@ export default {
       if (this.signInData.status === "invited") {
         route = "signin/completeinfo";
       }
-      data['status'] = this.signInData.status;
-      data['email'] = this.signInData.email;
+      data["status"] = this.signInData.status;
+      data["email"] = this.signInData.email;
       axios
         .post(route, data)
         .then((res) => {
@@ -121,13 +128,34 @@ export default {
       this.user.email = newEmail;
       this.user.phone = newPhone;
     },
+    addNewEmployment(data) {
+      this.user.employments.unshift(data);
+    },
+    updateEmployment(data) {
+      this.user.employments = this.user.employments.map(obj => data.find(o => o.id === obj.id) || obj);
+    },
+    deleteEmployment(id) {
+      this.user.employments = this.user.employments.filter(emp => emp.id !== id);
+    },
+
+    addSkills(skills) {
+      for(let skill of skills) {
+        this.user.skills.unshift(skill);
+      }
+    },
+    
+    deleteSkill(skill) {
+      this.user.skills = this.user.skills.filter(s => s !== skill);
+    }
   },
   mounted() {
     if (localStorage.getItem("userId")) {
       let userId = localStorage.getItem("userId");
-      axios.get('users/' + userId)
-      .then(res => {
+      axios.get("users/" + userId).then((res) => {
         this.user = res.data;
+        if(this.user.role === 'alumni') {
+          this.user.employments = this.user.employments.reverse();
+        }
         if(this.$router.path === "/eroview" ||
            this.$router.path === "/myprofile" ||
            this.$router.path === "/signin" ||
@@ -139,7 +167,7 @@ export default {
             this.$router.push("/myprofile");
           }
         }
-      })
+      });
     }
   },
 };
@@ -148,7 +176,7 @@ export default {
 <style>
 @import url("http://fonts.cdnfonts.com/css/sf-ui-display");
 * {
-  font-family: "SF UI Display 100", sans-serif;
+  font-family: sans-serif;
   color: #4d4d4d;
 }
 .container {
@@ -157,6 +185,6 @@ export default {
 }
 
 .v-main {
-  background: #E0E8EF;
+  background: #e0e8ef;
 }
 </style>

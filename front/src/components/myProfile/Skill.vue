@@ -5,7 +5,7 @@
         <h3>Skills</h3>
       </v-col>
       <v-col class="add-info">
-        <v-dialog v-model="leave" persistent max-width="400px">
+        <v-dialog v-model="showSkillDialog" persistent max-width="400px">
           <template v-slot:activator="{ on, attrs }">
             <v-btn
               color="white"
@@ -29,26 +29,32 @@
               <v-row class="pa-0">
                 <v-col cols="12 mt-0">
                   <v-combobox
-                    v-model="getInputSkill"
-                    prepend-inner-icon="mdi-checkbox-multiple-marked"
                     :items="skills"
+                    v-model="selectedSkills"
+                    prepend-inner-icon="mdi-checkbox-multiple-marked"
                     label="Skill"
-                    hide-selected
-                    :search-input.sync="search"
+                    :search-input.sync="keySearch"
                     multiple
                     small-chips
+                    hide-selected
                     clearable
                   >
-                    <template v-slot:no-data >
-                    <v-list-item @click="createNewSkill">
-                      <v-list-item-content>
-                        <v-list-item-title>
-                          <strong> ( {{ search }} )</strong> Create
-                          <v-icon class="createSkill">mdi-new-box</v-icon>
-                        </v-list-item-title>
-                      </v-list-item-content>
-                    </v-list-item>
-                  </template>
+                    <template
+                      v-slot:selection="{ attrs, item, parent, selectedSkills }"
+                    >
+                      <v-chip
+                        v-bind="attrs"
+                        :input-value="selectedSkills"
+                        small
+                      >
+                        <span class="pr-2">
+                          {{ item }}
+                        </span>
+                        <v-icon small @click="parent.selectItem(item)">
+                          $delete
+                        </v-icon>
+                      </v-chip>
+                    </template>
                   </v-combobox>
                 </v-col>
               </v-row>
@@ -70,7 +76,7 @@
                 depressed
                 color="primary"
                 class="white--text mb-1"
-                @click="addSkillOnCard"
+                @click="addSkill"
               >
                 ADD
               </v-btn>
@@ -85,7 +91,8 @@
         v-for="(skill, index) in userData.skills"
         :key="index"
         close
-        @click:close="removed(index)"
+        @click:close="removed(userData.user_id, skill)"
+
       >
         {{ skill }}
       </v-chip>
@@ -93,35 +100,75 @@
   </v-card>
 </template>
 <script>
+import axios from "../../axios-http";
 export default {
-  emits: ["new-skill","alumni-skill","remove-index"],
-  props: ["skills","userData"],
+  props: ["userData"],
   data: () => ({
-    leave: false,
-    search: null,
-    model:'',  
-    getInputSkill: [],  
+    showSkillDialog: false,
+    keySearch: null,
+    model: "",
+    skills: [],
+    selectedSkills: [],
   }),
   methods: {
-    removed(index){
-      this.userData.skills.splice(index,1);
-      // this.$emit("index", index);
+    removed(alumni_id, skill) {
+      this.$emit("deleteSkill", alumni_id, skill);
+      this.skills.unshift(skill);
     },
-    addSkillOnCard() {
-      for(let skill of this.getInputSkill){
-          this.userData.skills.push(skill);
-          // this.$emit("alumni-skill",skill);
+    addSkill() {
+      // this is the skills that we already have in database, and we want add it into alumni
+      let validSkills = [];
+
+      // this is the skills that we dont have in database, and we want add it into alumni and database
+      let notExistSkills = [];
+      if (this.keySearch !== null && !this.selectedSkills.includes(this.keySearch)) {
+        this.selectedSkills.push(this.keySearch);
       }
-      this.leave = false;
+      for (let skill of this.selectedSkills) {
+        if (
+          !this.userData.skills.includes(skill) &&
+          this.skills.includes(skill)
+        ) {
+          validSkills.push(skill);
+        } else if (
+          !this.userData.skills.includes(skill) &&
+          !this.skills.includes(skill)
+        ) {
+          validSkills.push(skill);
+          notExistSkills.push(skill);
+        }
+      }
+      let data = {
+        alumni_id: this.userData.user_id,
+        validSkills: validSkills,
+        notExistSkills: notExistSkills,
+      };
+      axios.post("alumniskills/add", data).then(() => {
+        this.showSkillDialog = false;
+        this.keySearch = null;
+        this.selectedSkills = [];
+        this.$emit("addSkills", validSkills);
+        this.skills = this.skills.filter(
+          (skill) => !this.userData.skills.includes(skill)
+        );
+      });
     },
     cancel() {
-      this.leave = false;
+      this.showSkillDialog = false;
+      this.selectedSkills = null;
+      this.keySearch = null;
     },
-    createNewSkill() {
-      this.$emit("new-skill", this.search);
+    getAllSkills() {
+      axios.get("skills").then((res) => {
+        this.skills = res.data.filter(
+          (skill) => !this.userData.skills.includes(skill)
+        );
+      });
     },
   },
-  
+  mounted() {
+    this.getAllSkills();
+  },
 };
 </script>
 <style>
@@ -137,3 +184,5 @@ export default {
   cursor: pointer;
 }
 </style>
+
+

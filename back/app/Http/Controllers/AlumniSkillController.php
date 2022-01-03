@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Skill;
 use App\Models\Alumni_skill;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AlumniSkillController extends Controller
 {
@@ -15,18 +17,23 @@ class AlumniSkillController extends Controller
      */
     public function createAlumniSKill(Request $request)
     {
-        $request->validate([
-            'alumni_id' => 'required',
-            'skill_id' => 'required',
-        ]);
+        $validSkills = $request->validSkills;
+        foreach($validSkills as $validSkill) {
+            $alumniskill = new Alumni_skill();
+            $alumniskill->alumni_id = $request->alumni_id;
+            $alumniskill->skillName = $validSkill;
+    
+            $alumniskill->save();
+        };
+        $notExistSkills = $request->notExistSkills;
+        foreach($notExistSkills as $notExistSkill) {
+            $skill = new Skill();
+            $skill->skill_name = $notExistSkill;
+    
+            $skill->save();
+        };
 
-        $alumniskill = new Alumni_skill();
-        $alumniskill->alumni_id = $request->alumni_id;
-        $alumniskill->skill_id = $request->skill_id;
-
-        $alumniskill->save();
-
-        return response()->json(['message' => 'Alumni skill',  'alumniSKill' => Alumni_skill::with(['alumni', 'skill'])->latest()->first()], 201);
+        return response()->json(['message' => 'Alumni skill',  'skills' => $request->validSkills], 201);
     }
     /**
      * Remove the specified resource from storage.
@@ -34,9 +41,9 @@ class AlumniSkillController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function deleteSlumniSkill(Request $request)
+    public function deleteAlumniSkill(Request $request)
     {
-        $alumniSkill = Alumni_skill::select('id')->where('alumni_id', '=', $request->alumni_id)->where('skill_id', '=', $request->skill_id)->get();
-        return Alumni_skill::destroy($alumniSkill[0]->id);
+        $alumniSkillId = Alumni_skill::select('id')->where('alumni_id', '=', $request->alumni_id)->where('skillName', '=', $request->skillName)->get();
+        return Alumni_skill::destroy($alumniSkillId[0]->id);
     }
 }

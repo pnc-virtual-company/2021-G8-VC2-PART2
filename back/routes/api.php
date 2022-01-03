@@ -18,6 +18,7 @@ Route::post('/signin/completeinfo', [UserController::class, "signInStep2"]);
 Route::get('/users/ero',[UserController::class, "getEroUsers"]);
 Route::get('/users/alumni',[UserController::class, "getAlumniUsers"]);
 Route::get('/users/{id}',[UserController::class, "getAUser"]);
+Route::get('/users/email/all',[UserController::class, "getUserEmails"]);
 
 Route::post('/users/remove',[UserController::class, "removeEroUser"]);
 // update alumni information
@@ -43,14 +44,10 @@ Route::delete('/companies/{id}',[CompanyController::class, "destroy"]);
 //Route for skill
 
 Route::get('/skills',[SkillController::class, "getSkills"]);
-Route::get('/skills/{id}',[SkillController::class, "showOneSkill"]);
-
-Route::post('/skills',[SkillController::class, "createSkill"]);
-Route::put('/skills/{id}',[SkillController::class, "updateSkill"]);
 Route::delete('/skills/{id}',[SkillController::class, "destroy"]);
 //alumni skill
-Route::post('/alumniskills', [AlumniSkillController::class ,'createAlumniSkill']);
-Route::post('/alumniskills/{id}', [AlumniSkillController::class ,'deleteAlumniSkill']);
+Route::post('/alumniskills/add', [AlumniSkillController::class ,'createAlumniSkill']);
+Route::post('/alumniskills/remove', [AlumniSkillController::class ,'deleteAlumniSkill']);
 
 
 //Route for position

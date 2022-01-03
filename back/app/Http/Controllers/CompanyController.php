@@ -28,6 +28,7 @@ class CompanyController extends Controller
         $request->validate([
             'company_name' => 'required',
             'location' => 'required',
+            'domain_company' => 'required',
             'logo' => 'nullable|image|mimes:jpg,jpeg,png,gif,jfif,svg|max:1999',
             'domain_company'=>'required'
         ]);
@@ -35,7 +36,7 @@ class CompanyController extends Controller
         $company ->company_name = $request->company_name;
         $company->location = $request->location;
         $company->logo = $request->file('logo')->hashName();
-        $request->file('logo')->store('public/images/logos');
+        $request->file('logo')->store('public/profiles');
         $company->domain_company = $request->domain_company;
 
         $company->save();

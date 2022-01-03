@@ -15,6 +15,17 @@ class Alumni extends Model
         'major',
         'phone'
     ];
+
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
+    
     public function user()
     {
         return $this->belongsTo(User::class);

@@ -2,8 +2,18 @@
   <section class="manageuser">
     <v-row class="mt-5">
       <v-col cols="12">
+        <v-alert
+          v-model="alert"
+          dismissible
+          color="cyan"
+          border="left"
+          elevation="3"
+          colored-border
+        >
+          {{ alertMessage }}
+        </v-alert>
         <v-text-field
-          v-model="search"
+          v-model="keySearch"
           prepend-inner-icon="mdi-magnify"
           placeholder="Search"
           label="Search"
@@ -16,33 +26,35 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="2">
-        <v-card class="card-alumni text-center" width="100px">
-          <v-icon color="blue" class="mt-3">mdi-account-check</v-icon>
-          <p v-if="selectedRole === 'alumni'">Alumni</p>
-          <p v-if="selectedRole === 'ero'">ERO</p>
-          <p class="numOfAlumni" v-if="selectedRole === 'alumni'">
-            {{ numberOfalumni }}
-          </p>
-          <p class="numOfAlumni" v-if="selectedRole === 'ero'">
-            {{ numberOferos }}
-          </p>
+      <v-col cols="5">
+        <v-card class="d-flex pa-2">
+        <v-progress-circular
+          :rotate="180"
+          :size="90"
+          :width="15"
+          :value="percentage"
+          color="red"
+        >
+          {{ invitedAlumnisStored.length + validatedAlumnisStored.length }}
+        </v-progress-circular>
+        <div class="data ml-3">
+          <div class="pointer"
+            @click="showInvited"
+          >
+            <v-icon color="grey darken-2">mdi-checkbox-blank</v-icon>
+            Invited {{ invitedAlumnisStored.length }}
+          </div><br>
+          <div class="pointer"
+            @click="showValidated"
+          >
+            <v-icon color="grey lighten-2">mdi-checkbox-blank</v-icon>
+            Validated {{ validatedAlumnisStored.length }}
+          </div>
+        </div>
         </v-card>
       </v-col>
-      <v-col cols="2">
-        <v-card class="card-alumni text-center" width="100px">
-          <v-icon color="blue" class="mt-3">mdi-account-plus</v-icon>
-          <p>Invited</p>
-          <p class="numOfAlumni" v-if="selectedRole === 'alumni'">
-            {{ numberOfalumniNotValidated }}
-          </p>
-          <p class="numOfAlumni" v-if="selectedRole === 'ero'">
-            {{ numberOferoNotValidated }}
-          </p>
-        </v-card>
-      </v-col>
-      <v-col cols="4"></v-col>
-      <v-col cols="2">
+      <v-col cols="2"></v-col>
+      <v-col cols="3">
         <v-select
           label="Role"
           dense
@@ -73,6 +85,7 @@
                 <v-row class="pa-0">
                   <v-col cols="12 mt-0">
                     <v-select
+                      v-if="userEro.role === 'admin'"
                       class="mt-5"
                       prepend-inner-icon="mdi-account-box-outline"
                       :items="roles"
@@ -82,9 +95,11 @@
                     ></v-select>
                     <v-combobox
                       class="mt-3"
+                      type="email"
                       prepend-inner-icon="mdi-email"
                       label="Email"
-                      v-model="emailToInvite"
+                      v-model="inviteEmailList"
+                      :search-input.sync="notChipEmail"
                       small-chips
                       multiple
                       clearable
@@ -114,12 +129,12 @@
     </v-row>
     <!-- End -->
     <v-card class="card_contain mt-5 mb-5" v-if="selectedRole === 'alumni'">
+      <v-card class="pa-10 text-center" v-if="alumnisToDisplay.length === 0">Data not found</v-card>
       <v-card
         flat
         class="name-card pa-3"
-        v-for="user in alumnis"
+        v-for="user in alumnisToDisplay"
         :key="user.id"
-        :search="search"
       >
         <v-layout
           row
@@ -127,29 +142,24 @@
           class="border-left"
           :class="`pa-2 user ${user.major}`"
         >
-          <v-flex xs6 md2 sm4>
-            <div class="caption grey--text">Name</div>
-            <div v-if="user.status == 'invited'">Empty</div>
-            <div v-else>{{ user.firstname }}{{ " " }}{{ user.lastname }}</div>
+          <v-flex xs6 md3 sm4>
+            <div class="caption grey--text mb-1">Name</div>
+            <div>{{ user.status == 'invited' ? 'Empty' : user.firstname + ' ' + user.lastname}}</div>
           </v-flex>
-          <v-flex xs6 md5 sm4>
-            <div class="caption grey--text">Email</div>
+          <v-flex xs6 md4 sm4>
+            <div class="caption grey--text mb-1">Email</div>
             <div>{{ user.email }}</div>
           </v-flex>
           <v-flex xs6 md2 sm4>
-            <div class="caption grey--text">Gender</div>
-            <div v-if="user.status == 'invited'">Empty</div>
-            <div v-else>{{ user.gender }}</div>
+            <div class="caption grey--text mb-1">Gender</div>
+            <div>{{ user.status == 'invited' ? 'Empty' : user.gender }}</div>
           </v-flex>
           <v-flex xs6 md2 sm4>
-            <div class="caption grey--text">Major</div>
-            <div v-if="user.status == 'invited'">Empty</div>
-            <div :class="`major ${user.major}`" v-else>
-              {{ user.major }}{{ " " }}{{ user.batch }}
-            </div>
+            <div class="caption grey--text mb-1">Major</div>
+            <div :class="`major ${user.major}`">{{ user.status == 'invited' ? 'Empty' : user.major + " " +  user.batch}}</div>
           </v-flex>
           <v-flex xs6 md1 sm4>
-            <div class="caption grey--text">Action</div>
+            <div class="caption grey--text mb-1">Action</div>
             <v-icon>mdi-delete</v-icon>
           </v-flex>
         </v-layout>
@@ -161,23 +171,21 @@
         class="name-card pa-3"
         v-for="user in eros"
         :key="user.id"
-        :search="search"
       >
         <v-layout row wrap :class="`pa-2 user ${user.status}`">
           <v-flex xs6 md1 sm2>
             <div class="caption grey--text">ID</div>
             <div>{{ user.id }}</div>
           </v-flex>
-          <v-flex xs6 md2 sm4>
+          <v-flex xs6 md3 sm4>
             <div class="caption grey--text">Name</div>
-            <div v-if="user.status == 'invited'">Empty</div>
-            <div v-else>{{ user.firstname }}{{ " " }}{{ user.lastname }}</div>
+            <div>{{ user.status == 'invited' ? 'Empty' : user.firstname + " "  + user.lastname }}</div>
           </v-flex>
-          <v-flex xs6 md6 sm4>
+          <v-flex xs6 md4 sm4>
             <div class="caption grey--text">Email</div>
             <div>{{ user.email }}</div>
           </v-flex>
-          <v-flex xs6 md2 sm4>
+          <v-flex xs6 md3 sm4>
             <div class="caption grey--text">Status</div>
             <div :class="`ero ${user.status}`">{{ user.status }}</div>
           </v-flex>
@@ -193,70 +201,124 @@
 <script>
 import axios from "../../axios-http.js";
 export default {
+  props: ["userEro"],
   data() {
     return {
+      existingEmails: null,
+      percentage: 0,
       roles: ["ero", "alumni"],
+      alert: false,
       dialog: false,
-      search: "",
+      keySearch: "",
       eros: null,
-      alumnis: null,
+      validatedAlumnisStored: null,
+      invitedAlumnisStored: null,
+      alumnisToDisplay: null,
       numberOfalumni: 0,
-      numberOfalumniNotValidated: 0,
-      numberOferoNotValidated: 0,
       numberOferos: 0,
       selectedRole: "alumni",
-      selectedRoleForInvite: "",
-      emailToInvite: null,
+      selectedRoleForInvite: "alumni",
       inviteEmailList: [],
-      newAlumniData: null,
+      notChipEmail: null,
+      numberOfalumniInvited: 0,
+      statusSelected: 'validated',
+      alertMessage: '',
       rules: {
         required: (value) => !!value || "Required",
       },
     };
   },
-  computed: {
-    searchAlumni() {
-      return this.newAlumniData.filter((user) => {
-        return user.firstname.toLowerCase().match(this.search.toLowerCase());
-      });
-    },
-  },
   methods: {
     submitEmail() {
-      this.inviteEmailList.push(this.emailToInvite);
-      this.dialog = false;
-      for (let invitedEmail of this.inviteEmailList) {
-        for (let email of invitedEmail) {
-          let role = this.selectedRole;
-          let data = {
-            email: email,
-            role: role,
-          };
-          axios.post("invite", data);
-        }
+      if(this.notChipEmail !== null && !this.inviteEmailList.includes(this.notChipEmail)) {
+        this.inviteEmailList.push(this.notChipEmail);
       }
+      this.numberOfalumniInvited += this.inviteEmailList.length;
+      for (let invitedEmail of this.inviteEmailList) {
+        let data = {
+          email: invitedEmail,
+          role: this.selectedRoleForInvite,
+        };
+        axios.post("invite", data).then((res) => {
+          this.inviteEmailList = [];
+          this.invitedAlumnisStored.unshift(res.data.user);
+        });
+      }
+      this.alert = true;
+      this.alertMessage = this.numberOfalumniInvited + " people invited";
+      this.dialog = false;
+      setTimeout(() => {
+        this.alert = false;
+        this.numberOfalumniInvited = 0;
+        this.alertMessage = '';
+      }, 5000);
+    },
+    showInvited() {
+      this.statusSelected = 'invited';
+    },
+    showValidated() {
+      this.statusSelected = 'validated';
     },
   },
+  watch: {
+    // will manage existing email when we invite
+    statusSelected: function(val) {
+      if(val === 'invited') {
+        this.alumnisToDisplay = this.invitedAlumnisStored;
+      } else {
+        this.alumnisToDisplay = this.validatedAlumnisStored;
+      }
+    },
+    dialog: function(val) {
+      if (!val) {
+        this.inviteEmailList = [];
+        this.selectedRoleForInvite = "alumni";
+      }
+    },
+    keySearch: function(val) {
+      let alumnisStored = this.validatedAlumnisStored;
+      if(this.statusSelected === 'invited') {
+        alumnisStored = this.invitedAlumnisStored;
+      }
+      if(val === '') {
+        this.alumnisToDisplay = alumnisStored;
+      } else if(this.statusSelected === 'validated') {
+        this.alumnisToDisplay = alumnisStored.filter(alumni => 
+          alumni.firstname.toLowerCase().includes(val.toLowerCase()) ||
+          alumni.lastname.toLowerCase().includes(val.toLowerCase()) ||
+          alumni.batch.toLowerCase().includes(val.toLowerCase()) ||
+          alumni.major.toLowerCase().includes(val.toLowerCase()) ||
+          alumni.gender.includes(val) ||
+          alumni.email.toLowerCase().includes(val.toLowerCase())
+        )
+      } else if(this.statusSelected === 'invited') {
+        this.alumnisToDisplay = alumnisStored.filter(alumni => 
+          alumni.email.toLowerCase().includes(val.toLowerCase())
+        )
+      }
+    }
+  },
   mounted() {
+    axios.get("/users/email/all").then((res) => {
+      this.existingEmails = res.data;
+    });
     axios.get("/users/ero").then((res) => {
       this.eros = res.data;
       this.numberOferos = this.eros.length;
-      this.numberOferoNotValidated = this.eros.filter(
-        (user) => user.status == "invited"
-      ).length;
     });
     axios.get("/users/alumni").then((res) => {
-      this.alumnis = res.data;
-      this.numberOfalumni = this.alumnis.length;
-      this.newAlumniData = this.alumnis;
-      this.numberOfalumniNotValidated = this.alumnis.filter(
-        (user) => user.status == "invited"
-      ).length;
+      this.invitedAlumnisStored = res.data.filter(alumni => alumni.status === 'invited');
+      this.validatedAlumnisStored = res.data.filter(alumni => alumni.status === 'validated');
+      this.alumnisToDisplay = this.validatedAlumnisStored;
+      this.percentage = (this.invitedAlumnisStored.length * 100)/(this.validatedAlumnisStored.length + this.invitedAlumnisStored.length);
     });
   },
 };
 </script>
 <style scoped>
+.pointer{
+  cursor: pointer;
+}
 .manageuser {
   width: 50%;
   margin: auto;

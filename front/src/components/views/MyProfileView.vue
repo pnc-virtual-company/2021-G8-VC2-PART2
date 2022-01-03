@@ -7,29 +7,29 @@
     ></profile>
     <skill-view
       :userData="userData"
-      :skills="skills"
-      @new-skill="addNewSkill"
+      @deleteSkill="deleteSkill"
+      @addSkills="addSkills"
     >
     </skill-view>
-    <employemt-view></employemt-view>
+    <employemt-view
+      :userData="userData"
+      @addNewEmployment="addNewEmployment"
+      @deleteEmployment="deleteEmployment"
+      @updateEmployment="updateEmployment"
+    ></employemt-view>
   </section>
 </template>
 <script>
+import axios from "../../axios-http";
 import Profile from "../myProfile/Profile.vue";
 import Skill from "../myProfile/Skill.vue";
 import EmploymentView from "../myProfile/employment/EmploymentView.vue";
-import axios from "../../axios-http";
 export default {
   props: ["userData"],
   components: {
     profile: Profile,
     "employemt-view": EmploymentView,
     "skill-view": Skill,
-  },
-  data() {
-    return {
-      skills: [],
-    };
   },
   methods: {
     changeProfile(profile) {
@@ -38,21 +38,30 @@ export default {
     changeAlumniInfo(newEmail, newPhone) {
       this.$emit("changeAlumniInfo", newEmail, newPhone);
     },
-    addNewSkill(skillName) {
-      let newSkill = {};
-      newSkill.skill_name = skillName,
-        axios.post("skills", newSkill);
+    addNewEmployment(data) {
+      this.$emit("addNewEmployment", data);
     },
-    getAllSkills() {
-      axios.get("skills").then((res) => {
-        for (let skill of res.data) {
-          this.skills.push(skill.skill_name);
-        }
-      });
+    updateEmployment(data) {
+      this.$emit("updateEmployment", data);
     },
-  },
-  mounted() {
-    this.getAllSkills();
+    deleteEmployment(id) {
+      this.$emit('deleteEmployment', id);
+    },
+    deleteSkill(alumni_id, skill){
+      let dataToDelete = {
+        'alumni_id': alumni_id,
+        'skillName': skill
+      }
+      axios.post("alumniskills/remove", dataToDelete)
+        .then(res => {
+          if(res.data === 1) {
+            this.$emit('deleteSkill', skill);
+          }
+        });
+    },
+    addSkills(data) {
+      this.$emit('addSkills', data);
+    }
   },
 };
 </script>

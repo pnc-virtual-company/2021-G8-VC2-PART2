@@ -27,7 +27,7 @@
                 </v-list-item-subtitle>
                 <v-list-item-subtitle class="text" v-if="alumni.employments.length > 0">
                   <v-avatar size="30">
-                    <v-img :src="logoUrl+alumni.employments[0].logo"></v-img>
+                    <v-img :src="imageUrl+alumni.employments[0].logo"></v-img>
                   </v-avatar>
                   {{ alumni.employments[0].company_name }}
                 </v-list-item-subtitle>
@@ -47,7 +47,6 @@ export default {
   props: ["alumni"],
   data: () => ({
     imageUrl: "http://127.0.0.1:8000/storage/profiles/",
-    logoUrl: "http://127.0.0.1:8000/storage/images/logos/",
   }),
 };
 </script>
