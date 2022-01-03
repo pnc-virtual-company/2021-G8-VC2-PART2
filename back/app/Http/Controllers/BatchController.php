@@ -48,9 +48,9 @@ class BatchController extends Controller
         //
         $idDeleted = Batch::destroy($id);
         if ($idDeleted) {
-            return response()->json(['message' => 'Batch deleted'], 202);
+            return response()->json(['message' => 'Batch deleted'], 200);
         } else {
-            return response()->json(['message' => 'Cannot delete!!'], 204);
+            return response()->json(['message' => 'Cannot delete!!'], 404);
         }
     }
     

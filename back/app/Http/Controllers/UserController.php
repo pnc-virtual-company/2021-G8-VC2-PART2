@@ -90,7 +90,6 @@ class Usercontroller extends Controller
                 }
             }
         }
-
         // alumni sign in
         if($user->role === 'alumni') {
             if($user->status === 'invited') {
@@ -223,13 +222,13 @@ class Usercontroller extends Controller
         return response()->json(['message'=>'Your profile have been uploaded',"profile" => $request->profile->hashName()],200);
     }
     // remove user 
-    public function removeEroUser(Request $request, $id)
+    public function removeUser($id)
     {
-        $user = User::findOrFail($id);
-        if($user->role === 'admin'){
-            if($request->role === 'ero'){
-                User::destroy($request->id);
-            }
+        $idDeleted = User::destroy($id);
+        if ($idDeleted) {
+            return response()->json(['message' => 'User have been deleted'], 200);
+        } else {
+            return response()->json(['message' => 'Cannot delete!!'], 404);
         }
     }
 
