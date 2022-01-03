@@ -39,9 +39,10 @@ class Usercontroller extends Controller
             $alumni->user_id = $user->id;
             $alumni->save();
         }
+        $userToReturn = $this->getAUser($user->id);
         return response()->json([
             'message' => 'Register',
-            'user' => $user,
+            'user' => $userToReturn,
         ]);
     }
     // sign in step1
@@ -128,6 +129,15 @@ class Usercontroller extends Controller
         }
     }
 
+    /*get all user emails*/
+    public function getUserEmails() {
+        $emails = User::select('email')->get();
+        $cleanList = [];
+        foreach($emails as $email) {
+            array_push($cleanList, $email->email);
+        }
+        return $cleanList;
+    }
     /*get all EROs*/
     public function getEroUsers() {
         return User::where('role', "ero")->latest()->get();
