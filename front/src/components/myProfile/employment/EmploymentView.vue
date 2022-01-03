@@ -447,6 +447,7 @@ export default {
     },
     dialog: function (val) {
       if (!val) {
+        this.formMode = "Add";
         this.employmentDataToAdd.position = null;
         this.employmentDataToAdd.company = null;
         this.employmentDataToAdd.startJobDate = new Date(

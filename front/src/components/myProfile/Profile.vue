@@ -148,9 +148,9 @@
           <div class="d-flex">
             <h3 class="mt-2">
               {{
-                userData.firstname.toUpperCase() +
+                userData.firstname +
                 " " +
-                userData.lastname.toUpperCase()
+                userData.lastname
               }}
             </h3>
             <v-icon>{{ getGenderSign }}</v-icon>

@@ -16,7 +16,7 @@
                 </v-list-item-title>
                 <v-list-item-title
                   class="text-title"
-                  v-if="alumni.employments.length > 0"
+                   v-if="alumni.employments.length > 0 && alumni.employments[0].startJobDate === alumni.employments[0].endJobDate"
                 >{{ alumni.employments[0].workPosition }}</v-list-item-title>
               </v-flex>
               <v-flex class="d-flex mt-2">
@@ -25,7 +25,7 @@
                   alumni.major
                   }} {{ alumni.batch }}
                 </v-list-item-subtitle>
-                <v-list-item-subtitle class="text" v-if="alumni.employments.length > 0">
+                <v-list-item-subtitle class="text" v-if="alumni.employments.length > 0 && alumni.employments[0].startJobDate === alumni.employments[0].endJobDate">
                   <v-avatar size="30">
                     <v-img :src="imageUrl+alumni.employments[0].logo"></v-img>
                   </v-avatar>
