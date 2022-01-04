@@ -129,8 +129,7 @@ export default {
     },
 
     deleteEmployment(id) {
-      axios.delete("employments/" + id).then((res) => {
-        console.log(res.data.massage);
+      axios.delete("employments/" + id).then(() => {
         this.confirmDeleteialog = false;
         this.$emit("deleteEmployment", id);
       });
