@@ -7,16 +7,7 @@
       <v-col class="add-info">
         <v-dialog v-model="showSkillDialog" persistent max-width="400px">
           <template v-slot:activator="{ on, attrs }">
-            <v-btn
-              color="white"
-              fab
-              x-small
-              dark
-              elevation="1"
-              class="mr-2"
-              v-bind="attrs"
-              v-on="on"
-            >
+            <v-btn color="white" fab x-small dark elevation="1" v-bind="attrs" v-on="on">
               <v-icon color="black">mdi-plus</v-icon>
             </v-btn>
           </template>
@@ -39,20 +30,10 @@
                     hide-selected
                     clearable
                   >
-                    <template
-                      v-slot:selection="{ attrs, item, parent, selectedSkills }"
-                    >
-                      <v-chip
-                        v-bind="attrs"
-                        :input-value="selectedSkills"
-                        small
-                      >
-                        <span class="pr-2">
-                          {{ item }}
-                        </span>
-                        <v-icon small @click="parent.selectItem(item)">
-                          $delete
-                        </v-icon>
+                    <template v-slot:selection="{ attrs, item, parent, selectedSkills }">
+                      <v-chip v-bind="attrs" :input-value="selectedSkills" small>
+                        <span class="pr-2">{{ item }}</span>
+                        <v-icon small @click="parent.selectItem(item)">$delete</v-icon>
                       </v-chip>
                     </template>
                   </v-combobox>
@@ -61,25 +42,8 @@
             </v-card-text>
             <v-card-actions class="btn-upload">
               <v-spacer></v-spacer>
-              <v-btn
-                class="mb-1"
-                small
-                depressed
-                color="primary"
-                text
-                @click="cancel"
-              >
-                Cancel
-              </v-btn>
-              <v-btn
-                small
-                depressed
-                color="primary"
-                class="white--text mb-1"
-                @click="addSkill"
-              >
-                ADD
-              </v-btn>
+              <v-btn class="mb-1" small depressed color="primary" text @click="cancel">Cancel</v-btn>
+              <v-btn small depressed color="primary" class="white--text mb-1" @click="addSkill">ADD</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -92,10 +56,7 @@
         :key="index"
         close
         @click:close="removed(userData.user_id, skill)"
-
-      >
-        {{ skill }}
-      </v-chip>
+      >{{ skill }}</v-chip>
     </div>
   </v-card>
 </template>
@@ -121,7 +82,10 @@ export default {
 
       // this is the skills that we dont have in database, and we want add it into alumni and database
       let notExistSkills = [];
-      if (this.keySearch !== null && !this.selectedSkills.includes(this.keySearch)) {
+      if (
+        this.keySearch !== null &&
+        !this.selectedSkills.includes(this.keySearch)
+      ) {
         this.selectedSkills.push(this.keySearch);
       }
       for (let skill of this.selectedSkills) {
@@ -158,16 +122,13 @@ export default {
       this.selectedSkills = null;
       this.keySearch = null;
     },
-    getAllSkills() {
-      axios.get("skills").then((res) => {
-        this.skills = res.data.filter(
-          (skill) => !this.userData.skills.includes(skill)
-        );
-      });
-    },
   },
   mounted() {
-    this.getAllSkills();
+    axios.get("skills").then((res) => {
+      this.skills = res.data.filter(
+        (skill) => !this.userData.skills.includes(skill)
+      );
+    });
   },
 };
 </script>

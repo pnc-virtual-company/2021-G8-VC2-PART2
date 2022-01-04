@@ -54,6 +54,11 @@ const routes = [
     name: 'PageNotFound',
     component: PageNotFound
   },
+  // {
+  //   path: "manageuser/:pathMatch(.*)",
+  //   name: 'PageNotFound',
+  //   component: PageNotFound
+  // },
 ]
 
 let authenticationGuard = (to, from, next) => {

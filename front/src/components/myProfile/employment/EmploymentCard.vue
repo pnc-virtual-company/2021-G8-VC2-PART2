@@ -9,9 +9,7 @@
         :style="{ zIndex: options.zIndex }"
       >
         <v-card>
-          <v-card-title class="mx-auto text--h6"
-            >Are you sure want to delete this record?</v-card-title
-          >
+          <v-card-title class="mx-auto text--h6">Do you want to delete this employment?</v-card-title>
           <v-divider></v-divider>
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -108,7 +106,11 @@ export default {
   },
   computed: {
     getEndJobDate() {
-      if (this.employment.startJobDate === this.employment.endJobDate) {
+      let startDate = this.employment.startJobDate.split('-');
+      let endDate = this.employment.endJobDate.split('-');
+      startDate = startDate[0]*365 + startDate[1]*30 + startDate[2];
+      endDate = endDate[0]*365 + endDate[1]*30 + endDate[2];
+      if (this.employment.startJobDate === this.employment.endJobDate || endDate <= startDate) {
         return "Present";
       }
       return this.employment.endJobDate.replace("-", "/").replace("-", "/");
