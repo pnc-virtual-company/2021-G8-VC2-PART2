@@ -21,9 +21,10 @@
 - Launch npm install
 - Run npm run serve to launch on developpment mode
 - Run npm i --save axios to install and progress axios on project
+
 # RUN PROJECT ON PRODUCTION
 
-## First time :
+First time :
 
 ```
 - Clone project
