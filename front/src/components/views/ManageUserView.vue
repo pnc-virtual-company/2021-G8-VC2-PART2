@@ -26,49 +26,47 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="5">
+      <v-col cols="5" v-if="manageSelected !== 'company'">
         <v-card class="d-flex pa-2">
-        <v-progress-circular
-          :rotate="180"
-          :size="90"
-          :width="15"
-          :value="percentage"
-          color="red"
-        >
-          {{ invitedAlumnisStored.length + validatedAlumnisStored.length }}
-        </v-progress-circular>
-        <div class="data ml-3">
-          <div class="pointer"
-            @click="showInvited"
+          <v-progress-circular
+            :rotate="180"
+            :size="90"
+            :width="15"
+            :value="percentage"
+            color="red"
           >
-            <v-icon color="grey darken-2">mdi-checkbox-blank</v-icon>
-            Invited {{ invitedAlumnisStored.length }}
-          </div><br>
-          <div class="pointer"
-            @click="showValidated"
-          >
-            <v-icon color="grey lighten-2">mdi-checkbox-blank</v-icon>
-            Validated {{ validatedAlumnisStored.length }}
+            {{ invitedAlumnisStored.length + validatedAlumnisStored.length }}
+          </v-progress-circular>
+          <div class="data ml-3">
+            <div class="pointer" @click="showInvited">
+              <v-icon color="grey darken-2">mdi-checkbox-blank</v-icon>
+              Invited {{ invitedAlumnisStored.length }}
+            </div>
+            <br />
+            <div class="pointer" @click="showValidated">
+              <v-icon color="grey lighten-2">mdi-checkbox-blank</v-icon>
+              Validated {{ validatedAlumnisStored.length }}
+            </div>
           </div>
-        </div>
         </v-card>
       </v-col>
-      <v-col cols="2"></v-col>
+      <v-col cols="2" v-if="manageSelected !== 'company'"></v-col>
       <v-col cols="3">
         <v-select
+          class="mt-1"
           label="Role"
           dense
           solo
-          :items="roles"
-          v-model="selectedRole"
+          :items="manages"
+          v-model="manageSelected"
         ></v-select>
       </v-col>
-      <v-col cols="2">
+      <v-col cols="2" v-if="manageSelected !== 'company'">
         <v-flex class="d-flex justify-end">
           <v-dialog v-model="dialog" max-width="500px">
             <template v-slot:activator="{ on, attrs }">
               <v-btn
-                class="white--text"
+                class="white--text mt-1"
                 depressed
                 color="warning invite-btn"
                 v-bind="attrs"
@@ -88,7 +86,7 @@
                       v-if="userEro.role === 'admin'"
                       class="mt-5"
                       prepend-inner-icon="mdi-account-box-outline"
-                      :items="roles"
+                      :items="manages"
                       v-model="selectedRoleForInvite"
                       label="Select role"
                       :rules="[rules.required]"
@@ -128,8 +126,10 @@
       </v-col>
     </v-row>
     <!-- End -->
-    <v-card class="card_contain mt-5 mb-5" v-if="selectedRole === 'alumni'">
-      <v-card class="pa-10 text-center" v-if="alumnisToDisplay.length === 0">Data not found</v-card>
+    <v-card class="card_contain mt-6 mb-5" v-if="manageSelected === 'alumni'">
+      <v-card class="pa-10 text-center" v-if="alumnisToDisplay.length === 0"
+        >Data not found</v-card
+      >
       <v-card
         flat
         class="name-card pa-3"
@@ -144,7 +144,13 @@
         >
           <v-flex xs6 md3 sm4>
             <div class="caption grey--text mb-1">Name</div>
-            <div>{{ user.status == 'invited' ? 'Empty' : user.firstname + ' ' + user.lastname}}</div>
+            <div>
+              {{
+                user.status == "invited"
+                  ? "Empty"
+                  : user.firstname + " " + user.lastname
+              }}
+            </div>
           </v-flex>
           <v-flex xs6 md4 sm4>
             <div class="caption grey--text mb-1">Email</div>
@@ -152,29 +158,32 @@
           </v-flex>
           <v-flex xs6 md2 sm4>
             <div class="caption grey--text mb-1">Gender</div>
-            <div>{{ user.status == 'invited' ? 'Empty' : user.gender }}</div>
+            <div>{{ user.status == "invited" ? "Empty" : user.gender }}</div>
           </v-flex>
           <v-flex xs6 md2 sm4>
             <div class="caption grey--text mb-1">Major</div>
-            <div :class="`major ${user.major}`">{{ user.status == 'invited' ? 'Empty' : user.major + " " +  user.batch}}</div>
+            <div :class="`major ${user.major}`">
+              {{
+                user.status == "invited"
+                  ? "Empty"
+                  : user.major + " " + user.batch
+              }}
+            </div>
           </v-flex>
           <v-flex xs6 md1 sm4>
             <div class="caption grey--text mb-1">Action</div>
-            <v-btn icon @click="removeUser(user.user_id, user.role, user.status)">
+            <v-btn
+              icon
+              @click="removeUser(user.user_id, user.role, user.status)"
+            >
               <v-icon>mdi-delete</v-icon>
             </v-btn>
-            
           </v-flex>
         </v-layout>
       </v-card>
     </v-card>
-    <v-card class="card_contain mt-5" v-if="selectedRole === 'ero'">
-      <v-card
-        flat
-        class="name-card pa-3"
-        v-for="user in eros"
-        :key="user.id"
-      >
+    <v-card class="card_contain mt-6" v-if="manageSelected === 'ero'">
+      <v-card flat class="name-card pa-3" v-for="user in eros" :key="user.id">
         <v-layout row wrap :class="`pa-2 user ${user.status}`">
           <v-flex xs6 md1 sm2>
             <div class="caption grey--text">ID</div>
@@ -182,7 +191,13 @@
           </v-flex>
           <v-flex xs6 md3 sm4>
             <div class="caption grey--text">Name</div>
-            <div>{{ user.status == 'invited' ? 'Empty' : user.firstname + " "  + user.lastname }}</div>
+            <div>
+              {{
+                user.status == "invited"
+                  ? "Empty"
+                  : user.firstname + " " + user.lastname
+              }}
+            </div>
           </v-flex>
           <v-flex xs6 md4 sm4>
             <div class="caption grey--text">Email</div>
@@ -197,11 +212,150 @@
             <v-btn icon @click="removeUser(user.id, user.role, user.status)">
               <v-icon>mdi-delete</v-icon>
             </v-btn>
-            
           </v-flex>
         </v-layout>
       </v-card>
     </v-card>
+    <!-- company -->
+    <v-card class="ma-0 pa-3 mb-7 text-center">Manage Company</v-card>
+    <v-card class="ma-0 pa-2" v-if="manageSelected === 'company'">
+      <v-row>
+        <v-col>
+          <v-list-item
+            class="ma-0 pa-3 companyLogo"
+            v-for="company of companyList"
+            :key="company.id"
+          >
+            <v-avatar class="mr-5 companyLogo" size="60">
+              <v-img :src="imageUrl + company.logo" alt=""></v-img>
+            </v-avatar>
+            <v-avatar size="60" class="edit">
+              <v-icon
+                size="20"
+                color="white"
+                @click="openLogoEditDialog(company.id, company.logo)"
+                class="mt-1"
+                >mdi-border-color</v-icon
+              >
+            </v-avatar>
+            <v-list-item-title class="pa-1">
+              <v-flex class="d-flex">
+                <v-list-item-title>
+                  {{ company.company_name }}
+                </v-list-item-title>
+                <v-menu bottom left> </v-menu>
+              </v-flex>
+              <v-list-item-subtitle class="mt-1">
+                {{ company.domain_company }} at
+                {{ company.location }}</v-list-item-subtitle
+              >
+            </v-list-item-title>
+            <v-icon
+              size="20"
+              class="mb-3 edit-text"
+              @click="isEditCompanyText = true"
+              >mdi-border-color</v-icon
+            >
+          </v-list-item>
+        </v-col>
+      </v-row>
+    </v-card>
+    <!-- edit logo -->
+    <v-dialog v-model="isEditLogo" persistent max-width="400px">
+      <v-card>
+        <v-card-title>
+          <span class="text-h6">EDIT COMPANY LOGO</span>
+        </v-card-title>
+        <v-divider></v-divider>
+        <v-card-text class="text-center">
+          <v-avatar size="200">
+            <v-img class="center mt-3" :src="companyLogo"> </v-img>
+          </v-avatar>
+        </v-card-text>
+        <v-card-actions class="btn-upload">
+          <div class="image-upload mb-2">
+            <input type="file" @change="fileChange" name="myFile" id="myFile" />
+            <label for="myFile" class="custom-file-upload" color="primary"
+              >SELECT PROFILE</label
+            >
+          </div>
+          <v-spacer></v-spacer>
+          <v-btn
+            class="mb-1"
+            small
+            depressed
+            color="primary"
+            text
+            @click="isEditLogo = false"
+          >
+            Cancel
+          </v-btn>
+          <v-btn
+            small
+            depressed
+            color="primary"
+            class="white--text mb-1"
+            @click="changeLogo"
+          >
+            Change
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <!-- edit logo -->
+    <!-- edit company text -->
+    <v-dialog v-model="isEditCompanyText" persistent max-width="400px">
+      <v-card>
+        <v-card-title class="mx-auto text--h6">Edit Company</v-card-title>
+        <v-divider></v-divider>
+        <v-card-text>
+          <v-form ref="form" v-model="valid" lazy-validation>
+            <v-text-field
+              label="Company Name"
+              clearable
+              v-model="newName"
+              :rules="[rules.required]"
+            ></v-text-field>
+            <v-text-field
+              label="Industry"
+              clearable
+              v-model="newIndustry"
+              :rules="[rules.required]"
+            ></v-text-field>
+            <v-text-field
+              class="mt-2"
+              v-model="newLocation"
+              clearable
+              label="Campany Location"
+              :rules="[rules.required]"
+            ></v-text-field>
+          </v-form>
+        </v-card-text>
+        <v-card-actions class="btn-upload">
+          <v-spacer></v-spacer>
+          <v-btn
+            class="mb-1"
+            small
+            depressed
+            color="primary"
+            text
+            @click="isEditCompanyText = false"
+          >
+            Cancel
+          </v-btn>
+          <v-btn
+            :disabled="!valid"
+            small
+            depressed
+            color="primary"
+            class="white--text mb-1"
+          >
+            Change
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <!--  -->
   </section>
 </template>
 <script>
@@ -210,9 +364,21 @@ export default {
   props: ["userEro"],
   data() {
     return {
+      newName: null,
+      newLocation: null,
+      newIndustry: null,
+      valid: false,
+      imageUrl: "http://127.0.0.1:8000/storage/profiles/",
+      companyLogo: null,
+      imageFile: null,
+      isEditLogo: false,
+      companyDataToEdit: {
+        id: null,
+      },
+      isEditCompanyText: false,
       existingEmails: null,
       percentage: 0,
-      roles: ["ero", "alumni"],
+      manages: ["company", "alumni", "ero"],
       alert: false,
       dialog: false,
       keySearch: "",
@@ -222,21 +388,51 @@ export default {
       alumnisToDisplay: null,
       numberOfalumni: 0,
       numberOferos: 0,
-      selectedRole: "alumni",
+      manageSelected: "company",
       selectedRoleForInvite: "alumni",
       inviteEmailList: [],
       notChipEmail: null,
       numberOfalumniInvited: 0,
-      statusSelected: 'validated',
-      alertMessage: '',
+      statusSelected: "validated",
+      alertMessage: "",
+      companyList: [],
+
       rules: {
         required: (value) => !!value || "Required",
       },
     };
   },
   methods: {
+    openLogoEditDialog(id, logo) {
+      this.isEditLogo = true;
+      this.companyDataToEdit.id = id;
+      this.companyLogo = 'http://127.0.0.1:8000/storage/profiles/' + logo;
+    },
+    fileChange(e) {
+      this.imageFile = e.target.files[0];
+      this.companyLogo = URL.createObjectURL(this.imageFile);
+    },
+    changeLogo() {
+      if (this.imageFile !== null) {
+        let imageFile = new FormData();
+        imageFile.append("logo", this.imageFile);
+        imageFile.append("_method", "PUT");
+        axios.post("companies/updateLogos/" + this.companyDataToEdit.id, imageFile).then((res) => {
+          this.isEditLogo = false;
+          for(let company of this.companyList) {
+            if(company.id === this.companyDataToEdit.id) {
+              company.logo = res.data.companyLogo;
+            }
+          }
+        });
+      }
+      
+    },
     submitEmail() {
-      if(this.notChipEmail !== null && !this.inviteEmailList.includes(this.notChipEmail)) {
+      if (
+        this.notChipEmail !== null &&
+        !this.inviteEmailList.includes(this.notChipEmail)
+      ) {
         this.inviteEmailList.push(this.notChipEmail);
       }
       this.numberOfalumniInvited += this.inviteEmailList.length;
@@ -256,67 +452,81 @@ export default {
       setTimeout(() => {
         this.alert = false;
         this.numberOfalumniInvited = 0;
-        this.alertMessage = '';
+        this.alertMessage = "";
       }, 5000);
     },
     showInvited() {
-      this.statusSelected = 'invited';
+      this.statusSelected = "invited";
     },
     showValidated() {
-      this.statusSelected = 'validated';
+      this.statusSelected = "validated";
     },
-    removeUser(id, role, status){
-      axios.delete('users/' + id).then(() => {
-        if(role === 'alumni') {
-          this.alumnisToDisplay = this.alumnisToDisplay.filter(alumni => alumni.user_id !== id);
-          if(status === 'invited') {
-            this.invitedAlumnisStored = this.invitedAlumnisStored.filter(alumni => alumni.user_id !== id);
-          } else if(status === 'validated') {
-            this.validatedAlumnisStored = this.validatedAlumnisStored.filter(alumni => alumni.user_id !== id);
+    removeUser(id, role, status) {
+      axios.delete("users/" + id).then(() => {
+        if (role === "alumni") {
+          this.alumnisToDisplay = this.alumnisToDisplay.filter(
+            (alumni) => alumni.user_id !== id
+          );
+          if (status === "invited") {
+            this.invitedAlumnisStored = this.invitedAlumnisStored.filter(
+              (alumni) => alumni.user_id !== id
+            );
+          } else if (status === "validated") {
+            this.validatedAlumnisStored = this.validatedAlumnisStored.filter(
+              (alumni) => alumni.user_id !== id
+            );
           }
-        } else if(role === 'ero') {
-          this.eros = this.eros.filter(ero => ero.id !== id);
+        } else if (role === "ero") {
+          this.eros = this.eros.filter((ero) => ero.id !== id);
         }
-      })
-    }
+      });
+    },
   },
   watch: {
+    isEditCompanyText: function (val) {
+      if (val) {
+        this.newName = null;
+        this.newIndustry = null;
+        this.newLocation = null;
+      }
+    },
     // will manage existing email when we invite
-    statusSelected: function(val) {
-      if(val === 'invited') {
+    statusSelected: function (val) {
+      if (val === "invited") {
         this.alumnisToDisplay = this.invitedAlumnisStored;
       } else {
         this.alumnisToDisplay = this.validatedAlumnisStored;
       }
     },
-    dialog: function(val) {
+    dialog: function (val) {
       if (!val) {
         this.inviteEmailList = [];
         this.selectedRoleForInvite = "alumni";
       }
     },
-    keySearch: function(val) {
+    keySearch: function (val) {
       let alumnisStored = this.validatedAlumnisStored;
-      if(this.statusSelected === 'invited') {
+      if (this.statusSelected === "invited") {
         alumnisStored = this.invitedAlumnisStored;
       }
-      if(val === '') {
+      if (val === "") {
         this.alumnisToDisplay = alumnisStored;
-      } else if(this.statusSelected === 'validated') {
-        this.alumnisToDisplay = alumnisStored.filter(alumni => 
-          alumni.firstname.toLowerCase().includes(val.toLowerCase()) ||
-          alumni.lastname.toLowerCase().includes(val.toLowerCase()) ||
-          alumni.batch.toLowerCase().includes(val.toLowerCase()) ||
-          alumni.major.toLowerCase().includes(val.toLowerCase()) ||
-          alumni.gender.includes(val) ||
+      } else if (this.statusSelected === "validated") {
+        this.alumnisToDisplay = alumnisStored.filter(
+          (alumni) =>
+            alumni.firstname.toLowerCase().includes(val.toLowerCase()) ||
+            alumni.lastname.toLowerCase().includes(val.toLowerCase()) ||
+            alumni.batch.toLowerCase().includes(val.toLowerCase()) ||
+            alumni.major.toLowerCase().includes(val.toLowerCase()) ||
+            alumni.gender.includes(val) ||
+            alumni.email.toLowerCase().includes(val.toLowerCase())
+        );
+      } else if (this.statusSelected === "invited") {
+        this.alumnisToDisplay = alumnisStored.filter((alumni) =>
           alumni.email.toLowerCase().includes(val.toLowerCase())
-        )
-      } else if(this.statusSelected === 'invited') {
-        this.alumnisToDisplay = alumnisStored.filter(alumni => 
-          alumni.email.toLowerCase().includes(val.toLowerCase())
-        )
+        );
       }
-    }
+    },
   },
   mounted() {
     axios.get("/users/email/all").then((res) => {
@@ -327,17 +537,60 @@ export default {
       this.numberOferos = this.eros.length;
     });
     axios.get("/users/alumni").then((res) => {
-      this.invitedAlumnisStored = res.data.filter(alumni => alumni.status === 'invited');
-      this.validatedAlumnisStored = res.data.filter(alumni => alumni.status === 'validated');
+      this.invitedAlumnisStored = res.data.filter(
+        (alumni) => alumni.status === "invited"
+      );
+      this.validatedAlumnisStored = res.data.filter(
+        (alumni) => alumni.status === "validated"
+      );
       this.alumnisToDisplay = this.validatedAlumnisStored;
-      this.percentage = (this.invitedAlumnisStored.length * 100)/(this.validatedAlumnisStored.length + this.invitedAlumnisStored.length);
+      this.percentage =
+        (this.invitedAlumnisStored.length * 100) /
+        (this.validatedAlumnisStored.length + this.invitedAlumnisStored.length);
     });
     this.removeUser();
+
+    axios.get("/allcompanies").then((res) => {
+      this.companyList = res.data;
+    });
   },
 };
 </script>
 <style scoped>
-.pointer{
+.custom-file-upload {
+  font-size: 12px;
+  border-radius: 5px;
+  background: #00a3ff;
+  padding: 8px 9px;
+  cursor: pointer;
+  color: white;
+}
+input[type="file"] {
+  display: none;
+}
+.img {
+  position: absolute;
+  top: 80px;
+  left: 90px;
+}
+.companyLogo:hover .edit {
+  display: block;
+}
+.companyLogo:hover .edit-text {
+  display: block;
+}
+.edit {
+  cursor: pointer;
+  position: absolute;
+  display: none;
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.7);
+}
+.edit-text {
+  display: none;
+  cursor: pointer;
+}
+.pointer {
   cursor: pointer;
 }
 .manageuser {

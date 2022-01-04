@@ -50,7 +50,7 @@
         <!-- skill -->
         <v-row>
           <v-col>
-            <h3>Skills</h3>
+            <h3 class="mt-1">Skills</h3>
             <div class="text-left">
               <v-chip class="ma-2" v-for="skill of alumni.skills" :key="skill">
                 {{ skill }}
@@ -63,9 +63,9 @@
         <!-- employment -->
         <v-row>
           <v-col>
-            <h3>Employment</h3>
+            <h3 class="mt-1">Employment</h3>
             <v-list-item
-              class="mt-3 ma-0 pa-0"
+              class="mt-5 ma-0 pa-0"
               v-for="employments of alumni.employments"
               :key="employments.id"
             >
@@ -83,7 +83,7 @@
                   {{ employments.company_name }}
                 </v-list-item-subtitle>
                 <v-list-item-subtitle>
-                  {{ getStartJobDate }} - {{ getEndJobDate }}
+                  {{ getStartJobDate }} - {{ getEndJobDate }}. {{ employments.location }}
                 </v-list-item-subtitle>
               </v-list-item-title>
             </v-list-item>

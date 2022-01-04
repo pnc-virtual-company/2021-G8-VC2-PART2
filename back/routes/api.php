@@ -35,10 +35,12 @@ Route::put('/domain_companies/{id}',[DomainCompanyController::class, "updateDoma
 //Route for company
 
 Route::get('/companies',[CompanyController::class, "getCompanies"]);
+Route::get('/allcompanies',[CompanyController::class, "getAllCompanies"]);
 Route::get('/companies/{id}',[CompanyController::class, "showOneCompany"]);
 
 Route::post('/companies',[CompanyController::class, "createCompany"]);
 Route::put('/companies/{id}',[CompanyController::class, "updateCompany"]);
+Route::put('/companies/updateLogos/{id}',[CompanyController::class, "updateLogo"]);
 Route::delete('/companies/{id}',[CompanyController::class, "destroy"]);
 
 //Route for skill

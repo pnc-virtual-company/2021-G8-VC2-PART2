@@ -244,6 +244,7 @@ export default {
     },
     changeProfile() {
       this.dialog = false;
+      console.log(this.imageFile)
       if (this.imageFile !== null) {
         let imageFile = new FormData();
         imageFile.append("profile", this.imageFile);
