@@ -16,9 +16,6 @@
       <div class="filter">
         <v-select label="Domain" dense solo :items="domains"></v-select>
       </div>
-      <!-- <v-btn depressed color="white">
-        <v-icon color="error">mdi-close</v-icon>
-      </v-btn>-->
     </div>
     <v-card class="mt-2 pa-4 rounded-lg">
       <ero-card v-for="alumni of alumnis" :key="alumni.id" :alumni="alumni"></ero-card>

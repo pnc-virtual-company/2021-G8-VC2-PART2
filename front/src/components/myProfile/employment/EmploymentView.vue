@@ -37,18 +37,7 @@
                       persistent-hint
                       :rules="[rules.required]"
                     >
-                      <!-- <template v-slot:no-data>
-                        <v-list-item>
-                          <v-list-item-content>
-                            <v-list-item-title>
-                              <strong>({{ positionSearch }}) </strong>
-                              <kbd>enter</kbd> to create
-                            </v-list-item-title>
-                          </v-list-item-content>
-                        </v-list-item>
-                      </template> -->
                     </v-combobox>
-                    <!--  -->
                     <v-combobox
                       v-model="employmentDataToAdd.company"
                       :items="dataToDisplay.companies"

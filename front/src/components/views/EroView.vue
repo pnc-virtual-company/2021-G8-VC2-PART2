@@ -27,14 +27,9 @@ export default {
   width: 50%;
   margin: auto;
 }
-@media (max-width: 600px) {
+@media (max-width: 960px) {
   .eroview {
     width: 90%;
-  }
-}
-@media (min-width: 600px) and (max-width: 800px) {
-  .eroview {
-    width: 60%;
   }
 }
 </style>

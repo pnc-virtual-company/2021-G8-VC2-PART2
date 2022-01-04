@@ -5,7 +5,7 @@
         <v-col>
           <v-list-item class="ma-0 pa-0">
             <v-avatar class="mr-3 mb-4" size="70">
-              <img :src="imageUrl+alumni.profile" alt />
+              <v-img :src="imageUrl+alumni.profile" alt></v-img>            
             </v-avatar>
             <v-list-item-title>
               <v-flex class="d-flex mt-2">
