@@ -160,7 +160,10 @@
           </v-flex>
           <v-flex xs6 md1 sm4>
             <div class="caption grey--text mb-1">Action</div>
-            <v-icon>mdi-delete</v-icon>
+            <v-btn icon @click="removeUser(user.user_id, user.role, user.status)">
+              <v-icon>mdi-delete</v-icon>
+            </v-btn>
+            
           </v-flex>
         </v-layout>
       </v-card>
@@ -174,25 +177,27 @@
       >
         <v-layout row wrap :class="`pa-2 user ${user.status}`">
           <v-flex xs6 md1 sm2>
-            <v-list-item class="caption grey--text">ID</v-list-item>
-            <v-list-item>{{ user.id }}</v-list-item>
+            <div class="caption grey--text">ID</div>
+            <div>{{ user.id }}</div>
           </v-flex>
-          <v-flex xs6 md2 sm4>
-            <v-list-item class="caption grey--text">Name</v-list-item>
-            <v-list-item v-if="user.status == 'invited'">Empty</v-list-item>
-            <v-list-item v-else>{{ user.firstname }}{{ " " }}{{ user.lastname }}</v-list-item>
+          <v-flex xs6 md3 sm4>
+            <div class="caption grey--text">Name</div>
+            <div>{{ user.status == 'invited' ? 'Empty' : user.firstname + " "  + user.lastname }}</div>
           </v-flex>
-          <v-flex xs6 md6 sm4>
+          <v-flex xs6 md4 sm4>
             <div class="caption grey--text">Email</div>
             <div>{{ user.email }}</div>
           </v-flex>
-          <v-flex xs6 md2 sm4>
-            <v-list-item class="caption grey--text">Status</v-list-item>
-            <v-list-item :class="`ero ${user.status}`">{{ user.status }}</v-list-item>
+          <v-flex xs6 md3 sm4>
+            <div class="caption grey--text">Status</div>
+            <div :class="`ero ${user.status}`">{{ user.status }}</div>
           </v-flex>
           <v-flex xs6 md1 sm4>
             <div class="caption grey--text">Action</div>
-            <v-icon>mdi-delete</v-icon>
+            <v-btn icon @click="removeUser(user.id, user.role, user.status)">
+              <v-icon>mdi-delete</v-icon>
+            </v-btn>
+            
           </v-flex>
         </v-layout>
       </v-card>
@@ -216,7 +221,6 @@ export default {
       invitedAlumnisStored: null,
       alumnisToDisplay: null,
       numberOfalumni: 0,
-      numberOferoNotValidated: 0,
       numberOferos: 0,
       selectedRole: "alumni",
       selectedRoleForInvite: "alumni",
@@ -261,6 +265,20 @@ export default {
     showValidated() {
       this.statusSelected = 'validated';
     },
+    removeUser(id, role, status){
+      axios.delete('users/' + id).then(() => {
+        if(role === 'alumni') {
+          this.alumnisToDisplay = this.alumnisToDisplay.filter(alumni => alumni.user_id !== id);
+          if(status === 'invited') {
+            this.invitedAlumnisStored = this.invitedAlumnisStored.filter(alumni => alumni.user_id !== id);
+          } else if(status === 'validated') {
+            this.validatedAlumnisStored = this.validatedAlumnisStored.filter(alumni => alumni.user_id !== id);
+          }
+        } else if(role === 'ero') {
+          this.eros = this.eros.filter(ero => ero.id !== id);
+        }
+      })
+    }
   },
   watch: {
     // will manage existing email when we invite
@@ -307,9 +325,6 @@ export default {
     axios.get("/users/ero").then((res) => {
       this.eros = res.data;
       this.numberOferos = this.eros.length;
-      this.numberOferoNotValidated = this.eros.filter(
-        (user) => user.status == "invited"
-      ).length;
     });
     axios.get("/users/alumni").then((res) => {
       this.invitedAlumnisStored = res.data.filter(alumni => alumni.status === 'invited');
@@ -317,6 +332,7 @@ export default {
       this.alumnisToDisplay = this.validatedAlumnisStored;
       this.percentage = (this.invitedAlumnisStored.length * 100)/(this.validatedAlumnisStored.length + this.invitedAlumnisStored.length);
     });
+    this.removeUser();
   },
 };
 </script>

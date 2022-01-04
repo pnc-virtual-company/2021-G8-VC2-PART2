@@ -5,8 +5,20 @@
         <h3>Skills</h3>
       </v-col>
       <v-col class="add-info">
+        <v-btn
+              color="white"
+              fab
+              x-small
+              dark
+              elevation="1"
+              class="mr-2"
+              @click="showSkill = !showSkill"
+            >
+              <v-icon color="black">mdi-pencil</v-icon>
+            </v-btn>
         <v-dialog v-model="showSkillDialog" persistent max-width="400px">
           <template v-slot:activator="{ on, attrs }">
+        
             <v-btn
               color="white"
               fab
@@ -85,7 +97,17 @@
         </v-dialog>
       </v-col>
     </v-row>
-    <div class="text-left">
+    <div class="text-left" v-if="showSkill">
+      <v-chip
+        class="ma-2"
+        v-for="(skill, index) in userData.skills"
+        :key="index"
+        @click:close="removed(userData.user_id, skill)"
+      >
+        {{ skill }}
+      </v-chip>
+    </div>
+    <div class="text-left" v-else>
       <v-chip
         class="ma-2"
         v-for="(skill, index) in userData.skills"
@@ -109,6 +131,7 @@ export default {
     model: "",
     skills: [],
     selectedSkills: [],
+    showSkill: true,
   }),
   methods: {
     removed(alumni_id, skill) {

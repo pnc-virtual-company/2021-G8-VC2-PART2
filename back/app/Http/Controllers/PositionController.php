@@ -83,9 +83,9 @@ class PositionController extends Controller
     {
         $position = Position::destroy($id);
         if ($position) {
-            return response()->json(['message' => 'Position deleted'], 202);
+            return response()->json(['message' => 'Position deleted'], 200);
         } else {
-            return response()->json(['message' => 'Cannot delete!!'], 204);
+            return response()->json(['message' => 'Cannot delete!!'], 404);
         }
     }
 }
