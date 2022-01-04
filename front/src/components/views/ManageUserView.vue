@@ -129,7 +129,7 @@
     </v-row>
     <!-- End -->
     <v-card class="card_contain mt-5 mb-5" v-if="selectedRole === 'alumni'">
-      <v-card class="pa-10 text-center" v-if="alumnisToDisplay.length === 0">Data not found</v-card>
+      <v-card class="pa-10 text-center" v-if="alumnisToDisplay.length === 0">No People Found</v-card>
       <v-card
         flat
         class="name-card pa-3"

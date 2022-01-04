@@ -14,24 +14,30 @@
         <v-select label="Company" dense solo :items="companyLists"></v-select>
       </div>
       <div class="filter">
-        <v-select label="Position" dense solo :items="positions"></v-select>
-      </div>
-      <div class="filter">
         <v-select label="Batch" dense solo :items="batches"></v-select>
       </div>
       <div class="filter">
         <v-select label="Major" dense solo :items="majors"></v-select>
       </div>
       <div class="filter">
-        <v-select label="Domain" dense solo :items="domains"></v-select>
+        <v-select label="Gender" dense solo :items="genders"></v-select>
       </div>
-      <!-- <v-btn depressed color="white">
-        <v-icon color="error">mdi-close</v-icon>
-      </v-btn> -->
+      <div class="filter">
+        <v-btn depressed color="white" width="100%">
+          <v-icon color="error">mdi-close</v-icon>
+        </v-btn>
+      </div>
     </div>
 
     <v-card class="mt-2 pa-4 rounded-lg">
-      <ero-card v-for="alumni of alumnisToDisplay" :key="alumni.id" :alumni="alumni"></ero-card>
+      <v-card class="pa-10 text-center" v-if="alumnisToDisplay.length === 0"
+        >No People Found</v-card
+      >
+      <ero-card
+        v-for="alumni of alumnisToDisplay"
+        :key="alumni.id"
+        :alumni="alumni"
+      ></ero-card>
     </v-card>
   </section>
 </template>
@@ -44,32 +50,32 @@ export default {
     EroCard,
   },
   data: () => ({
-    keySearch: '',
+    keySearch: "",
     alumnisStored: null,
     alumnisToDisplay: null,
     companies: [],
     companyLists: [],
-    positions: [],
     batches: [],
-    majors: ["SNA","WEP"],
-    domains: [],
+    majors: ["SNA", "WEP", "DMO"],
+    genders: ["Female", "Male", "Other"],
   }),
   watch: {
-    keySearch: function(val) {
-      if(val === '' || val === null){
+    keySearch: function (val) {
+      if (val === "" || val === null) {
         this.alumnisToDisplay = this.alumnisStored;
       } else {
         let key = val.toLowerCase();
-        this.alumnisToDisplay = this.alumnisStored.filter(alumni => 
-          alumni.firstname.toLowerCase().includes(key) ||
-          alumni.lastname.toLowerCase().includes(key) ||
-          alumni.batch.toLowerCase().includes(key) ||
-          alumni.major.toLowerCase().includes(key) ||
-          alumni.gender.includes(val) ||
-          alumni.email.toLowerCase().includes(key)
-        )
+        this.alumnisToDisplay = this.alumnisStored.filter(
+          (alumni) =>
+            alumni.firstname.toLowerCase().includes(key) ||
+            alumni.lastname.toLowerCase().includes(key) ||
+            alumni.batch.toLowerCase().includes(key) ||
+            alumni.major.toLowerCase().includes(key) ||
+            alumni.gender.includes(val) ||
+            alumni.email.toLowerCase().includes(key)
+        );
       }
-    }
+    },
   },
   methods: {
     submit(emailToInvite, selectedRole) {
@@ -89,12 +95,6 @@ export default {
         }
       });
     },
-    /*get positions*/
-    getPositions() {
-      axios.get("workPositions").then((res) => {
-        this.positions = res.data;
-      });
-    },
     /*get batches*/
     getBatches() {
       axios.get("batches").then((res) => {
@@ -104,23 +104,17 @@ export default {
     /* get all of explore alumni */
     getExploreAlumniData() {
       axios.get("users/alumni").then((res) => {
-        this.alumnisStored = res.data.filter(alumni => alumni.status === 'validated');
+        this.alumnisStored = res.data.filter(
+          (alumni) => alumni.status === "validated"
+        );
         this.alumnisToDisplay = this.alumnisStored;
-      });
-    },
-    /*get all domain companies*/
-    getDomain() {
-      axios.get("domain_companies").then((res) => {
-        this.domains = res.data;
       });
     },
   },
   mounted() {
     this.getExploreAlumniData();
     this.getCompanies();
-    this.getPositions();
     this.getBatches();
-    this.getDomain();
   },
 };
 </script>
@@ -151,8 +145,6 @@ export default {
 .v-text-field {
   border-radius: 5px;
 }
- 
-
 
 .eroview {
   width: 50%;

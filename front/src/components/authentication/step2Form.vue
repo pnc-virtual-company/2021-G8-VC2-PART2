@@ -142,7 +142,7 @@ export default {
   data() {
     return {
       genders: ["Female", "Male", "Other"],
-      majors: ["WEP", "SNA"],
+      majors: ["WEP", "SNA", "DMO"],
       batches: [],
       valid: true,
       show1: false,

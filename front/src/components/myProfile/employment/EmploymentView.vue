@@ -2,7 +2,7 @@
   <v-card class="mt-5 mb-4 pa-4 rounded-lg">
     <v-row class="mb-1">
       <v-col cols="8" sm="3" md="5">
-        <h3>Employment</h3>
+        <h3>Employments</h3>
       </v-col>
       <v-col class="add-info">
         <div class="text-center">
@@ -27,27 +27,14 @@
                   <v-card-title>{{ formMode }} Employment</v-card-title>
                   <v-divider></v-divider>
                   <v-col md="12" sm="12">
-                    <v-combobox
+                    <v-text-field
                       prepend-inner-icon="mdi-clipboard-account"
                       v-model="employmentDataToAdd.position"
-                      :items="dataToDisplay.positions"
-                      :search-input.sync="positionSearch"
-                      hide-selected
                       label="Work Position"
                       persistent-hint
                       :rules="[rules.required]"
                     >
-                      <!-- <template v-slot:no-data>
-                        <v-list-item>
-                          <v-list-item-content>
-                            <v-list-item-title>
-                              <strong>({{ positionSearch }}) </strong>
-                              <kbd>enter</kbd> to create
-                            </v-list-item-title>
-                          </v-list-item-content>
-                        </v-list-item>
-                      </template> -->
-                    </v-combobox>
+                    </v-text-field>
                     <!--  -->
                     <v-combobox
                       v-model="employmentDataToAdd.company"
@@ -169,6 +156,7 @@
                           </template>
                           <v-date-picker
                             v-model="employmentDataToAdd.endJobDate"
+                            :min="employmentDataToAdd.startJobDate"
                             scrollable
                           >
                             <v-spacer></v-spacer>
@@ -251,7 +239,7 @@
                       <v-select
                         class="mt-3"
                         :items="dataToDisplay.domains"
-                        label="Select domain"
+                        label="Select industry"
                         :rules="[rules.required]"
                         prepend-inner-icon="mdi-web"
                         v-model="companyDataToAdd.domain"
@@ -339,7 +327,6 @@ export default {
       startDateDialog: false,
       endDateDialog: false,
       dataToDisplay: {
-        positions: null,
         domains: null,
         companies: null,
       },
@@ -364,7 +351,6 @@ export default {
           .toISOString()
           .substr(0, 10),
       },
-      positionSearch: null,
       companyPic:
         "https://foroalfa.org/imagenes/ilustraciones/logotipo-y-logo.jpg",
       rules: {
@@ -432,7 +418,8 @@ export default {
         this.isSelectingEndDate = true;
       }
       this.formMode = "Update"
-    }
+    },
+    
   },
   watch: {
     showAddCompanyForm: function (val) {
@@ -465,9 +452,6 @@ export default {
     },
   },
   mounted() {
-    axios.get("workPositions").then((res) => {
-      this.dataToDisplay.positions = res.data;
-    });
     axios.get("domain_companies").then((res) => {
       this.dataToDisplay.domains = res.data;
     });
