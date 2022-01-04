@@ -101,7 +101,7 @@ export default {
   width: 100%;
   height: 20%;
 }
-@media (max-width: 960px) {
+@media (max-width: 1100px) {
   .right {
     width: 100%;
   }
