@@ -112,11 +112,9 @@ class Usercontroller extends Controller
                     'profile'=>$defaultImg 
                 ]);
 
-                $updatedResult = User::join('alumnis', 'users.id', '=', 'alumnis.user_id')
-                                ->where('users.id', $user->id)
-                                ->get(['users.*', 'alumnis.*']);
+                $updatedResult = $this->getAUser($user->id);
                 
-                return response()->json(['message' => 'Successfully', 'user' => $updatedResult[0]], 201);
+                return response()->json(['message' => 'Successfully', 'user' => $updatedResult], 201);
             } else if ($user->status === 'validated') {
                 if(!Hash::check($request->password, $user->password)){
                     return response()->json(['message' => 'Unauthorized'], 401);
@@ -148,7 +146,7 @@ class Usercontroller extends Controller
         foreach($users as $user) {
             $skills = DB::table('alumni_skills')
                         ->select('skillName')
-                        ->where('alumni_id', '=', $user->id)
+                        ->where('alumni_id', '=', $user->user_id)
                         ->get();
             $cleanSkillList = [];
             foreach($skills as $skill) {
@@ -158,7 +156,7 @@ class Usercontroller extends Controller
             
             $employmentList = DB::table('employments')
                             ->join('companies', 'companies.id', '=', 'employments.company_id')
-                            ->where('employments.alumni_id', '=', $user->id)
+                            ->where('employments.alumni_id', '=', $user->user_id)
                             ->get(['employments.*', 'companies.*']);
             
             $user['employments'] = $employmentList;

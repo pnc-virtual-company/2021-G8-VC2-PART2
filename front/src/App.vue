@@ -59,6 +59,15 @@ export default {
     },
   },
   methods: {
+    // shortEmployments() {
+    //   let copyOfEmp = this.user.employments;
+    //   this.user.employments = [];
+    //   for(let emp of copyOfEmp) {
+    //     for(let )
+    //     let lastEmp = 
+    //     this.user.employments.push()
+    //   }
+    // },
     signOut() {
       localStorage.removeItem("userId");
       this.user = { role: null };
@@ -154,6 +163,10 @@ export default {
         this.user = res.data;
         if(this.user.role === 'alumni') {
           this.user.employments = this.user.employments.reverse();
+          this.user.employments.sort(function (a, b) {
+            var dateA = new Date(a.startJobDate), dateB = new Date(b.startJobDate)
+            return dateB - dateA
+          });
         }
         if(this.$router.path === "/eroview" ||
            this.$router.path === "/myprofile" ||

@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div class="step2 mt-5">
+    <div class="step2 mt-10">
       <div class="profile">
         <img src="../../assets/profilepic.svg" alt="" />
       </div>
@@ -8,7 +8,7 @@
         <p v-if="status === 'invited'">COMPLETE INFORMATION</p>
         <p v-else>INPUT PASSWORD</p>
       </div>
-      <v-form class="pa-0" ref="form" v-model="valid" lazy-validation>
+      <v-form class="pa-10" ref="form" v-model="valid" lazy-validation>
         <v-row class="justify-center row-input" v-if="status === 'invited'">
           <v-col md="4" sm="5">
             <v-text-field
@@ -63,7 +63,7 @@
               type="number"
               label="Phone Number"
               placeholder="+885"
-              :rules="[rules.required]"
+              :rules="[rules.required, rules.minPhone, rules.maxPhone]"
             ></v-text-field>
           </v-col>
           <v-col md="4" sm="5">
@@ -142,7 +142,7 @@ export default {
   data() {
     return {
       genders: ["Female", "Male", "Other"],
-      majors: ["WEP", "SNA"],
+      majors: ["WEP", "SNA", "DMO"],
       batches: [],
       valid: true,
       show1: false,
@@ -162,16 +162,19 @@ export default {
       rules: {
         required: (value) => !!value || "Required",
         min: (v) => v.length >= 8 || "Min 8 characters",
+        minPhone: (v) => v.length >= 8 || "Min 8 characters",
+        maxPhone: (v) => v.length <= 10 || "Max 10 characters",
       },
     };
   },
   computed: {
     passwordConfirmationRule() {
-      return () =>
+      return (
         this.signInData.confirmPassword === "" ||
         this.signInData.password === "" ||
         this.signInData.password === this.signInData.confirmPassword || 
-        "Password does not match";
+        "Password must match"
+      )
     },
   },
   methods: {

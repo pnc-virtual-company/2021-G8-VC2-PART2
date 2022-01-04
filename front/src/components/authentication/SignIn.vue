@@ -101,7 +101,7 @@ export default {
   width: 100%;
   height: 20%;
 }
-@media (max-width: 600px) {
+@media (max-width: 960px) {
   .right {
     width: 100%;
   }
@@ -111,21 +111,6 @@ export default {
   }
   .left {
     display: none;
-  }
-}
-@media (min-width: 600px) and (max-width: 768px) {
-  .right {
-    width: 60%;
-  }
-  .right > img {
-    width: 100%;
-    height: 20%;
-  }
-  .left {
-    width: 40%;
-  }
-  .left > img {
-    width: 60vh;
   }
 }
 </style>

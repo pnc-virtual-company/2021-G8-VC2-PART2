@@ -63,33 +63,36 @@
         <!-- employment -->
         <v-row>
           <v-col>
-            <h3 class="mt-1">Employment</h3>
-            <v-list-item
-              class="mt-5 ma-0 pa-0"
-              v-for="employments of alumni.employments"
-              :key="employments.id"
+            <h3>Employment</h3>
+            <v-card
+              v-for="employment of alumni.employments"
+              :key="employment.id"
             >
+            <v-list-item class="mt-3 ma-0 pa-0" >
               <v-avatar class="mr-5" size="50">
-                <v-img :src="imageUrl + employments.logo" alt=""></v-img>
+                <v-img :src="imageUrl + employment.logo" alt=""></v-img>
               </v-avatar>
               <v-list-item-title>
                 <v-flex class="d-flex">
                   <v-list-item-title>
-                    {{ employments.workPosition }}
+                    {{ employment.workPosition }}
                   </v-list-item-title>
                   <v-menu bottom left> </v-menu>
                 </v-flex>
                 <v-list-item-subtitle>
-                  {{ employments.company_name }}
+                  {{ employment.company_name }}
                 </v-list-item-subtitle>
                 <v-list-item-subtitle>
-                  {{ getStartJobDate }} - {{ getEndJobDate }}. {{ employments.location }}
+                  {{ getStartJobDate(employment.startJobDate) }} - {{ employment.endJobDate }}.
+                {{ employment.location }}
                 </v-list-item-subtitle>
               </v-list-item-title>
             </v-list-item>
+            <v-divider class="mt-2"></v-divider>
+
+            </v-card>
           </v-col>
         </v-row>
-        <v-divider class="mt-2"></v-divider>
         <v-row justify="end" class="mt-2">
           <v-btn @click="dialog = false" small color="primary"> Close </v-btn>
         </v-row>
@@ -112,9 +115,8 @@
                 </v-list-item-title>
                 <v-list-item-title
                   class="text-title"
-                  v-if="alumni.employments.length > 0"
-                  >{{ alumni.employments[0].workPosition }}</v-list-item-title
-                >
+                  v-if="alumni.employments.length > 0&& isWorking(alumni.employments[0].startJobDate, alumni.employments[0].endJobDate)"
+                  >{{ alumni.employments[0].workPosition }}</v-list-item-title>
               </v-flex>
               <v-flex class="d-flex mt-2">
                 <v-list-item-subtitle class="text mt-2">
@@ -122,15 +124,14 @@
                 </v-list-item-subtitle>
                 <v-list-item-subtitle
                   class="text"
-                  v-if="alumni.employments.length > 0"
-                >
+                  v-if="alumni.employments.length > 0 && isWorking(alumni.employments[0].startJobDate, alumni.employments[0].endJobDate)">
                   <v-avatar size="30">
                     <v-img :src="imageUrl + alumni.employments[0].logo"></v-img>
                   </v-avatar>
                   {{ alumni.employments[0].company_name }}
                 </v-list-item-subtitle>
               </v-flex>
-              <br />
+              <br>
             </v-list-item-title>
           </v-list-item>
           <v-divider></v-divider>
@@ -142,23 +143,29 @@
 
 <script>
 export default {
-  props: ["alumni", "employment"],
+  props: ["alumni"],
   data: () => ({
     imageUrl: "http://127.0.0.1:8000/storage/profiles/",
     dialog: false,
     skills: [],
   }),
-  computed: {
-    getEndJobDate() {
-      if (this.employment[0].startJobDate === this.employment[0].endJobDate) {
+  methods: {
+    isWorking(startDate, endDate) {
+      let start = startDate.split('-');
+      let end = endDate.split('-');
+      start = startDate[0]*365 + startDate[1]*30 + startDate[2];
+      end = endDate[0]*365 + endDate[1]*30 + endDate[2];
+      return end <= start;
+    },
+    getEndJobDate(start, end) {
+      if (this.isWorking(start, end)) {
         return "Present";
       }
-      return this.employment[0].endJobDate.replace("-", "/").replace("-", "/");
+      return end.replace("-", "/").replace("-", "/");
     },
-    getStartJobDate() {
-      return this.employment[0].startJobDate
-        .replace("-", "/")
-        .replace("-", "/");
+    getStartJobDate(start) {
+      console.log(start)
+      return (start.replace("-", "/").replace("-", "/"));
     },
   },
 };

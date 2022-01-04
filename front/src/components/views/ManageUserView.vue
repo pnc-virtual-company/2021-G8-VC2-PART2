@@ -1,7 +1,7 @@
 <template>
   <section class="manageuser">
     <v-row class="mt-5">
-      <v-col cols="12">
+      <v-col cols="12" sm="6" md="12" lg="12">
         <v-alert
           v-model="alert"
           dismissible
@@ -25,8 +25,8 @@
         ></v-text-field>
       </v-col>
     </v-row>
-    <v-row>
-      <v-col cols="5" v-if="manageSelected !== 'company'">
+    <v-row wrap>
+      <v-col cols="12" sm="12" md="5" lg="5" v-if="manageSelected !== 'company'">
         <v-card class="d-flex pa-2">
           <v-progress-circular
             :rotate="180"
@@ -51,7 +51,7 @@
         </v-card>
       </v-col>
       <v-col cols="2" v-if="manageSelected !== 'company'"></v-col>
-      <v-col cols="3">
+      <v-col cols="8" md="5" lg="5">
         <v-select
           class="mt-1"
           label="Role"
@@ -61,7 +61,7 @@
           v-model="manageSelected"
         ></v-select>
       </v-col>
-      <v-col cols="2" v-if="manageSelected !== 'company'">
+      <v-col cols="4" md="2" lg="2" v-if="manageSelected !== 'company'">
         <v-flex class="d-flex justify-end">
           <v-dialog v-model="dialog" max-width="500px">
             <template v-slot:activator="{ on, attrs }">
@@ -126,10 +126,8 @@
       </v-col>
     </v-row>
     <!-- End -->
-    <v-card class="card_contain mt-6 mb-5" v-if="manageSelected === 'alumni'">
-      <v-card class="pa-10 text-center" v-if="alumnisToDisplay.length === 0"
-        >Data not found</v-card
-      >
+    <v-card class="card_contain mt-5 mb-5" v-if="manageSelected === 'alumni'">
+      <v-card class="pa-10 text-center" v-if="alumnisToDisplay.length === 0">No People Found</v-card>
       <v-card
         flat
         class="name-card pa-3"
@@ -138,11 +136,10 @@
       >
         <v-layout
           row
-          wrap
           class="border-left"
           :class="`pa-2 user ${user.major}`"
         >
-          <v-flex xs6 md3 sm4>
+          <v-flex xs6 md3 sm2>
             <div class="caption grey--text mb-1">Name</div>
             <div>
               {{
@@ -152,15 +149,15 @@
               }}
             </div>
           </v-flex>
-          <v-flex xs6 md4 sm4>
+          <v-flex xs6 md4>
             <div class="caption grey--text mb-1">Email</div>
             <div>{{ user.email }}</div>
           </v-flex>
-          <v-flex xs6 md2 sm4>
+          <v-flex xs6 md2 >
             <div class="caption grey--text mb-1">Gender</div>
             <div>{{ user.status == "invited" ? "Empty" : user.gender }}</div>
           </v-flex>
-          <v-flex xs6 md2 sm4>
+          <v-flex xs6 md2 >
             <div class="caption grey--text mb-1">Major</div>
             <div :class="`major ${user.major}`">
               {{
@@ -170,7 +167,7 @@
               }}
             </div>
           </v-flex>
-          <v-flex xs6 md1 sm4>
+          <v-flex xs6 md1 >
             <div class="caption grey--text mb-1">Action</div>
             <v-btn
               icon
@@ -186,25 +183,19 @@
       <v-card flat class="name-card pa-3" v-for="user in eros" :key="user.id">
         <v-layout row wrap :class="`pa-2 user ${user.status}`">
           <v-flex xs6 md1 sm2>
-            <div class="caption grey--text">ID</div>
+            <div class="caption grey--text mb-1">ID</div>
             <div>{{ user.id }}</div>
           </v-flex>
-          <v-flex xs6 md3 sm4>
-            <div class="caption grey--text">Name</div>
-            <div>
-              {{
-                user.status == "invited"
-                  ? "Empty"
-                  : user.firstname + " " + user.lastname
-              }}
-            </div>
+          <v-flex xs6 md3 xs2>
+            <div class="caption grey--text mb-1">Name</div>
+            <div>{{ user.status == 'invited' ? 'Empty' : user.firstname + " "  + user.lastname }}</div>
           </v-flex>
-          <v-flex xs6 md4 sm4>
-            <div class="caption grey--text">Email</div>
+          <v-flex xs6 md4 xs4>
+            <div class="caption grey--text mb-1">Email</div>
             <div>{{ user.email }}</div>
           </v-flex>
-          <v-flex xs6 md3 sm4>
-            <div class="caption grey--text">Status</div>
+          <v-flex xs6 md3 xs4>
+            <div class="caption grey--text mb-1">Status</div>
             <div :class="`ero ${user.status}`">{{ user.status }}</div>
           </v-flex>
           <v-flex xs6 md1 sm4>
@@ -388,7 +379,7 @@ export default {
       alumnisToDisplay: null,
       numberOfalumni: 0,
       numberOferos: 0,
-      manageSelected: "company",
+      manageSelected: "alumni",
       selectedRoleForInvite: "alumni",
       inviteEmailList: [],
       notChipEmail: null,
@@ -509,7 +500,7 @@ export default {
       if (this.statusSelected === "invited") {
         alumnisStored = this.invitedAlumnisStored;
       }
-      if (val === "") {
+      if(val === '' || val === null) {
         this.alumnisToDisplay = alumnisStored;
       } else if (this.statusSelected === "validated") {
         this.alumnisToDisplay = alumnisStored.filter(
@@ -628,5 +619,10 @@ input[type="file"] {
 }
 .border-left {
   border-left: 4px solid #ff5858;
+}
+@media (max-width: 960px) {
+  .manageuser {
+    width: 90%;
+  }
 }
 </style>
