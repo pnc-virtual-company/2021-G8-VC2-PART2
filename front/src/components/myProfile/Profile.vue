@@ -39,7 +39,7 @@
                 label="Phone"
                 type="number"
                 prepend-inner-icon="mdi-phone-in-talk"
-                :rules="[rules.required]"
+                :rules="[rules.required, rules.minPhone, rules.maxPhone]"
               ></v-text-field>
             </v-form>
           </v-card-text>
@@ -246,6 +246,8 @@ export default {
       rules: {
         required: (value) => !!value || "Required",
         emailRules: (v) => /.+@.+/.test(v) || "Invalid email format",
+        minPhone: (v) => v.length >= 8 || "Min 8 characters",
+        maxPhone: (v) => v.length <= 10 || "Max 10 characters",
       },
     };
   },

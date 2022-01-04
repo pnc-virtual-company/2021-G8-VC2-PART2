@@ -158,7 +158,10 @@
           </v-flex>
           <v-flex xs6 md1 >
             <div class="caption grey--text mb-1">Action</div>
-            <v-icon>mdi-delete</v-icon>
+            <v-btn icon @click="removeUser(user.user_id, user.role, user.status)">
+              <v-icon>mdi-delete</v-icon>
+            </v-btn>
+            
           </v-flex>
         </v-layout>
       </v-card>
@@ -187,9 +190,12 @@
             <div class="caption grey--text mb-1">Status</div>
             <div :class="`ero ${user.status}`">{{ user.status }}</div>
           </v-flex>
-          <v-flex xs6 md1 xs4>
-            <div class="caption grey--text mb-1">Action</div>
-            <v-icon>mdi-delete</v-icon>
+          <v-flex xs6 md1 sm4>
+            <div class="caption grey--text">Action</div>
+            <v-btn icon @click="removeUser(user.id, user.role, user.status)">
+              <v-icon>mdi-delete</v-icon>
+            </v-btn>
+            
           </v-flex>
         </v-layout>
       </v-card>
@@ -257,6 +263,20 @@ export default {
     showValidated() {
       this.statusSelected = 'validated';
     },
+    removeUser(id, role, status){
+      axios.delete('users/' + id).then(() => {
+        if(role === 'alumni') {
+          this.alumnisToDisplay = this.alumnisToDisplay.filter(alumni => alumni.user_id !== id);
+          if(status === 'invited') {
+            this.invitedAlumnisStored = this.invitedAlumnisStored.filter(alumni => alumni.user_id !== id);
+          } else if(status === 'validated') {
+            this.validatedAlumnisStored = this.validatedAlumnisStored.filter(alumni => alumni.user_id !== id);
+          }
+        } else if(role === 'ero') {
+          this.eros = this.eros.filter(ero => ero.id !== id);
+        }
+      })
+    }
   },
   watch: {
     // will manage existing email when we invite
@@ -310,6 +330,7 @@ export default {
       this.alumnisToDisplay = this.validatedAlumnisStored;
       this.percentage = (this.invitedAlumnisStored.length * 100)/(this.validatedAlumnisStored.length + this.invitedAlumnisStored.length);
     });
+    this.removeUser();
   },
 };
 </script>

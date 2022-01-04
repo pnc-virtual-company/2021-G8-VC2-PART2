@@ -9,9 +9,7 @@ import ManageUserView from '../components/views/ManageUserView.vue'
 import Event from '../components/views/EventView.vue'
 import PageNotFound from '../components/views/PageNotFound.vue'
 import Unauthorized from '../components/views/Unauthorized.vue'
-
-const routes = [
-  {
+const routes = [{
     path: "/",
     redirect: "/signin"
   },
@@ -24,25 +22,36 @@ const routes = [
     path: '/myprofile',
     name: 'MyProfile',
     component: MyProfileView,
-    meta: {'needLogin': true, 'mustBeAlumni': true},
+    meta: {
+      'needLogin': true,
+      'mustBeAlumni': true
+    },
   },
   {
     path: "/eroview",
     name: 'EroView',
     component: EroView,
-    meta: {'needLogin': true, 'mustBeEro': true},
+    meta: {
+      'needLogin': true,
+      'mustBeEro': true
+    },
   },
   {
     path: "/manageuser",
     name: 'ManageUserView',
     component: ManageUserView,
-    meta: {'needLogin': true, 'mustBeEro': true},
+    meta: {
+      'needLogin': true,
+      'mustBeEro': true
+    },
   },
   {
     path: "/eventview",
     name: 'Event',
     component: Event,
-    meta: {'needLogin': true},
+    meta: {
+      'needLogin': true
+    },
   },
   {
     path: "/unauthorized",
@@ -65,7 +74,7 @@ let authenticationGuard = (to, from, next) => {
   let needLogin = to.meta.needLogin;
   let userId = localStorage.getItem("userId");
   let isLoggedIn = userId !== null;
-  
+
   if (needLogin) {
     if (!isLoggedIn) {
       next("/signin");
@@ -74,44 +83,44 @@ let authenticationGuard = (to, from, next) => {
       if (mustBeAlumni) {
         let userData = null;
         axios.get('users/' + userId)
-        .then(res => {
-          userData = res.data;
-          if (userData.role === 'alumni') {
-            next();
-          } else {
-            next("/unauthorized");
-          }
-        })
-      } else {
-        let mustBeEro = to.meta.mustBeEro;
-        if (mustBeEro) {
-          let userData = null;
-          axios.get('users/' + userId)
           .then(res => {
             userData = res.data;
-            if (userData.role === 'ero' || userData.role === 'admin') {
+            if (userData.role === 'alumni') {
               next();
             } else {
               next("/unauthorized");
             }
           })
+      } else {
+        let mustBeEro = to.meta.mustBeEro;
+        if (mustBeEro) {
+          let userData = null;
+          axios.get('users/' + userId)
+            .then(res => {
+              userData = res.data;
+              if (userData.role === 'ero' || userData.role === 'admin') {
+                next();
+              } else {
+                next("/unauthorized");
+              }
+            })
         } else {
           next();
         }
       }
     }
   } else {
-    if(to.path === '/signin' && isLoggedIn) {
+    if (to.path === '/signin' && isLoggedIn) {
       let userData = null;
       axios.get('users/' + userId)
-      .then(res => {
-        userData = res.data;
-        if (userData.role === 'ero' || userData.role === 'admin') {
-          next("/eroview");
-        } else {
-          next("/myprofile");
-        }
-      })
+        .then(res => {
+          userData = res.data;
+          if (userData.role === 'ero' || userData.role === 'admin') {
+            next("/eroview");
+          } else {
+            next("/myprofile");
+          }
+        })
     } else {
       next();
     }

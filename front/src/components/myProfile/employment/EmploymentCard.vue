@@ -110,7 +110,7 @@ export default {
       let endDate = this.employment.endJobDate.split('-');
       startDate = startDate[0]*365 + startDate[1]*30 + startDate[2];
       endDate = endDate[0]*365 + endDate[1]*30 + endDate[2];
-      if (this.employment.startJobDate === this.employment.endJobDate || endDate <= startDate) {
+      if (endDate <= startDate) {
         return "Present";
       }
       return this.employment.endJobDate.replace("-", "/").replace("-", "/");
@@ -129,8 +129,7 @@ export default {
     },
 
     deleteEmployment(id) {
-      axios.delete("employments/" + id).then((res) => {
-        console.log(res.data.massage);
+      axios.delete("employments/" + id).then(() => {
         this.confirmDeleteialog = false;
         this.$emit("deleteEmployment", id);
       });

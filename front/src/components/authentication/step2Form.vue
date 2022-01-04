@@ -63,7 +63,7 @@
               type="number"
               label="Phone Number"
               placeholder="+885"
-              :rules="[rules.required]"
+              :rules="[rules.required, rules.minPhone, rules.maxPhone]"
             ></v-text-field>
           </v-col>
           <v-col md="4" sm="5">
@@ -162,16 +162,19 @@ export default {
       rules: {
         required: (value) => !!value || "Required",
         min: (v) => v.length >= 8 || "Min 8 characters",
+        minPhone: (v) => v.length >= 8 || "Min 8 characters",
+        maxPhone: (v) => v.length <= 10 || "Max 10 characters",
       },
     };
   },
   computed: {
     passwordConfirmationRule() {
-      return () =>
+      return (
         this.signInData.confirmPassword === "" ||
         this.signInData.password === "" ||
         this.signInData.password === this.signInData.confirmPassword || 
-        "Password does not match";
+        "Password must match"
+      )
     },
   },
   methods: {
