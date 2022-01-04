@@ -23,7 +23,6 @@
         @updateEmployment="updateEmployment"
         @deleteEmployment="deleteEmployment"
         @addSkills="addSkills"
-
         @deleteSkill="deleteSkill"
       ></router-view>
     </v-main>
@@ -35,7 +34,7 @@ import axios from "./axios-http.js";
 import Nav from "./components/nav/Navigation.vue";
 export default {
   components: {
-    "navigation-bar": Nav,
+    "navigation-bar": Nav,  
   },
   data() {
     return {

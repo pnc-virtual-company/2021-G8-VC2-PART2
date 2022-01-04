@@ -21,7 +21,7 @@
       </v-btn>-->
     </div>
     <v-card class="mt-2 pa-4 rounded-lg">
-      <ero-card v-for="alumni of alumnis" :key="alumni.id" :alumni="alumni"></ero-card>
+      <ero-card v-for="alumni of alumnis" :key="alumni.id" :alumni="alumni" :employment="alumni.employments"></ero-card>
     </v-card>
   </section>
 </template>
