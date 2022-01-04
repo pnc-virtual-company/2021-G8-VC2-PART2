@@ -161,6 +161,7 @@ export default {
         }
         this.alumnisFilter = this.alumnisStored;
         this.alumnisToDisplay = this.alumnisFilter;
+        console.log(this.alumnisToDisplay);
       });
     },
   },
