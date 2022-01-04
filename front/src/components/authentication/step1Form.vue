@@ -2,7 +2,7 @@
   <section>
     <div class="step1">
       <div class="profile">
-        <img src="../../assets/profilepic.svg" alt="" />
+        <img src="../../assets/profilepic.svg" alt />
       </div>
       <div class="title-login">
         <p>WELCOME BACK</p>
@@ -29,9 +29,11 @@
               color="primary"
               @click="$emit('submitFirstStep', email)"
             >
-              NEXT <v-icon>mdi-arrow-right</v-icon></v-btn
-            >
+              NEXT
+              <v-icon>mdi-arrow-right</v-icon>
+            </v-btn>
           </v-col>
+            <small v-if="eroSupport !== null" class="black--text mt-1">{{ eroSupport }}</small>
         </v-row>
       </v-form>
     </div>
@@ -40,7 +42,7 @@
 
 <script>
 export default {
-  props: ["invalidEmail"],
+  props: ["invalidEmail", "eroSupport"],
   data() {
     return {
       valid: true,
@@ -54,12 +56,12 @@ export default {
     };
   },
   watch: {
-    email: function(newValue) {
-      if(newValue !== '') {
-        this.$emit('clearErrorMessage');
+    email: function (newValue) {
+      if (newValue !== "") {
+        this.$emit("clearErrorMessage");
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
