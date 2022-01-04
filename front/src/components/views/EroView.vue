@@ -31,21 +31,21 @@
 
     <v-card class="mt-2 pa-4 rounded-lg">
       <v-card class="pa-10 text-center" v-if="alumnisToDisplay.length === 0">No People Found</v-card>
-      <ero-card
+      <alumni-card
         v-for="alumni of alumnisToDisplay"
         :key="alumni.id"
         :alumni="alumni"
-      ></ero-card>
+      ></alumni-card>
     </v-card>
   </section>
 </template>
 
 <script>
-import EroCard from "../ero/AlumniCard.vue";
+import AlumniCard from "../ero/AlumniCard.vue";
 import axios from "../../axios-http.js";
 export default {
   components: {
-    EroCard,
+    AlumniCard,
   },
   data: () => ({
     filterData: {
@@ -95,7 +95,7 @@ export default {
             this.alumnisFilter = this.alumnisStored;
           } else {
             this.alumnisFilter = this.alumnisStored.filter(alumni => alumni.employments.length > 0);  
-            this.alumnisFilter = this.alumnisFilter.filter(alumni => this.isInPresent(alumni.employments[0].startJobDate, alumni.employments[0].endJobDate) && alumni.employments[0].company_name === val.companySelected)
+            this.alumnisFilter = this.alumnisFilter.filter(alumni => this.isWorking(alumni.employments[0].startJobDate, alumni.employments[0].endJobDate) && alumni.employments[0].company_name === val.companySelected)
           }
           this.alumnisFilter = this.alumnisFilter.filter(alumni => 
             alumni.gender.includes(val.genderSelected) &&
@@ -117,7 +117,7 @@ export default {
         genderSelected: '',
       }
     },
-    isInPresent(startDate, endDate) {
+    isWorking(startDate, endDate) {
       let start = startDate.split('-');
       let end = endDate.split('-');
       start = startDate[0]*365 + startDate[1]*30 + startDate[2];

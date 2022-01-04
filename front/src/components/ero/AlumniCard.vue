@@ -16,7 +16,7 @@
                 </v-list-item-title>
                 <v-list-item-title
                   class="text-title"
-                   v-if="alumni.employments.length > 0 && alumni.employments[0].startJobDate === alumni.employments[0].endJobDate"
+                  v-if="alumni.employments.length > 0 && isWorking(alumni.employments[0].startJobDate, alumni.employments[0].endJobDate)"
                 >{{ alumni.employments[0].workPosition }}</v-list-item-title>
               </v-flex>
               <v-flex class="d-flex mt-2">
@@ -25,7 +25,7 @@
                   alumni.major
                   }} {{ alumni.batch }} ({{ alumni.gender }})
                 </v-list-item-subtitle>
-                <v-list-item-subtitle class="text" v-if="alumni.employments.length > 0 && alumni.employments[0].startJobDate === alumni.employments[0].endJobDate">
+                <v-list-item-subtitle class="text" v-if="alumni.employments.length > 0 && isWorking(alumni.employments[0].startJobDate, alumni.employments[0].endJobDate)">
                   <v-avatar size="30">
                     <v-img :src="imageUrl+alumni.employments[0].logo"></v-img>
                   </v-avatar>
@@ -48,6 +48,15 @@ export default {
   data: () => ({
     imageUrl: "http://127.0.0.1:8000/storage/profiles/",
   }),
+  methods: {
+    isWorking(startDate, endDate) {
+      let start = startDate.split('-');
+      let end = endDate.split('-');
+      start = startDate[0]*365 + startDate[1]*30 + startDate[2];
+      end = endDate[0]*365 + endDate[1]*30 + endDate[2];
+      return end <= start;
+    },
+  },
 };
 </script>
 
