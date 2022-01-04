@@ -11,28 +11,26 @@
 
     <div class="filter-container">
       <div class="filter">
-        <v-select label="Company" dense solo :items="companyLists"></v-select>
+        <v-select label="Company" dense solo :items="companyLists" v-model="filterData.companySelected"></v-select>
       </div>
       <div class="filter">
-        <v-select label="Batch" dense solo :items="batches"></v-select>
+        <v-select label="Batch" dense solo :items="batches" v-model="filterData.batchSelected"></v-select>
       </div>
       <div class="filter">
-        <v-select label="Major" dense solo :items="majors"></v-select>
+        <v-select label="Major" dense solo :items="majors" v-model="filterData.majorSelected"></v-select>
       </div>
       <div class="filter">
-        <v-select label="Gender" dense solo :items="genders"></v-select>
+        <v-select label="Gender" dense solo :items="genders" v-model="filterData.genderSelected"></v-select>
       </div>
       <div class="filter">
-        <v-btn depressed color="white" width="100%">
+        <v-btn depressed color="white" width="100%" @click="clearFilter">
           <v-icon color="error">mdi-close</v-icon>
         </v-btn>
       </div>
     </div>
 
     <v-card class="mt-2 pa-4 rounded-lg">
-      <v-card class="pa-10 text-center" v-if="alumnisToDisplay.length === 0"
-        >No People Found</v-card
-      >
+      <v-card class="pa-10 text-center" v-if="alumnisToDisplay.length === 0">No People Found</v-card>
       <ero-card
         v-for="alumni of alumnisToDisplay"
         :key="alumni.id"
@@ -50,9 +48,16 @@ export default {
     EroCard,
   },
   data: () => ({
+    filterData: {
+      companySelected: '',
+      batchSelected: '',
+      majorSelected: '',
+      genderSelected: '',
+    },
     keySearch: "",
     alumnisStored: null,
     alumnisToDisplay: null,
+    alumnisFilter: null,
     companies: [],
     companyLists: [],
     batches: [],
@@ -62,10 +67,10 @@ export default {
   watch: {
     keySearch: function (val) {
       if (val === "" || val === null) {
-        this.alumnisToDisplay = this.alumnisStored;
+        this.alumnisToDisplay = this.alumnisFilter;
       } else {
         let key = val.toLowerCase();
-        this.alumnisToDisplay = this.alumnisStored.filter(
+        this.alumnisToDisplay = this.alumnisFilter.filter(
           (alumni) =>
             alumni.firstname.toLowerCase().includes(key) ||
             alumni.lastname.toLowerCase().includes(key) ||
@@ -76,8 +81,49 @@ export default {
         );
       }
     },
+    filterData: {
+      handler(val){
+        if(
+          val.companySelected === '' &&
+          val.batchSelected === '' &&
+          val.majorSelected === '' &&
+          val.genderSelected === ''
+        ) {
+          this.alumnisFilter = this.alumnisStored;
+        } else {
+          if(val.companySelected === '') {
+            this.alumnisFilter = this.alumnisStored;
+          } else {
+            this.alumnisFilter = this.alumnisStored.filter(alumni => alumni.employments.length > 0);  
+            this.alumnisFilter = this.alumnisFilter.filter(alumni => this.isInPresent(alumni.employments[0].startJobDate, alumni.employments[0].endJobDate) && alumni.employments[0].company_name === val.companySelected)
+          }
+          this.alumnisFilter = this.alumnisFilter.filter(alumni => 
+            alumni.gender.includes(val.genderSelected) &&
+            alumni.batch.includes(val.batchSelected) &&
+            alumni.major.includes(val.majorSelected)
+          );
+        }
+        this.alumnisToDisplay = this.alumnisFilter;
+      },
+      deep: true
+  }
   },
   methods: {
+    clearFilter() {
+      this.filterData = {
+        companySelected: '',
+        batchSelected: '',
+        majorSelected: '',
+        genderSelected: '',
+      }
+    },
+    isInPresent(startDate, endDate) {
+      let start = startDate.split('-');
+      let end = endDate.split('-');
+      start = startDate[0]*365 + startDate[1]*30 + startDate[2];
+      end = endDate[0]*365 + endDate[1]*30 + endDate[2];
+      return end <= start;
+    },
     submit(emailToInvite, selectedRole) {
       this.dialog = false;
       let data = {
@@ -107,7 +153,14 @@ export default {
         this.alumnisStored = res.data.filter(
           (alumni) => alumni.status === "validated"
         );
-        this.alumnisToDisplay = this.alumnisStored;
+        for(let alumni of this.alumnisStored) {
+          alumni.employments.sort(function (a, b) {
+            var dateA = new Date(a.startJobDate), dateB = new Date(b.startJobDate)
+            return dateB - dateA
+          });
+        }
+        this.alumnisFilter = this.alumnisStored;
+        this.alumnisToDisplay = this.alumnisFilter;
       });
     },
   },
@@ -150,14 +203,9 @@ export default {
   width: 50%;
   margin: auto;
 }
-@media (max-width: 600px) {
+@media (max-width: 960px) {
   .eroview {
     width: 90%;
-  }
-}
-@media (min-width: 600px) and (max-width: 800px) {
-  .eroview {
-    width: 60%;
   }
 }
 </style>
