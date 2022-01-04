@@ -153,7 +153,6 @@
                 userData.lastname
               }}
             </h3>
-            <v-icon>{{ getGenderSign }}</v-icon>
           </div>
         </v-col>
         <v-col class="edit-info">
@@ -169,31 +168,42 @@
           </v-btn>
         </v-col>
       </v-row>
-      <v-row class="mt-0">
-        <v-col cols="12" md="6">
+      <v-layout row wrap class="mt-0 pa-2">
+        <v-flex xs12 sm6 md8 lg8 class="ma-0">
           <v-list-item class="ma-0 pa-0">
             <div class="mr-3">
-              <v-icon color="#00A3FF">mdi-clipboard-text</v-icon>
+              <v-avatar size="30">
+                <img
+                  src="../../assets/pn-logo.png"
+                  alt="John"
+                >
+              </v-avatar>
             </div>
-            <v-list-item-title>{{ userData.batch }}</v-list-item-title>
+            <v-list-item-title>{{ userData.batch + "-" + userData.major }}</v-list-item-title>
           </v-list-item>
           <v-list-item class="ma-0 pa-0">
-            <v-icon class="mr-3" color="#00A3FF">mdi-school</v-icon>
-            <v-list-item-title>{{ userData.major }}</v-list-item-title>
+            <v-icon size="30" class="mr-3" color="#00A3FF">mdi-account</v-icon>
+            <v-list-item-title>{{ userData.gender }}</v-list-item-title>
           </v-list-item>
-        </v-col>
-        <v-spacer></v-spacer>
-        <v-col class="ma-0">
-          <v-list-item class="ma-0 pa-0">
-            <v-icon class="mr-3" color="#00A3FF">mdi-email</v-icon>
+        </v-flex>
+        <v-flex xs12 sm6 md4 lg4class="ma-0">
+          <v-list-item class="ma-0 pa-0 d-flex justify-end">
+            <div class="mr-3">
+              <v-avatar size="30">
+                <img
+                  src="../../assets/mail-logo.png"
+                  alt="John"
+                >
+              </v-avatar>
+            </div>
             <v-list-item-title>{{ userData.email }}</v-list-item-title>
           </v-list-item>
-          <v-list-item class="ma-0 pa-0">
-            <v-icon class="mr-3" color="#00A3FF">mdi-phone-in-talk</v-icon>
-            <v-list-item-title>+885 {{ userData.phone }}</v-list-item-title>
+          <v-list-item class="ma-0 pa-0 d-flex justify-end">
+            <v-icon size="30" class="mr-3" color="#00A3FF">mdi-phone-in-talk</v-icon>
+            <v-list-item-title>+855{{ userData.phone }}</v-list-item-title>
           </v-list-item>
-        </v-col>
-      </v-row>
+        </v-flex>
+      </v-layout>
     </v-card>
   </section>
 </template>
