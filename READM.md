@@ -14,6 +14,11 @@
 - Launch php artisan key:generate
 - Launch php artisan storage:link ( to allow the image folder to be public)
 - Launch php artisan serve
+- To set up ADMIN user on your data
+- + Http request  POST  and  http://127.0.0.1:8000/api/invite
+  + Go to your Thurnder Client and Go to Headers input Accept apllication/json
+  + Go to Body then Form and complete the fill information
+  + firstname , lastname, email, password, role
 
 ## FRONT
 

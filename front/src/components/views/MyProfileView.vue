@@ -71,7 +71,7 @@ export default {
   width: 50%;
   margin: auto;
 }
-@media (max-width: 960px) {
+@media (max-width: 1024px) {
   .myProfileView {
     width: 90%;
   }

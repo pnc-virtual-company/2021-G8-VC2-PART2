@@ -2,14 +2,15 @@
   <section>
     <div class="step1">
       <div class="profile">
-        <img src="../../assets/profilepic.svg" alt />
+        <img class="avatar_lg" src="../../assets/profilepic.svg" alt="" />
+        <img class="alumni_lg" src="../../assets/alumni_lg.png" alt="" />
       </div>
       <div class="title-login">
         <p>WELCOME BACK</p>
       </div>
-      <v-form class="pa-10" ref="form" v-model="valid" lazy-validation>
+      <v-form class="pa-0" ref="form" v-model="valid" lazy-validation>
         <v-row class="justify-center">
-          <v-col md="8" sm="8">
+          <v-col cols="10" lg="8" md="6" sm="8" xs="10">
             <v-text-field
               label="Email"
               type="email"
@@ -21,7 +22,7 @@
           </v-col>
         </v-row>
         <v-row class="justify-center row-input">
-          <v-col md="8" sm="8">
+          <v-col cols="10" lg="8" md="6" sm="8" xs="10">
             <v-btn
               :disabled="!valid"
               type="button"
@@ -66,6 +67,9 @@ export default {
 </script>
 
 <style scoped>
+.alumni_lg{
+  display: none;
+}
 .row-input {
   margin-top: 0;
   padding: 0;
@@ -102,5 +106,13 @@ export default {
 }
 .v-btn {
   width: 100%;
+}
+@media (max-width: 1100px) {
+  .alumni_lg{
+    display: block;
+  }
+  .avatar_lg{
+    display: none;
+  }
 }
 </style>

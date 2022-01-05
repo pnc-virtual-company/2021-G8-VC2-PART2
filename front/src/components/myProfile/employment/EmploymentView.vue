@@ -271,7 +271,6 @@
                   <v-spacer></v-spacer>
                   <v-btn
                     class="mb-3"
-                    small
                     depressed
                     color="primary"
                     text
@@ -280,7 +279,6 @@
                   >
                   <v-btn
                     :disabled="!validEmploymentData"
-                    small
                     depressed
                     color="blue"
                     class="white--text mb-3"

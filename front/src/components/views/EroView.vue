@@ -1,5 +1,5 @@
 <template>
-  <section class="eroview">
+  <section class="eroview mb-5">
     <v-text-field
       class="mt-7"
       v-model="keySearch"

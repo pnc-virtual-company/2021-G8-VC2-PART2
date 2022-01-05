@@ -1,25 +1,12 @@
 <template>
-  <div class="container">
-    <h3>404 PAGE NOT FOUND</h3>
-    <div class="img">
-      <img src="../../assets/alumni2.png" alt="" />
-    </div>
-  </div>
+  <v-container class="rounded-lg">
+    <v-img src="https://i.pinimg.com/originals/0e/c0/db/0ec0dbf1e9a008acb9955d3246970e15.gif" alt=""></v-img>
+  </v-container>
 </template>
 <style scoped>
 .container {
   text-align: center;
   background: rgb(255, 255, 255);
   margin-top: 50px;
-}
-.img {
-    width: 100%;
-    height: 300px;
-    margin-top: 5px;
-    background: rgba(0, 0, 0, 0.192);
-}
-.img > img {
-    width: 100%;
-    height: 100%;
 }
 </style>

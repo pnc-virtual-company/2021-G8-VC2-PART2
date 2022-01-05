@@ -164,37 +164,46 @@
           </v-btn>
         </v-col>
       </v-row>
-      <v-layout row wrap class="mt-0 pa-2">
-        <v-flex xs12 sm6 md8 lg8 class="ma-0">
+      <v-layout row wrap class="mt-0 pa-4">
+        <v-flex xs12 sm7 md8 lg8 class="ma-0">
           <v-list-item class="ma-0 pa-0">
-            <div class="mr-3">
-              <v-avatar size="30">
-                <img src="../../assets/pn-logo.png" alt="John" />
-              </v-avatar>
-            </div>
-            <v-list-item-title>{{
-              userData.batch + "-" + userData.major
-            }}</v-list-item-title>
-          </v-list-item>
-          <v-list-item class="ma-0 pa-0">
-            <v-icon size="30" class="mr-3" color="#00A3FF">mdi-account</v-icon>
-            <v-list-item-title>{{ userData.gender }}</v-list-item-title>
-          </v-list-item>
-        </v-flex>
-        <v-flex xs12 sm6 md4 lg4class="ma-0">
-          <v-list-item class="ma-0 pa-0 d-flex justify-end">
-            <div class="mr-3">
+          <div class="mr-3">
               <v-avatar size="30">
                 <img src="../../assets/mail-logo.png" alt="John" />
               </v-avatar>
             </div>
-            <v-list-item-title>{{ userData.email }}</v-list-item-title>
+            <v-list-item-title> {{userData.email}} </v-list-item-title>
           </v-list-item>
           <v-list-item class="ma-0 pa-0 d-flex justify-end">
-            <v-icon size="30" class="mr-3" color="#00A3FF"
-              >mdi-phone-in-talk</v-icon
-            >
+            <v-icon size="30" class="mr-3" color="#00A3FF">mdi-phone-in-talk</v-icon>
             <v-list-item-title>+855{{ userData.phone }}</v-list-item-title>
+          </v-list-item>
+        </v-flex>
+        <v-flex xs12 sm5 md4 lg4class="ma-0">
+          <v-list-item class="ma-0 pa-0">
+          <div class="mr-3">
+              <v-avatar size="30">
+                <img src="../../assets/pn-logo.png" alt="John" />
+              </v-avatar>
+            </div>
+          <v-list-item-title>{{ userData.batch + "-" + userData.major }}</v-list-item-title>
+          </v-list-item>
+          <v-list-item class="ma-0 pa-0 d-flex justify-end">
+                        <div class="mr-3">
+              <v-avatar v-if="userData.gender=='Female'" size="30">
+                <img
+                  src="../../assets/female.png"
+                  alt="John"
+                >
+              </v-avatar>
+              <v-avatar v-if="userData.gender=='Male'" size="30">
+                <img
+                  src="../../assets/male.png"
+                  alt="John"
+                >
+              </v-avatar>
+            </div>
+            <v-list-item-title>{{ userData.gender }}</v-list-item-title>
           </v-list-item>
         </v-flex>
       </v-layout>
