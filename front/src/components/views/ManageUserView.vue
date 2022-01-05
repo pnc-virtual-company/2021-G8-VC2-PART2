@@ -28,29 +28,26 @@
     <v-row wrap>
       <v-col cols="12" sm="12" md="5" lg="5">
         <v-card class="d-flex pa-2">
-        <v-progress-circular
-          :rotate="180"
-          :size="90"
-          :width="15"
-          :value="percentage"
-          color="red"
-        >
-          {{ invitedAlumnisStored.length + validatedAlumnisStored.length }}
-        </v-progress-circular>
-        <div class="data ml-3">
-          <div class="pointer"
-            @click="showInvited"
+          <v-progress-circular
+            :rotate="180"
+            :size="90"
+            :width="15"
+            :value="percentage"
+            color="red"
           >
-            <v-icon color="grey darken-2">mdi-checkbox-blank</v-icon>
-            Invited {{ invitedAlumnisStored.length }}
-          </div><br>
-          <div class="pointer"
-            @click="showValidated"
-          >
-            <v-icon color="grey lighten-2">mdi-checkbox-blank</v-icon>
-            Validated {{ validatedAlumnisStored.length }}
+            {{ invitedAlumnisStored.length + validatedAlumnisStored.length }}
+          </v-progress-circular>
+          <div class="data ml-3">
+            <div class="pointer" @click="showInvited">
+              <v-icon color="grey darken-2">mdi-checkbox-blank</v-icon>
+              Invited {{ invitedAlumnisStored.length }}
+            </div>
+            <br />
+            <div class="pointer" @click="showValidated">
+              <v-icon color="grey lighten-2">mdi-checkbox-blank</v-icon>
+              Validated {{ validatedAlumnisStored.length }}
+            </div>
           </div>
-        </div>
         </v-card>
       </v-col>
       <v-col cols="8" md="5" lg="5">
@@ -64,7 +61,7 @@
       </v-col>
       <v-col cols="4" md="2" lg="2">
         <v-flex class="d-flex justify-end">
-          <v-dialog v-model="dialog" max-width="500px">
+          <v-dialog v-model="dialog" max-width="500px" persistent>
             <template v-slot:activator="{ on, attrs }">
               <v-btn
                 class="white--text"
@@ -96,14 +93,35 @@
                       class="mt-3"
                       type="email"
                       prepend-inner-icon="mdi-email"
-                      label="Email"
+                      label="Emails"
                       v-model="inviteEmailList"
+                      @blur="checkEmail"
                       :search-input.sync="notChipEmail"
                       small-chips
                       multiple
                       clearable
                       :rules="[rules.required]"
-                    ></v-combobox>
+                    >
+                      <template
+                        v-slot:selection="{
+                          attrs,
+                          item,
+                          parent,
+                          inviteEmailList,
+                        }"
+                      >
+                        <v-chip
+                          v-bind="attrs"
+                          :input-value="inviteEmailList"
+                          small
+                        >
+                          <span class="pr-2">{{ item }}</span>
+                          <v-icon small @click="parent.selectItem(item)"
+                            >$delete</v-icon
+                          >
+                        </v-chip>
+                      </template>
+                    </v-combobox>
                   </v-col>
                 </v-row>
               </v-card-text>
@@ -128,51 +146,58 @@
     </v-row>
     <!-- End -->
     <v-card class="card_contain mt-5 mb-5" v-if="selectedRole === 'alumni'">
-      <v-card class="pa-10 text-center" v-if="alumnisToDisplay.length === 0">No People Found</v-card>
+      <v-card class="pa-10 text-center" v-if="alumnisToDisplay.length === 0"
+        >No People Found</v-card
+      >
       <v-card
         flat
         class="name-card pa-3"
         v-for="user in alumnisToDisplay"
         :key="user.id"
       >
-        <v-layout
-          row
-          class="border-left"
-          :class="`pa-2 user ${user.major}`"
-        >
+        <v-layout row class="border-left" :class="`pa-2 user ${user.major}`">
           <v-flex xs6 md3 sm2>
             <div class="caption grey--text mb-1">Name</div>
-            <div>{{ user.status == 'invited' ? 'Empty' : user.firstname + ' ' + user.lastname}}</div>
+            <div>
+              {{
+                user.status == "invited"
+                  ? "Empty"
+                  : user.firstname + " " + user.lastname
+              }}
+            </div>
           </v-flex>
           <v-flex xs6 md4>
             <div class="caption grey--text mb-1">Email</div>
             <div>{{ user.email }}</div>
           </v-flex>
-          <v-flex xs6 md2 >
+          <v-flex xs6 md2>
             <div class="caption grey--text mb-1">Gender</div>
-            <div>{{ user.status == 'invited' ? 'Empty' : user.gender }}</div>
+            <div>{{ user.status == "invited" ? "Empty" : user.gender }}</div>
           </v-flex>
-          <v-flex xs6 md2 >
+          <v-flex xs6 md2>
             <div class="caption grey--text mb-1">Major</div>
-            <div :class="`major ${user.major}`">{{ user.status == 'invited' ? 'Empty' : user.major + " " +  user.batch}}</div>
+            <div :class="`major ${user.major}`">
+              {{
+                user.status == "invited"
+                  ? "Empty"
+                  : user.major + " " + user.batch
+              }}
+            </div>
           </v-flex>
-          <v-flex xs6 md1 >
+          <v-flex xs6 md1>
             <div class="caption grey--text mb-1">Action</div>
-            <v-btn icon @click="removeUser(user.user_id, user.role, user.status)">
+            <v-btn
+              icon
+              @click="removeUser(user.user_id, user.role, user.status)"
+            >
               <v-icon>mdi-delete</v-icon>
             </v-btn>
-            
           </v-flex>
         </v-layout>
       </v-card>
     </v-card>
     <v-card class="card_contain mt-5" v-if="selectedRole === 'ero'">
-      <v-card
-        flat
-        class="name-card pa-3"
-        v-for="user in eros"
-        :key="user.id"
-      >
+      <v-card flat class="name-card pa-3" v-for="user in eros" :key="user.id">
         <v-layout row wrap :class="`pa-2 user ${user.status}`">
           <v-flex xs6 md1 sm2>
             <div class="caption grey--text mb-1">ID</div>
@@ -180,7 +205,13 @@
           </v-flex>
           <v-flex xs6 md3 xs2>
             <div class="caption grey--text mb-1">Name</div>
-            <div>{{ user.status == 'invited' ? 'Empty' : user.firstname + " "  + user.lastname }}</div>
+            <div>
+              {{
+                user.status == "invited"
+                  ? "Empty"
+                  : user.firstname + " " + user.lastname
+              }}
+            </div>
           </v-flex>
           <v-flex xs6 md4 xs4>
             <div class="caption grey--text mb-1">Email</div>
@@ -195,7 +226,6 @@
             <v-btn icon @click="removeUser(user.id, user.role, user.status)">
               <v-icon>mdi-delete</v-icon>
             </v-btn>
-            
           </v-flex>
         </v-layout>
       </v-card>
@@ -225,8 +255,8 @@ export default {
       inviteEmailList: [],
       notChipEmail: null,
       numberOfalumniInvited: 0,
-      statusSelected: 'validated',
-      alertMessage: '',
+      statusSelected: "validated",
+      alertMessage: "",
       rules: {
         required: (value) => !!value || "Required",
       },
@@ -234,9 +264,6 @@ export default {
   },
   methods: {
     submitEmail() {
-      if(this.notChipEmail !== null && !this.inviteEmailList.includes(this.notChipEmail)) {
-        this.inviteEmailList.push(this.notChipEmail);
-      }
       this.numberOfalumniInvited += this.inviteEmailList.length;
       for (let invitedEmail of this.inviteEmailList) {
         let data = {
@@ -248,73 +275,106 @@ export default {
           this.invitedAlumnisStored.unshift(res.data.user);
         });
       }
+      this.existingEmails = [...this.existingEmails, ...this.inviteEmailList];
       this.alert = true;
       this.alertMessage = this.numberOfalumniInvited + " people invited";
       this.dialog = false;
       setTimeout(() => {
         this.alert = false;
         this.numberOfalumniInvited = 0;
-        this.alertMessage = '';
+        this.alertMessage = "";
       }, 5000);
     },
     showInvited() {
-      this.statusSelected = 'invited';
+      this.statusSelected = "invited";
     },
     showValidated() {
-      this.statusSelected = 'validated';
+      this.statusSelected = "validated";
     },
-    removeUser(id, role, status){
-      axios.delete('users/' + id).then(() => {
-        if(role === 'alumni') {
-          this.alumnisToDisplay = this.alumnisToDisplay.filter(alumni => alumni.user_id !== id);
-          if(status === 'invited') {
-            this.invitedAlumnisStored = this.invitedAlumnisStored.filter(alumni => alumni.user_id !== id);
-          } else if(status === 'validated') {
-            this.validatedAlumnisStored = this.validatedAlumnisStored.filter(alumni => alumni.user_id !== id);
+    removeUser(id, role, status) {
+      axios.delete("users/" + id).then(() => {
+        if (role === "alumni") {
+          this.alumnisToDisplay = this.alumnisToDisplay.filter(
+            (alumni) => alumni.user_id !== id
+          );
+          if (status === "invited") {
+            this.invitedAlumnisStored = this.invitedAlumnisStored.filter(
+              (alumni) => alumni.user_id !== id
+            );
+          } else if (status === "validated") {
+            this.validatedAlumnisStored = this.validatedAlumnisStored.filter(
+              (alumni) => alumni.user_id !== id
+            );
           }
-        } else if(role === 'ero') {
-          this.eros = this.eros.filter(ero => ero.id !== id);
+        } else if (role === "ero") {
+          this.eros = this.eros.filter((ero) => ero.id !== id);
         }
-      })
-    }
+      });
+    },
+    checkEmail() {
+      if (this.notChipEmail !== null) {
+        let emails = this.notChipEmail.split(/[?:\s\n]+/);
+        for (let email of emails) {
+          let isExist = this.existingEmails.includes(email);
+          const regExOfEmail = RegExp(/^[a-zA-Z0-9.!#$%&`*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/);
+          if (isExist || email === "" || !email.match(regExOfEmail)) {
+            emails = emails.filter((e) => e !== email);
+          }
+        }
+        this.inviteEmailList = [...new Set([...this.inviteEmailList, ...emails])];
+        this.notChipEmail = null;
+      }
+    },
   },
   watch: {
-    // will manage existing email when we invite
-    statusSelected: function(val) {
-      if(val === 'invited') {
+    inviteEmailList: function (emails) {
+      if(emails.length > 0) {
+        let email = emails[emails.length - 1];
+        let isExist = this.existingEmails.includes(email);
+        const regExOfEmail = RegExp(/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/);
+        if (isExist || email === "" || !email.match(regExOfEmail)) {
+          this.inviteEmailList.pop();
+          this.notChipEmail = email;
+          this.checkEmail();
+        }
+      }
+    },
+    statusSelected: function (val) {
+      if (val === "invited") {
         this.alumnisToDisplay = this.invitedAlumnisStored;
       } else {
         this.alumnisToDisplay = this.validatedAlumnisStored;
       }
     },
-    dialog: function(val) {
+    dialog: function (val) {
       if (!val) {
         this.inviteEmailList = [];
         this.selectedRoleForInvite = "alumni";
       }
     },
-    keySearch: function(val) {
+    keySearch: function (val) {
       let alumnisStored = this.validatedAlumnisStored;
-      if(this.statusSelected === 'invited') {
+      if (this.statusSelected === "invited") {
         alumnisStored = this.invitedAlumnisStored;
       }
-      if(val === '' || val === null) {
+      if (val === "" || val === null) {
         this.alumnisToDisplay = alumnisStored;
-      } else if(this.statusSelected === 'validated') {
-        this.alumnisToDisplay = alumnisStored.filter(alumni => 
-          alumni.firstname.toLowerCase().includes(val.toLowerCase()) ||
-          alumni.lastname.toLowerCase().includes(val.toLowerCase()) ||
-          alumni.batch.toLowerCase().includes(val.toLowerCase()) ||
-          alumni.major.toLowerCase().includes(val.toLowerCase()) ||
-          alumni.gender.includes(val) ||
+      } else if (this.statusSelected === "validated") {
+        this.alumnisToDisplay = alumnisStored.filter(
+          (alumni) =>
+            alumni.firstname.toLowerCase().includes(val.toLowerCase()) ||
+            alumni.lastname.toLowerCase().includes(val.toLowerCase()) ||
+            alumni.batch.toLowerCase().includes(val.toLowerCase()) ||
+            alumni.major.toLowerCase().includes(val.toLowerCase()) ||
+            alumni.gender.includes(val) ||
+            alumni.email.toLowerCase().includes(val.toLowerCase())
+        );
+      } else if (this.statusSelected === "invited") {
+        this.alumnisToDisplay = alumnisStored.filter((alumni) =>
           alumni.email.toLowerCase().includes(val.toLowerCase())
-        )
-      } else if(this.statusSelected === 'invited') {
-        this.alumnisToDisplay = alumnisStored.filter(alumni => 
-          alumni.email.toLowerCase().includes(val.toLowerCase())
-        )
+        );
       }
-    }
+    },
   },
   mounted() {
     axios.get("/users/email/all").then((res) => {
@@ -325,17 +385,23 @@ export default {
       this.numberOferos = this.eros.length;
     });
     axios.get("/users/alumni").then((res) => {
-      this.invitedAlumnisStored = res.data.filter(alumni => alumni.status === 'invited');
-      this.validatedAlumnisStored = res.data.filter(alumni => alumni.status === 'validated');
+      this.invitedAlumnisStored = res.data.filter(
+        (alumni) => alumni.status === "invited"
+      );
+      this.validatedAlumnisStored = res.data.filter(
+        (alumni) => alumni.status === "validated"
+      );
       this.alumnisToDisplay = this.validatedAlumnisStored;
-      this.percentage = (this.invitedAlumnisStored.length * 100)/(this.validatedAlumnisStored.length + this.invitedAlumnisStored.length);
+      this.percentage =
+        (this.invitedAlumnisStored.length * 100) /
+        (this.validatedAlumnisStored.length + this.invitedAlumnisStored.length);
     });
     this.removeUser();
   },
 };
 </script>
 <style scoped>
-.pointer{
+.pointer {
   cursor: pointer;
 }
 .manageuser {
