@@ -69,7 +69,7 @@
       </v-col>
       <v-col cols="4" md="2" lg="2" v-if="manageSelected !== 'company'">
         <v-flex class="d-flex justify-end">
-          <v-dialog v-model="dialog" max-width="500px">
+          <v-dialog v-model="dialog" max-width="500px" persistent>
             <template v-slot:activator="{ on, attrs }">
               <v-btn
                 class="white--text mt-1"
@@ -101,14 +101,35 @@
                       class="mt-3"
                       type="email"
                       prepend-inner-icon="mdi-email"
-                      label="Email"
+                      label="Emails"
                       v-model="inviteEmailList"
+                      @blur="checkEmail"
                       :search-input.sync="notChipEmail"
                       small-chips
                       multiple
                       clearable
                       :rules="[rules.required]"
-                    ></v-combobox>
+                    >
+                      <template
+                        v-slot:selection="{
+                          attrs,
+                          item,
+                          parent,
+                          inviteEmailList,
+                        }"
+                      >
+                        <v-chip
+                          v-bind="attrs"
+                          :input-value="inviteEmailList"
+                          small
+                        >
+                          <span class="pr-2">{{ item }}</span>
+                          <v-icon small @click="parent.selectItem(item)"
+                            >$delete</v-icon
+                          >
+                        </v-chip>
+                      </template>
+                    </v-combobox>
                   </v-col>
                 </v-row>
               </v-card-text>
@@ -408,7 +429,6 @@ export default {
       statusSelected: "validated",
       alertMessage: "",
       companyList: [],
-
       rules: {
         required: (value) => !!value || "Required",
       },
@@ -474,12 +494,6 @@ export default {
       }
     },
     submitEmail() {
-      if (
-        this.notChipEmail !== null &&
-        !this.inviteEmailList.includes(this.notChipEmail)
-      ) {
-        this.inviteEmailList.push(this.notChipEmail);
-      }
       this.numberOfalumniInvited += this.inviteEmailList.length;
       for (let invitedEmail of this.inviteEmailList) {
         let data = {
@@ -491,6 +505,7 @@ export default {
           this.invitedAlumnisStored.unshift(res.data.user);
         });
       }
+      this.existingEmails = [...this.existingEmails, ...this.inviteEmailList];
       this.alert = true;
       this.alertMessage = this.numberOfalumniInvited + " people invited";
       this.dialog = false;
@@ -526,8 +541,34 @@ export default {
         }
       });
     },
+    checkEmail() {
+      if (this.notChipEmail !== null) {
+        let emails = this.notChipEmail.split(/[?:\s\n]+/);
+        for (let email of emails) {
+          let isExist = this.existingEmails.includes(email);
+          const regExOfEmail = RegExp(/^[a-zA-Z0-9.!#$%&`*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/);
+          if (isExist || email === "" || !email.match(regExOfEmail)) {
+            emails = emails.filter((e) => e !== email);
+          }
+        }
+        this.inviteEmailList = [...new Set([...this.inviteEmailList, ...emails])];
+        this.notChipEmail = null;
+      }
+    },
   },
   watch: {
+    inviteEmailList: function (emails) {
+      if(emails.length > 0) {
+        let email = emails[emails.length - 1];
+        let isExist = this.existingEmails.includes(email);
+        const regExOfEmail = RegExp(/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/);
+        if (isExist || email === "" || !email.match(regExOfEmail)) {
+          this.inviteEmailList.pop();
+          this.notChipEmail = email;
+          this.checkEmail();
+        }
+      }
+    },
     isEditCompanyText: function (val) {
       if (val) {
         this.newName = null;

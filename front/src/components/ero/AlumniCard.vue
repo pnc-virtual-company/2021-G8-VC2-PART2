@@ -164,7 +164,6 @@ export default {
       return end.replace("-", "/").replace("-", "/");
     },
     getStartJobDate(start) {
-      console.log(start)
       return (start.replace("-", "/").replace("-", "/"));
     },
   },
