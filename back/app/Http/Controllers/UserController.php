@@ -173,7 +173,7 @@ class Usercontroller extends Controller
                     ->get(['users.*', 'alumnis.*'])->first();
             $skills = DB::table('alumni_skills')
                         ->select('skillName')
-                        ->where('alumni_skills.alumni_id', '=', $id)
+                        ->where('alumni_skills.alumni_id', '=', $user->user_id)
                         ->get();
             $cleanSkillList = [];
             foreach($skills as $skill) {
@@ -183,7 +183,7 @@ class Usercontroller extends Controller
             
             $employmentList = DB::table('employments')
                             ->join('companies', 'companies.id', '=', 'employments.company_id')
-                            ->where('employments.alumni_id', '=', $id)
+                            ->where('employments.alumni_id', '=', $user->user_id)
                             ->get(['companies.*', 'employments.*']);
             
             $user->employments = $employmentList;
@@ -215,7 +215,7 @@ class Usercontroller extends Controller
         ]);
         $request->profile->store('public/profiles');
         $alumniProfile = $request->profile->hashName();
-        Alumni::where('user_id', $id)->get()->first()->update(['profile' => $alumniProfile]);
+        Alumni::where('id', $id)->get()->first()->update(['profile' => $alumniProfile]);
         
         return response()->json(['message'=>'Your profile have been uploaded',"profile" => $request->profile->hashName()],200);
     }

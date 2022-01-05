@@ -6,16 +6,17 @@
       </v-col>
       <v-col class="add-info">
         <v-btn
-              color="white"
-              fab
-              x-small
-              dark
-              elevation="1"
-              class="mr-2"
-              @click="showSkill = !showSkill"
-            >
-              <v-icon color="black">mdi-pencil</v-icon>
-            </v-btn>
+          v-if="userData.skills.length > 0"
+          color="white"
+          fab
+          x-small
+          dark
+          elevation="1"
+          class="mr-2"
+          @click="showSkill = !showSkill"
+        >
+          <v-icon color="black">mdi-pencil</v-icon>
+        </v-btn>
         <v-dialog v-model="showSkillDialog" persistent max-width="400px">
           <template v-slot:activator="{ on, attrs }">
             <v-btn
@@ -50,10 +51,18 @@
                     hide-selected
                     clearable
                   >
-                    <template v-slot:selection="{ attrs, item, parent, selectedSkills }">
-                      <v-chip v-bind="attrs" :input-value="selectedSkills" small>
+                    <template
+                      v-slot:selection="{ attrs, item, parent, selectedSkills }"
+                    >
+                      <v-chip
+                        v-bind="attrs"
+                        :input-value="selectedSkills"
+                        small
+                      >
                         <span class="pr-2">{{ item }}</span>
-                        <v-icon small @click="parent.selectItem(item)">$delete</v-icon>
+                        <v-icon small @click="parent.selectItem(item)"
+                          >$delete</v-icon
+                        >
                       </v-chip>
                     </template>
                   </v-combobox>
@@ -62,8 +71,23 @@
             </v-card-text>
             <v-card-actions class="btn-upload">
               <v-spacer></v-spacer>
-              <v-btn class="mb-1" small depressed color="primary" text @click="cancel">Cancel</v-btn>
-              <v-btn small depressed color="primary" class="white--text mb-1" @click="addSkill">ADD</v-btn>
+              <v-btn
+                class="mb-1"
+                small
+                depressed
+                color="primary"
+                text
+                @click="cancel"
+                >Cancel</v-btn
+              >
+              <v-btn
+                small
+                depressed
+                color="primary"
+                class="white--text mb-1"
+                @click="addSkill"
+                >ADD</v-btn
+              >
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -86,7 +110,8 @@
         :key="index"
         close
         @click:close="removed(userData.user_id, skill)"
-      >{{ skill }}</v-chip>
+        >{{ skill }}</v-chip
+      >
     </div>
   </v-card>
 </template>

@@ -64,11 +64,6 @@ const routes = [
     name: "PageNotFound",
     component: PageNotFound,
   },
-  // {
-  //   path: "manageuser/:pathMatch(.*)",
-  //   name: 'PageNotFound',
-  //   component: PageNotFound
-  // },
 ];
 
 let authenticationGuard = (to, from, next) => {
@@ -128,6 +123,7 @@ let authenticationGuard = (to, from, next) => {
 Vue.use(VueRouter);
 
 const router = new VueRouter({
+  mode: 'history',
   base: process.env.BASE_URL,
   routes,
 });
