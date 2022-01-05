@@ -26,7 +26,13 @@
       </v-col>
     </v-row>
     <v-row wrap>
-      <v-col cols="12" sm="12" md="5" lg="5" v-if="manageSelected !== 'company'">
+      <v-col
+        cols="12"
+        sm="12"
+        md="5"
+        lg="5"
+        v-if="manageSelected !== 'company'"
+      >
         <v-card class="d-flex pa-2">
           <v-progress-circular
             :rotate="180"
@@ -127,18 +133,16 @@
     </v-row>
     <!-- End -->
     <v-card class="card_contain mt-5 mb-5" v-if="manageSelected === 'alumni'">
-      <v-card class="pa-10 text-center" v-if="alumnisToDisplay.length === 0">No People Found</v-card>
+      <v-card class="pa-10 text-center" v-if="alumnisToDisplay.length === 0"
+        >No People Found</v-card
+      >
       <v-card
         flat
         class="name-card pa-3"
         v-for="user in alumnisToDisplay"
         :key="user.id"
       >
-        <v-layout
-          row
-          class="border-left"
-          :class="`pa-2 user ${user.major}`"
-        >
+        <v-layout row class="border-left" :class="`pa-2 user ${user.major}`">
           <v-flex xs6 md3 sm2>
             <div class="caption grey--text mb-1">Name</div>
             <div>
@@ -153,11 +157,11 @@
             <div class="caption grey--text mb-1">Email</div>
             <div>{{ user.email }}</div>
           </v-flex>
-          <v-flex xs6 md2 >
+          <v-flex xs6 md2>
             <div class="caption grey--text mb-1">Gender</div>
             <div>{{ user.status == "invited" ? "Empty" : user.gender }}</div>
           </v-flex>
-          <v-flex xs6 md2 >
+          <v-flex xs6 md2>
             <div class="caption grey--text mb-1">Major</div>
             <div :class="`major ${user.major}`">
               {{
@@ -167,7 +171,7 @@
               }}
             </div>
           </v-flex>
-          <v-flex xs6 md1 >
+          <v-flex xs6 md1>
             <div class="caption grey--text mb-1">Action</div>
             <v-btn
               icon
@@ -188,7 +192,13 @@
           </v-flex>
           <v-flex xs6 md3 xs2>
             <div class="caption grey--text mb-1">Name</div>
-            <div>{{ user.status == 'invited' ? 'Empty' : user.firstname + " "  + user.lastname }}</div>
+            <div>
+              {{
+                user.status == "invited"
+                  ? "Empty"
+                  : user.firstname + " " + user.lastname
+              }}
+            </div>
           </v-flex>
           <v-flex xs6 md4 xs4>
             <div class="caption grey--text mb-1">Email</div>
@@ -244,7 +254,14 @@
             <v-icon
               size="20"
               class="mb-3 edit-text"
-              @click="isEditCompanyText = true"
+              @click="
+                openEditCompanyText(
+                  company.id,
+                  company.company_name,
+                  company.domain_company,
+                  company.location
+                )
+              "
               >mdi-border-color</v-icon
             >
           </v-list-item>
@@ -304,20 +321,20 @@
             <v-text-field
               label="Company Name"
               clearable
-              v-model="newName"
+              v-model="companyDataToEdit.companyName"
+              :rules="[rules.required]"
+            ></v-text-field>
+            <v-text-field
+              class="mt-2"
+              v-model="companyDataToEdit.companyLocation"
+              clearable
+              label="Campany Location"
               :rules="[rules.required]"
             ></v-text-field>
             <v-text-field
               label="Industry"
               clearable
-              v-model="newIndustry"
-              :rules="[rules.required]"
-            ></v-text-field>
-            <v-text-field
-              class="mt-2"
-              v-model="newLocation"
-              clearable
-              label="Campany Location"
+              v-model="companyDataToEdit.industry"
               :rules="[rules.required]"
             ></v-text-field>
           </v-form>
@@ -340,6 +357,7 @@
             depressed
             color="primary"
             class="white--text mb-1"
+            @click="editCompanyText"
           >
             Change
           </v-btn>
@@ -355,9 +373,6 @@ export default {
   props: ["userEro"],
   data() {
     return {
-      newName: null,
-      newLocation: null,
-      newIndustry: null,
       valid: false,
       imageUrl: "http://127.0.0.1:8000/storage/profiles/",
       companyLogo: null,
@@ -365,7 +380,13 @@ export default {
       isEditLogo: false,
       companyDataToEdit: {
         id: null,
+        companyName: null,
+        companyLocation: null,
+        industry: null,
       },
+      name: null,
+      location: null,
+      industry: null,
       isEditCompanyText: false,
       existingEmails: null,
       percentage: 0,
@@ -379,7 +400,7 @@ export default {
       alumnisToDisplay: null,
       numberOfalumni: 0,
       numberOferos: 0,
-      manageSelected: "alumni",
+      manageSelected: "company",
       selectedRoleForInvite: "alumni",
       inviteEmailList: [],
       notChipEmail: null,
@@ -394,10 +415,42 @@ export default {
     };
   },
   methods: {
+    openEditCompanyText(id, name, industry, location) {
+      this.isEditCompanyText = true;
+      this.companyDataToEdit.id = id;
+      this.companyDataToEdit.companyName = name;
+      this.companyDataToEdit.companyLocation = location;
+      this.companyDataToEdit.industry = industry;
+    },
+    editCompanyText() {
+      if (
+        this.companyDataToEdit.companyName !== null &&
+        this.companyDataToEdit.companyLocation !== null &&
+        this.companyDataToEdit.industry !== null
+      ) {
+        let companyDataForEdit = {
+          domain_company: this.companyDataToEdit.industry,
+          company_name: this.companyDataToEdit.companyName,
+          location: this.companyDataToEdit.companyLocation,
+        };
+        axios
+          .put("companies/" + this.companyDataToEdit.id, companyDataForEdit)
+          .then((res) => {
+            this.isEditCompanyText = false;
+            for (let company of this.companyList) {
+              if (company.id === this.companyDataToEdit.id) {
+                company.domain_company = res.data.data.domain_company;
+                company.company_name = res.data.data.company_name;
+                company.location = res.data.data.location;
+              }
+            }
+          });
+      }
+    },
     openLogoEditDialog(id, logo) {
       this.isEditLogo = true;
       this.companyDataToEdit.id = id;
-      this.companyLogo = 'http://127.0.0.1:8000/storage/profiles/' + logo;
+      this.companyLogo = "http://127.0.0.1:8000/storage/profiles/" + logo;
     },
     fileChange(e) {
       this.imageFile = e.target.files[0];
@@ -408,16 +461,17 @@ export default {
         let imageFile = new FormData();
         imageFile.append("logo", this.imageFile);
         imageFile.append("_method", "PUT");
-        axios.post("companies/updateLogos/" + this.companyDataToEdit.id, imageFile).then((res) => {
-          this.isEditLogo = false;
-          for(let company of this.companyList) {
-            if(company.id === this.companyDataToEdit.id) {
-              company.logo = res.data.companyLogo;
+        axios
+          .post("companies/updateLogos/" + this.companyDataToEdit.id, imageFile)
+          .then((res) => {
+            this.isEditLogo = false;
+            for (let company of this.companyList) {
+              if (company.id === this.companyDataToEdit.id) {
+                company.logo = res.data.companyLogo;
+              }
             }
-          }
-        });
+          });
       }
-      
     },
     submitEmail() {
       if (
@@ -500,7 +554,7 @@ export default {
       if (this.statusSelected === "invited") {
         alumnisStored = this.invitedAlumnisStored;
       }
-      if(val === '' || val === null) {
+      if (val === "" || val === null) {
         this.alumnisToDisplay = alumnisStored;
       } else if (this.statusSelected === "validated") {
         this.alumnisToDisplay = alumnisStored.filter(
