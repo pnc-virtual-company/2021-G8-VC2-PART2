@@ -246,10 +246,10 @@
             v-for="company of companyList"
             :key="company.id"
           >
-            <v-avatar class="mr-5 companyLogo" size="60">
+            <v-avatar class="mr-5 companyLogo" size="80">
               <v-img :src="imageUrl + company.logo" alt=""></v-img>
             </v-avatar>
-            <v-avatar size="60" class="edit">
+            <v-avatar size="80" class="edit">
               <v-icon
                 size="20"
                 color="white"
@@ -269,6 +269,7 @@
                 {{ company.domain_company }} at
                 {{ company.location }}</v-list-item-subtitle
               >
+            <v-divider class="mt-2"></v-divider>
             </v-list-item-title>
             <v-icon
               size="20"
@@ -632,7 +633,6 @@ export default {
         (this.invitedAlumnisStored.length * 100) /
         (this.validatedAlumnisStored.length + this.invitedAlumnisStored.length);
     });
-    this.removeUser();
 
     axios.get("/allcompanies").then((res) => {
       this.companyList = res.data;
@@ -641,6 +641,9 @@ export default {
 };
 </script>
 <style scoped>
+.v-card {
+  border-radius: 10px;
+}
 .custom-file-upload {
   font-size: 12px;
   border-radius: 5px;
@@ -659,6 +662,11 @@ input[type="file"] {
 }
 .companyLogo:hover .edit {
   display: block;
+
+}
+.companyLogo:hover {
+  background: rgb(245, 245, 245);
+  border-radius: 10px;
 }
 .companyLogo:hover .edit-text {
   display: block;
