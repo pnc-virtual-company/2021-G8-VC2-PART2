@@ -1,5 +1,5 @@
 <template>
-  <section class="eroview">
+  <section class="eroview mb-5">
     <v-text-field
       class="mt-7"
       v-model="keySearch"
@@ -161,7 +161,6 @@ export default {
         }
         this.alumnisFilter = this.alumnisStored;
         this.alumnisToDisplay = this.alumnisFilter;
-        console.log(this.alumnisToDisplay);
       });
     },
   },

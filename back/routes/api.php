@@ -35,10 +35,12 @@ Route::put('/domain_companies/{id}',[DomainCompanyController::class, "updateDoma
 //Route for company
 
 Route::get('/companies',[CompanyController::class, "getCompanies"]);
+Route::get('/allcompanies',[CompanyController::class, "getAllCompanies"]);
 Route::get('/companies/{id}',[CompanyController::class, "showOneCompany"]);
 
 Route::post('/companies',[CompanyController::class, "createCompany"]);
 Route::put('/companies/{id}',[CompanyController::class, "updateCompany"]);
+Route::put('/companies/updateLogos/{id}',[CompanyController::class, "updateLogo"]);
 Route::delete('/companies/{id}',[CompanyController::class, "destroy"]);
 
 //Route for skill
@@ -49,15 +51,6 @@ Route::delete('/skills/{id}',[SkillController::class, "destroy"]);
 Route::post('/alumniskills/add', [AlumniSkillController::class ,'createAlumniSkill']);
 Route::post('/alumniskills/remove', [AlumniSkillController::class ,'deleteAlumniSkill']);
 
-
-//Route for position
-
-Route::get('/workPositions',[PositionController::class, "getWorkPositions"]);
-Route::get('/workPositions/{id}',[PositionController::class, "getOneWorkPosition"]);
-
-Route::post('/workPositions',[PositionController::class, "createWorkPosition"]);
-Route::put('/workPositions/{id}',[PositionController::class, "updateWorkPosition"]);
-Route::delete('/workPositions/{id}',[PositionController::class, "deleteWorkPosition"]);
 
 // Route for batch
 Route::get('/batches',[BatchController::class, "getAllBatchNames"]);

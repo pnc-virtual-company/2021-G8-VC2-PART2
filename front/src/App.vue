@@ -12,6 +12,7 @@
         :status="signInData.status"
         :role="signInData.role"
         :invalidEmail="error.invalidEmail"
+        :eroSupport="error.eroSupport"
         :invalidEmailOrPassword="error.invalidEmailOrPassword"
         @submitFirstStep="submitStep1"
         @submitSecondStep="submitStep2"
@@ -44,6 +45,7 @@ export default {
       },
       error: {
         invalidEmail: null,
+        eroSupport : null,
         invalidEmailOrPassword: null,
       },
       signInData: {
@@ -59,15 +61,6 @@ export default {
     },
   },
   methods: {
-    // shortEmployments() {
-    //   let copyOfEmp = this.user.employments;
-    //   this.user.employments = [];
-    //   for(let emp of copyOfEmp) {
-    //     for(let )
-    //     let lastEmp = 
-    //     this.user.employments.push()
-    //   }
-    // },
     signOut() {
       localStorage.removeItem("userId");
       this.user = { role: null };
@@ -82,10 +75,12 @@ export default {
           this.signInData.status = res.data.status;
           this.signInData.role = res.data.role;
           this.error.invalidEmail = null;
+          this.error.eroSupport = null;
         })
         .catch((err) => {
           if (err.response.status === 401) {
             this.error.invalidEmail = "Invalid email address";
+            this.error.eroSupport = "To help you please contact ERO by + 855 71254321"
           } else {
             console.log(err);
           }
@@ -128,6 +123,7 @@ export default {
     },
     clearErrorMessage() {
       this.error.invalidEmail = null;
+      this.error.eroSupport = null;
     },
     changeProfile(profile) {
       this.user.profile = profile;

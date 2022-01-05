@@ -58,7 +58,7 @@
                       <template v-slot:item="data">
                         <template>
                           <v-list-item-avatar>
-                            <img :src="imageUrl + data.item.logo" />
+                            <v-img :src="imageUrl + data.item.logo"></v-img>
                           </v-list-item-avatar>
                           <v-list-item-content>
                             <v-list-item-title
@@ -158,6 +158,7 @@
                           </template>
                           <v-date-picker
                             v-model="employmentDataToAdd.endJobDate"
+                            :min="employmentDataToAdd.startJobDate"
                             scrollable
                           >
                             <v-spacer></v-spacer>
@@ -240,7 +241,7 @@
                       <v-select
                         class="mt-3"
                         :items="dataToDisplay.domains"
-                        label="Select domain"
+                        label="Industry"
                         :rules="[rules.required]"
                         prepend-inner-icon="mdi-web"
                         v-model="companyDataToAdd.domain"

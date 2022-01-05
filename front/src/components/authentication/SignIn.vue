@@ -9,6 +9,7 @@
         <form-step-one
           v-if="onForm === 1"
           :invalidEmail="invalidEmail"
+          :eroSupport="eroSupport"
           @next="next"
           @submitFirstStep="submitStep1"
           @clearErrorMessage="$emit('clearErrorMessage')"
@@ -30,7 +31,7 @@
 import Step1 from "./step1Form.vue";
 import Step2 from "./step2Form.vue";
 export default {
-  props: ["status", "invalidEmail", "invalidEmailOrPassword", 'role'],
+  props: ["status", "invalidEmail","eroSupport", "invalidEmailOrPassword", 'role'],
   components: {
     "form-step-one": Step1,
     "form-step-two": Step2,

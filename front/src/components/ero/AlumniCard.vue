@@ -2,54 +2,73 @@
   <section>
     <!-- profile -->
     <!-- persistent -->
-    <v-dialog v-model="dialog" persistent max-width="600px">
-      <v-card class="pa-6">
-        <v-row>
-          <v-col cols="8" sm="3" md="5">
-            <v-avatar size="90">
+    <v-dialog v-model="dialog" persistent max-width="760px">
+      <v-card class="pa-4">
+       <v-layout row wrap class="mt-0 pr-4 pl-4">
+        <v-flex xs12 sm12 md12 lg11>
+            <v-avatar size="100">
               <v-img :src="imageUrl + alumni.profile" alt=""></v-img>
             </v-avatar>
-            <div class="img mr-3">
-              <div class="text-center"></div>
+        </v-flex>
+        <v-flex xs12 sm12 md12 lg1>
+          <v-btn @click="dialog = false" elevation="0" class="close-btn mx-2" small color="error">
+            <v-icon dark>
+              mdi-close
+            </v-icon>
+          </v-btn>
+        </v-flex>
+        <v-flex xs12 sm7 md8 lg8 class="ma-0">
+          <v-list-item class="ma-0 pa-0">
+            <h3>{{alumni.firstname + " " + alumni.lastname}}</h3>
+          </v-list-item>
+          <v-list-item class="ma-0 pa-0">
+           <div class="mr-3">
+              <v-avatar size="30">
+                <img src="../../assets/pn-logo.png" alt="John" />
+              </v-avatar>
             </div>
-            <div class="d-flex">
-              <h3 class="mt-2">{{ alumni.firstname }} {{ alumni.lastname }}</h3>
-              <v-icon v-if="alumni.gender === 'Male'"> mdi-gender-male </v-icon>
-              <v-icon v-else> mdi-gender-female </v-icon>
+            <v-list-item-title>{{ alumni.batch + "-" + alumni.major }}</v-list-item-title>
+          </v-list-item>
+        </v-flex>
+        <v-flex xs12 sm5 md4 lg4 class="ma-0">
+          <v-list-item class="ma-0 pa-0 d-flex justify-end">
+            <div class="mr-3">
+              <v-avatar v-if="alumni.gender=='Female'" size="30">
+                <img
+                  src="../../assets/female.png"
+                  alt="John"
+                >
+              </v-avatar>
+              <v-avatar v-if="alumni.gender=='Male'" size="30">
+                <img
+                  src="../../assets/male.png"
+                  alt="John"
+                >
+              </v-avatar>
             </div>
-          </v-col>
-        </v-row>
-        <v-row class="mt-0">
-          <v-col cols="12" md="6">
-            <v-list-item class="ma-0 pa-0">
-              <div class="mr-3">
-                <v-icon color="#00A3FF">mdi-clipboard-text</v-icon>
-              </div>
-              <v-list-item-title> {{ alumni.major }} </v-list-item-title>
-            </v-list-item>
-            <v-list-item class="ma-0 pa-0">
-              <v-icon class="mr-3" color="#00A3FF">mdi-school</v-icon>
-              <v-list-item-title> {{ alumni.batch }} </v-list-item-title>
-            </v-list-item>
-          </v-col>
-          <v-spacer></v-spacer>
-          <v-col class="ma-0">
-            <v-list-item class="ma-0 pa-0">
-              <v-icon class="mr-3" color="#00A3FF">mdi-email</v-icon>
-              <v-list-item-title> {{ alumni.email }} </v-list-item-title>
-            </v-list-item>
-            <v-list-item class="ma-0 pa-0">
-              <v-icon class="mr-3" color="#00A3FF">mdi-phone-in-talk</v-icon>
-              <v-list-item-title>+885 {{ alumni.phone }} </v-list-item-title>
-            </v-list-item>
-          </v-col>
-        </v-row>
-        <v-divider class="mt-2"></v-divider>
+            <v-list-item-title>{{ alumni.gender }}</v-list-item-title>
+          </v-list-item>
+          <v-list-item class="ma-0 pa-0 d-flex justify-end">
+            <v-icon size="30" class="mr-3" color="#00A3FF">mdi-phone-in-talk</v-icon>
+            <v-list-item-title>+855{{ alumni.phone }}</v-list-item-title>
+          </v-list-item>
+        </v-flex>
+        <v-flex>
+          <v-list-item class="ma-0 pa-0">
+          <div class="mr-3">
+              <v-avatar class="background-img" size="30">
+                <img src="../../assets/mail-logo.png" alt="John" />
+              </v-avatar>
+            </div>
+          <v-list-item-title>{{ alumni.email }}</v-list-item-title>
+          </v-list-item>
+        </v-flex>
+      </v-layout>  
+        <v-divider class="mt-3 mb-3"></v-divider>
         <!-- profile -->
-
         <!-- skill -->
-        <v-row>
-          <v-col>
+        <v-layout row wrap class="mt-0">
+          <v-col class="ma-0">
             <h3>Skills</h3>
             <div class="text-left">
               <v-chip class="ma-2" v-for="skill of alumni.skills" :key="skill">
@@ -57,45 +76,43 @@
               </v-chip>
             </div>
           </v-col>
-        </v-row>
-        <v-divider class="mt-2"></v-divider>
+        </v-layout>
+        <v-divider class="mt-5 mb-3"></v-divider>
         <!-- skill -->
         <!-- employment -->
-        <v-row>
-          <v-col>
+        <v-layout row wrap class="mt-0 pr-4 pl-4">
+          <v-flex>
             <h3>Employment</h3>
             <v-card
+              class="ma-0 pa-2 elevation-0 rounded-lg alumni-card"
               v-for="employment of alumni.employments"
               :key="employment.id"
             >
-            <v-list-item class="mt-3 ma-0 pa-0" >
-              <v-avatar class="mr-5" size="50">
-                <v-img :src="imageUrl + employment.logo" alt=""></v-img>
-              </v-avatar>
-              <v-list-item-title>
-                <v-flex class="d-flex">
-                  <v-list-item-title>
-                    {{ employment.workPosition }}
-                  </v-list-item-title>
-                  <v-menu bottom left> </v-menu>
-                </v-flex>
-                <v-list-item-subtitle>
-                  {{ employment.company_name }}
-                </v-list-item-subtitle>
-                <v-list-item-subtitle>
-                  {{ getStartJobDate(employment.startJobDate) }} - {{ employment.endJobDate }}.
-                {{ employment.location }}
-                </v-list-item-subtitle>
-              </v-list-item-title>
-            </v-list-item>
+              <v-list-item class="ma-0 pa-2">
+                <v-avatar class="mr-5" size="70">
+                  <v-img :src="imageUrl + employment.logo" alt=""></v-img>
+                </v-avatar>
+                <v-list-item-title>
+                  <v-flex class="d-flex">
+                    <v-list-item-title>
+                      {{ employment.workPosition }}
+                    </v-list-item-title>
+                    <v-menu bottom left> </v-menu>
+                  </v-flex>
+                  <v-list-item-subtitle class="mt-2">
+                    {{ employment.company_name }}
+                  </v-list-item-subtitle>
+                  <v-list-item-subtitle class="mt-1">
+                    {{ getStartJobDate(employment.startJobDate) }} -
+                    {{ employment.endJobDate }}.
+                    {{ employment.location }}
+                  </v-list-item-subtitle>
             <v-divider class="mt-2"></v-divider>
-
+                </v-list-item-title>
+              </v-list-item>
             </v-card>
-          </v-col>
-        </v-row>
-        <v-row justify="end" class="mt-2">
-          <v-btn @click="dialog = false" small color="primary"> Close </v-btn>
-        </v-row>
+          </v-flex>
+        </v-layout>
         <!-- employment -->
       </v-card>
     </v-dialog>
@@ -115,8 +132,15 @@
                 </v-list-item-title>
                 <v-list-item-title
                   class="text-title"
-                  v-if="alumni.employments.length > 0&& isWorking(alumni.employments[0].startJobDate, alumni.employments[0].endJobDate)"
-                  >{{ alumni.employments[0].workPosition }}</v-list-item-title>
+                  v-if="
+                    alumni.employments.length > 0 &&
+                    isWorking(
+                      alumni.employments[0].startJobDate,
+                      alumni.employments[0].endJobDate
+                    )
+                  "
+                  >{{ alumni.employments[0].workPosition }}</v-list-item-title
+                >
               </v-flex>
               <v-flex class="d-flex mt-2">
                 <v-list-item-subtitle class="text mt-2">
@@ -124,17 +148,24 @@
                 </v-list-item-subtitle>
                 <v-list-item-subtitle
                   class="text"
-                  v-if="alumni.employments.length > 0 && isWorking(alumni.employments[0].startJobDate, alumni.employments[0].endJobDate)">
-                  <v-avatar size="30">
+                  v-if="
+                    alumni.employments.length > 0 &&
+                    isWorking(
+                      alumni.employments[0].startJobDate,
+                      alumni.employments[0].endJobDate
+                    )
+                  "
+                >
+                  <v-avatar size="35" class="mr-1">
                     <v-img :src="imageUrl + alumni.employments[0].logo"></v-img>
                   </v-avatar>
                   {{ alumni.employments[0].company_name }}
                 </v-list-item-subtitle>
               </v-flex>
-              <br>
+              <v-divider class="mt-2"></v-divider>
+              <br />
             </v-list-item-title>
           </v-list-item>
-          <v-divider></v-divider>
         </v-col>
       </v-row>
     </v-card>
@@ -151,10 +182,10 @@ export default {
   }),
   methods: {
     isWorking(startDate, endDate) {
-      let start = startDate.split('-');
-      let end = endDate.split('-');
-      start = startDate[0]*365 + startDate[1]*30 + startDate[2];
-      end = endDate[0]*365 + endDate[1]*30 + endDate[2];
+      let start = startDate.split("-");
+      let end = endDate.split("-");
+      start = startDate[0] * 365 + startDate[1] * 30 + startDate[2];
+      end = endDate[0] * 365 + endDate[1] * 30 + endDate[2];
       return end <= start;
     },
     getEndJobDate(start, end) {
@@ -164,17 +195,22 @@ export default {
       return end.replace("-", "/").replace("-", "/");
     },
     getStartJobDate(start) {
-      console.log(start)
-      return (start.replace("-", "/").replace("-", "/"));
+      return start.replace("-", "/").replace("-", "/");
     },
   },
 };
 </script>
 
 <style scoped>
+.close-btn {
+  position: fixed;
+}
 .option {
   display: flex;
   justify-content: flex-end;
+}
+.alumni-detail:hover {
+  background: #f5f4f3;
 }
 .alumni-card:hover {
   background: #f5f4f3;
@@ -183,7 +219,7 @@ export default {
   border-radius: 10px;
 }
 .text {
-  font-size: 13px;
+  font-size: 15px;
 }
 .text-title {
   font-size: 18px;

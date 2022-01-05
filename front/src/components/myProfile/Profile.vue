@@ -71,7 +71,7 @@
       <!-- end edit info -->
       <v-row>
         <v-col cols="8" sm="3" md="5">
-          <v-avatar size="100px">
+          <v-avatar size="100">
             <v-img :src="imageUrl + userData.profile" alt=""></v-img>
           </v-avatar>
           <div class="img mr-3">
@@ -89,7 +89,7 @@
                     v-bind="attrs"
                     v-on="on"
                   >
-                    <v-icon color="black">mdi-camera</v-icon>
+                    <v-icon color="black" @click="openDialogEditProfile(userData.id, userData.profile)">mdi-camera</v-icon>
                   </v-btn>
                 </template>
 
@@ -147,11 +147,7 @@
           </div>
           <div class="d-flex">
             <h3 class="mt-2">
-              {{
-                userData.firstname +
-                " " +
-                userData.lastname
-              }}
+              {{ userData.firstname + " " + userData.lastname }}
             </h3>
           </div>
         </v-col>
@@ -173,10 +169,7 @@
           <v-list-item class="ma-0 pa-0">
             <div class="mr-3">
               <v-avatar size="30">
-                <img
-                  src="../../assets/pn-logo.png"
-                  alt="John"
-                >
+                <img src="../../assets/pn-logo.png" alt="John" />
               </v-avatar>
             </div>
             <v-list-item-title>Passerelles Numberiques Cambodia</v-list-item-title>
@@ -213,10 +206,7 @@
           <v-list-item class="ma-0 pa-0">
           <div class="mr-3">
               <v-avatar size="30">
-                <img
-                  src="../../assets/mail-logo.png"
-                  alt="John"
-                >
+                <img src="../../assets/mail-logo.png" alt="John" />
               </v-avatar>
             </div>
           <v-list-item-title>{{ userData.email }}</v-list-item-title>
@@ -236,8 +226,7 @@ export default {
       imageUrl: "http://127.0.0.1:8000/storage/profiles/",
       alert: false,
       dialog: false,
-      image:
-        "https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-PNG-Free-Image.png",
+      image: "",
       imageFile: null,
       valid: true,
       newEmail: "",
@@ -269,6 +258,10 @@ export default {
     },
   },
   methods: {
+    openDialogEditProfile(id, profile) {
+      this.userData.user_id = id;
+      this.image = this.imageUrl + profile;
+    },
     fileChange(e) {
       this.imageFile = e.target.files[0];
       this.image = URL.createObjectURL(this.imageFile);
