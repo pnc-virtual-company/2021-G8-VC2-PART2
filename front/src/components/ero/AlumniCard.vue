@@ -2,7 +2,7 @@
   <section>
     <!-- profile -->
     <!-- persistent -->
-    <v-dialog v-model="dialog" persistent max-width="600px">
+    <v-dialog v-model="dialog" persistent max-width="650px">
       <v-card class="pa-6">
         <v-row>
           <v-col cols="8" sm="3" md="5">
@@ -44,7 +44,8 @@
             </v-list-item>
           </v-col>
         </v-row>
-        <v-divider class="mt-2"></v-divider>
+        
+          <v-divider class="mt-2"></v-divider>
         <!-- profile -->
 
         <!-- skill -->
@@ -65,31 +66,32 @@
           <v-col>
             <h3>Employment</h3>
             <v-card
+              class="ma-0 pa-2 elevation-0 rounded-lg alumni-card"
               v-for="employment of alumni.employments"
               :key="employment.id"
             >
-            <v-list-item class="mt-3 ma-0 pa-0" >
-              <v-avatar class="mr-5" size="50">
-                <v-img :src="imageUrl + employment.logo" alt=""></v-img>
-              </v-avatar>
-              <v-list-item-title>
-                <v-flex class="d-flex">
-                  <v-list-item-title>
-                    {{ employment.workPosition }}
-                  </v-list-item-title>
-                  <v-menu bottom left> </v-menu>
-                </v-flex>
-                <v-list-item-subtitle>
-                  {{ employment.company_name }}
-                </v-list-item-subtitle>
-                <v-list-item-subtitle>
-                  {{ getStartJobDate(employment.startJobDate) }} - {{ employment.endJobDate }}.
-                {{ employment.location }}
-                </v-list-item-subtitle>
-              </v-list-item-title>
-            </v-list-item>
-            <v-divider class="mt-2"></v-divider>
-
+              <v-list-item class="mt-3 ma-0 pa-0">
+                <v-avatar class="mr-5" size="70">
+                  <v-img :src="imageUrl + employment.logo" alt=""></v-img>
+                </v-avatar>
+                <v-list-item-title>
+                  <v-flex class="d-flex">
+                    <v-list-item-title>
+                      {{ employment.workPosition }}
+                    </v-list-item-title>
+                    <v-menu bottom left> </v-menu>
+                  </v-flex>
+                  <v-list-item-subtitle class="mt-2">
+                    {{ employment.company_name }}
+                  </v-list-item-subtitle>
+                  <v-list-item-subtitle class="mt-1">
+                    {{ getStartJobDate(employment.startJobDate) }} -
+                    {{ employment.endJobDate }}.
+                    {{ employment.location }}
+                  </v-list-item-subtitle>
+                  <v-divider class="mt-2"></v-divider>
+                </v-list-item-title>
+              </v-list-item>
             </v-card>
           </v-col>
         </v-row>
@@ -115,8 +117,15 @@
                 </v-list-item-title>
                 <v-list-item-title
                   class="text-title"
-                  v-if="alumni.employments.length > 0&& isWorking(alumni.employments[0].startJobDate, alumni.employments[0].endJobDate)"
-                  >{{ alumni.employments[0].workPosition }}</v-list-item-title>
+                  v-if="
+                    alumni.employments.length > 0 &&
+                    isWorking(
+                      alumni.employments[0].startJobDate,
+                      alumni.employments[0].endJobDate
+                    )
+                  "
+                  >{{ alumni.employments[0].workPosition }}</v-list-item-title
+                >
               </v-flex>
               <v-flex class="d-flex mt-2">
                 <v-list-item-subtitle class="text mt-2">
@@ -124,17 +133,24 @@
                 </v-list-item-subtitle>
                 <v-list-item-subtitle
                   class="text"
-                  v-if="alumni.employments.length > 0 && isWorking(alumni.employments[0].startJobDate, alumni.employments[0].endJobDate)">
-                  <v-avatar size="30">
+                  v-if="
+                    alumni.employments.length > 0 &&
+                    isWorking(
+                      alumni.employments[0].startJobDate,
+                      alumni.employments[0].endJobDate
+                    )
+                  "
+                >
+                  <v-avatar size="35">
                     <v-img :src="imageUrl + alumni.employments[0].logo"></v-img>
                   </v-avatar>
                   {{ alumni.employments[0].company_name }}
                 </v-list-item-subtitle>
               </v-flex>
-              <br>
+              <v-divider class="mt-2"></v-divider>
+              <br />
             </v-list-item-title>
           </v-list-item>
-          <v-divider></v-divider>
         </v-col>
       </v-row>
     </v-card>
@@ -151,10 +167,10 @@ export default {
   }),
   methods: {
     isWorking(startDate, endDate) {
-      let start = startDate.split('-');
-      let end = endDate.split('-');
-      start = startDate[0]*365 + startDate[1]*30 + startDate[2];
-      end = endDate[0]*365 + endDate[1]*30 + endDate[2];
+      let start = startDate.split("-");
+      let end = endDate.split("-");
+      start = startDate[0] * 365 + startDate[1] * 30 + startDate[2];
+      end = endDate[0] * 365 + endDate[1] * 30 + endDate[2];
       return end <= start;
     },
     getEndJobDate(start, end) {
@@ -164,7 +180,7 @@ export default {
       return end.replace("-", "/").replace("-", "/");
     },
     getStartJobDate(start) {
-      return (start.replace("-", "/").replace("-", "/"));
+      return start.replace("-", "/").replace("-", "/");
     },
   },
 };
@@ -175,6 +191,9 @@ export default {
   display: flex;
   justify-content: flex-end;
 }
+.alumni-detail:hover {
+  background: #f5f4f3;
+}
 .alumni-card:hover {
   background: #f5f4f3;
 }
@@ -182,7 +201,7 @@ export default {
   border-radius: 10px;
 }
 .text {
-  font-size: 13px;
+  font-size: 15px;
 }
 .text-title {
   font-size: 18px;

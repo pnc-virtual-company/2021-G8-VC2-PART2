@@ -36,7 +36,7 @@
       <v-row>
         <v-col>
           <v-list-item class="ma-0 pa-0">
-            <v-avatar class="mr-5" size="70px">
+            <v-avatar class="mr-5" size="70">
               <v-img :src="imageUrl + employment.logo" alt=""></v-img>
             </v-avatar>
             <v-list-item-title>
@@ -73,11 +73,11 @@
                 >{{ getStartJobDate }} - {{ getEndJobDate }}.
                 {{ employment.location }}
               </v-list-item-subtitle>
+      <v-divider class="mt-2"></v-divider>
             </v-list-item-title>
           </v-list-item>
         </v-col>
       </v-row>
-      <v-divider class="mt-2"></v-divider>
     </v-card>
   </section>
 </template>
