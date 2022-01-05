@@ -35,7 +35,6 @@
 | PUT          | /domain_companies/{id} | The route to update the domain              |
 |              |                        |                                             |
 
-
 ### 4. Company Routes (back)
 
 | HTTP REQUEST | ROUTES          | DESCRIPTION                     |
@@ -45,7 +44,6 @@
 | POST         | /companies      | The route to create a company   |
 | PUT          | /companies/{id} | The route to update the company |
 | DELETE       | /companies/{id} | The route to remove the company |
-
 
 ### 5. Skill Routes (back)
 
@@ -68,4 +66,14 @@
 | :----------- | ------------- | -------------------------------- |
 | GET          | /batches      | The route to get all batches     |
 | POST         | /batches      | The route for create a new batch |
-| DELETE       | /batches/{id} |                                  |
+| DELETE       | /batches/{id} | The route to remove a batch      |
+
+### 8. employment Routes
+
+| HTTP REQUEST | ROUTES            | DESCRIPTION                        |
+| ------------ | ----------------- | ---------------------------------- |
+| GET          | /employments      | The route for get all employment   |
+| GET          | /employments/{id} | The route to get an employment     |
+| POST         | /employments      | The route to create new employment |
+| PUT          | /employment/{id}  | The route for update an employment |
+| DELETE       | /employment/{id}  | The route to remove an employment  |
