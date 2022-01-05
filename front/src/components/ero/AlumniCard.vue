@@ -50,7 +50,7 @@
         <!-- skill -->
         <v-row>
           <v-col>
-            <h3>Skills</h3>
+            <h3 class="mt-1">Skills</h3>
             <div class="text-left">
               <v-chip class="ma-2" v-for="skill of alumni.skills" :key="skill">
                 {{ skill }}
@@ -164,7 +164,6 @@ export default {
       return end.replace("-", "/").replace("-", "/");
     },
     getStartJobDate(start) {
-      console.log(start)
       return (start.replace("-", "/").replace("-", "/"));
     },
   },
