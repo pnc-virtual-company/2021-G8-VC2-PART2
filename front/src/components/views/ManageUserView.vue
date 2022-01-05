@@ -137,7 +137,7 @@
       </v-col>
     </v-row>
     <!-- End -->
-    <v-card class="card_contain mt-5 mb-5" v-if="manageSelected === 'alumni'">
+    <v-card class="card_contain mt-6 mb-6" v-if="manageSelected === 'alumni'" color="#e0e8ef">
       <v-card class="pa-10 text-center" v-if="alumnisToDisplay.length === 0"
         >No People Found</v-card
       >
@@ -188,7 +188,7 @@
         </v-layout>
       </v-card>
     </v-card>
-    <v-card class="card_contain mt-6" v-if="manageSelected === 'ero'">
+    <v-card class="card_contain mt-6" v-if="manageSelected === 'ero'" color="#e0e8ef">
       <v-card flat class="name-card pa-3" v-for="user in eros" :key="user.id">
         <v-layout row wrap :class="`pa-2 user ${user.status}`">
           <v-flex xs6 md1 sm2>
