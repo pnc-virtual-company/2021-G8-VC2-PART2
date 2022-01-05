@@ -2,7 +2,7 @@
   <section>
     <!-- profile -->
     <!-- persistent -->
-    <v-dialog v-model="dialog" persistent max-width="650px">
+    <v-dialog v-model="dialog" persistent max-width="600px">
       <v-card class="pa-6">
         <v-row>
           <v-col cols="8" sm="3" md="5">
