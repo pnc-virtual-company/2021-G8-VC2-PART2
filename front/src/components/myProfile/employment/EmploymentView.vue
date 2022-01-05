@@ -158,6 +158,7 @@
                           </template>
                           <v-date-picker
                             v-model="employmentDataToAdd.endJobDate"
+                            :min="employmentDataToAdd.startJobDate"
                             scrollable
                           >
                             <v-spacer></v-spacer>
