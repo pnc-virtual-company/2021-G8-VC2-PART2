@@ -204,6 +204,7 @@ export default {
 <style scoped>
 .close-btn {
   position: fixed;
+  z-index: 1000;
 }
 .option {
   display: flex;

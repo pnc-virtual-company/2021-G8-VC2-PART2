@@ -2,7 +2,13 @@
   <section class="manageuser">
     <v-row class="mt-5">
       <v-tabs centered background-color="#e0e8ef">
-        <v-tab @click="setActiveSubPage(menu)" class="font-weight-bold" v-for="(menu, index) of getMenu" :key="index">{{ menu }}</v-tab>
+        <v-tab
+          @click="setActiveSubPage(menu)"
+          class="font-weight-bold"
+          v-for="(menu, index) of getMenu"
+          :key="index"
+          >{{ menu }}</v-tab
+        >
       </v-tabs>
     </v-row>
     <v-row class="mt-5" v-if="manageSelected === 'alumni'">
@@ -55,10 +61,15 @@
           </div>
         </v-card>
       </v-col>
-      <v-col  cols="12" sm="12" md="5" lg="5" v-if="manageSelected !== 'alumni'"></v-col>
+      <v-col
+        cols="12"
+        sm="12"
+        md="5"
+        lg="5"
+        v-if="manageSelected !== 'alumni'"
+      ></v-col>
       <v-col cols="5" md="5" lg="5" v-if="manageSelected !== 'company'"></v-col>
-      <!-- <v-col cols="4" md="4" lg="4" v-if="manageSelected === 'company'"></v-col> -->
-     
+
       <v-col cols="4" md="2" lg="2" v-if="manageSelected !== 'company'">
         <v-flex class="d-flex justify-end">
           <v-dialog v-model="dialog" max-width="500px" persistent>
@@ -136,7 +147,11 @@
       </v-col>
     </v-row>
     <!-- End -->
-    <v-card class="card_contain mt-6 mb-6" v-if="manageSelected === 'alumni'" color="#e0e8ef">
+    <v-card
+      class="card_contain mt-6 mb-6"
+      v-if="manageSelected === 'alumni'"
+      color="#e0e8ef"
+    >
       <v-card class="pa-10 text-center" v-if="alumnisToDisplay.length === 0"
         >No People Found</v-card
       >
@@ -187,10 +202,12 @@
         </v-layout>
       </v-card>
     </v-card>
-    <v-card class="card_contain mt-6" v-if="manageSelected === 'ero'" color="#e0e8ef">
-      <v-card class="pa-10 text-center" v-if="eros.length === 0"
-        >No ERO</v-card
-      >
+    <v-card
+      class="card_contain mt-6"
+      v-if="manageSelected === 'ero'"
+      color="#e0e8ef"
+    >
+      <v-card class="pa-10 text-center" v-if="eros.length === 0">No ERO</v-card>
       <v-card flat class="name-card pa-3" v-for="user in eros" :key="user.id">
         <v-layout row wrap :class="`pa-2 user ${user.status}`">
           <v-flex xs6 md1 sm2>
@@ -236,10 +253,10 @@
             v-for="company of companyList"
             :key="company.id"
           >
-            <v-avatar class="mr-5 companyLogo" size="80">
+            <v-avatar class="mr-5 companyLogo" size="60">
               <v-img :src="imageUrl + company.logo" alt=""></v-img>
             </v-avatar>
-            <v-avatar size="80" class="edit">
+            <v-avatar size="60" class="edit">
               <v-icon
                 size="20"
                 color="white"
@@ -256,10 +273,12 @@
                 <v-menu bottom left> </v-menu>
               </v-flex>
               <v-list-item-subtitle class="mt-1">
-                {{ company.domain_company }} at
-                {{ company.location }}</v-list-item-subtitle
-              >
-            <v-divider class="mt-2"></v-divider>
+                {{ company.domain_company }}
+              </v-list-item-subtitle>
+              <v-list-item-subtitle class="mt-1">
+                {{ company.location }}
+              </v-list-item-subtitle>
+              <v-divider class="mt-2"></v-divider>
             </v-list-item-title>
             <v-icon
               size="20"
@@ -423,11 +442,11 @@ export default {
   },
   computed: {
     getMenu() {
-      if(this.userEro.role === 'ero') {
-        return ['alumni', 'company'];
+      if (this.userEro.role === "ero") {
+        return ["alumni", "company"];
       }
       return ["alumni", "ero", "company"];
-    }
+    },
   },
   methods: {
     setActiveSubPage(page) {
@@ -500,7 +519,11 @@ export default {
         };
         axios.post("invite", data).then((res) => {
           this.inviteEmailList = [];
-          this.invitedAlumnisStored.unshift(res.data.user);
+          if (this.manageSelected === "alumni") {
+            this.invitedAlumnisStored.unshift(res.data.user);
+          } else {
+            this.eros.unshift(res.data.user);
+          }
         });
       }
       this.existingEmails = [...this.existingEmails, ...this.inviteEmailList];
@@ -544,22 +567,28 @@ export default {
         let emails = this.notChipEmail.split(/[?:\s\n]+/);
         for (let email of emails) {
           let isExist = this.existingEmails.includes(email);
-          const regExOfEmail = RegExp(/^[a-zA-Z0-9.!#$%&`*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/);
+          const regExOfEmail = RegExp(
+            /^[a-zA-Z0-9.!#$%&`*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+          );
           if (isExist || email === "" || !email.match(regExOfEmail)) {
             emails = emails.filter((e) => e !== email);
           }
         }
-        this.inviteEmailList = [...new Set([...this.inviteEmailList, ...emails])];
+        this.inviteEmailList = [
+          ...new Set([...this.inviteEmailList, ...emails]),
+        ];
         this.notChipEmail = null;
       }
     },
   },
   watch: {
     inviteEmailList: function (emails) {
-      if(emails.length > 0) {
+      if (emails.length > 0) {
         let email = emails[emails.length - 1];
         let isExist = this.existingEmails.includes(email);
-        const regExOfEmail = RegExp(/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/);
+        const regExOfEmail = RegExp(
+          /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+        );
         if (isExist || email === "" || !email.match(regExOfEmail)) {
           this.inviteEmailList.pop();
           this.notChipEmail = email;
@@ -659,7 +688,6 @@ input[type="file"] {
 }
 .companyLogo:hover .edit {
   display: block;
-
 }
 .companyLogo:hover {
   background: rgb(245, 245, 245);
