@@ -188,6 +188,9 @@
       </v-card>
     </v-card>
     <v-card class="card_contain mt-6" v-if="manageSelected === 'ero'" color="#e0e8ef">
+      <v-card class="pa-10 text-center" v-if="eros.length === 0"
+        >No ERO</v-card
+      >
       <v-card flat class="name-card pa-3" v-for="user in eros" :key="user.id">
         <v-layout row wrap :class="`pa-2 user ${user.status}`">
           <v-flex xs6 md1 sm2>
@@ -223,6 +226,9 @@
     </v-card>
     <!-- company -->
     <v-card class="ma-0 pa-2 mt-2" v-if="manageSelected === 'company'">
+      <v-card class="pa-10 text-center" v-if="companyList.length === 0"
+        >No Company</v-card
+      >
       <v-row>
         <v-col>
           <v-list-item
