@@ -61,15 +61,6 @@ export default {
     },
   },
   methods: {
-    // shortEmployments() {
-    //   let copyOfEmp = this.user.employments;
-    //   this.user.employments = [];
-    //   for(let emp of copyOfEmp) {
-    //     for(let )
-    //     let lastEmp = 
-    //     this.user.employments.push()
-    //   }
-    // },
     signOut() {
       localStorage.removeItem("userId");
       this.user = { role: null };

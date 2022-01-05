@@ -1,6 +1,11 @@
 <template>
   <section class="manageuser">
     <v-row class="mt-5">
+      <v-tabs centered background-color="#e0e8ef">
+        <v-tab @click="setActiveSubPage(menu)" class="font-weight-bold" v-for="(menu, index) of manages" :key="index">{{ menu }}</v-tab>
+      </v-tabs>
+    </v-row>
+    <v-row class="mt-5">
       <v-col cols="12" sm="6" md="12" lg="12">
         <v-alert
           v-model="alert"
@@ -12,8 +17,6 @@
         >
           {{ alertMessage }}
         </v-alert>
-    <v-card class="ma-0 pa-3" v-if="manageSelected === 'ero'"><b>Manage ERO</b></v-card>
-    <v-card class="ma-0 pa-3" v-if="manageSelected === 'company'"><b>Manage Company</b></v-card>
         <v-text-field
           v-if="manageSelected === 'alumni'"
           v-model="keySearch"
@@ -54,18 +57,9 @@
         </v-card>
       </v-col>
       <v-col  cols="12" sm="12" md="5" lg="5" v-if="manageSelected !== 'alumni'"></v-col>
-      <v-col cols="2" md="2" lg="2" v-if="manageSelected !== 'company'"></v-col>
+      <v-col cols="5" md="5" lg="5" v-if="manageSelected !== 'company'"></v-col>
       <v-col cols="4" md="4" lg="4" v-if="manageSelected === 'company'"></v-col>
-      <v-col cols="3" md="3" lg="3">
-        <v-select
-          class="mt-1"
-          label="Role"
-          dense
-          solo
-          :items="manages"
-          v-model="manageSelected"
-        ></v-select>
-      </v-col>
+     
       <v-col cols="4" md="2" lg="2" v-if="manageSelected !== 'company'">
         <v-flex class="d-flex justify-end">
           <v-dialog v-model="dialog" max-width="500px" persistent>
@@ -87,15 +81,6 @@
               <v-card-text>
                 <v-row class="pa-0">
                   <v-col cols="12 mt-0">
-                    <v-select
-                      v-if="userEro.role === 'admin'"
-                      class="mt-5"
-                      prepend-inner-icon="mdi-account-box-outline"
-                      :items="manages"
-                      v-model="selectedRoleForInvite"
-                      label="Select role"
-                      :rules="[rules.required]"
-                    ></v-select>
                     <v-combobox
                       class="mt-3"
                       type="email"
@@ -141,7 +126,7 @@
                 <v-btn
                   color="primary"
                   text
-                  @click="submitEmail(inviteEmailList, selectedRoleForInvite)"
+                  @click="submitEmail(inviteEmailList)"
                 >
                   Submit
                 </v-btn>
@@ -409,7 +394,7 @@ export default {
       isEditCompanyText: false,
       existingEmails: null,
       percentage: 0,
-      manages: ["company", "alumni", "ero"],
+      manages: ["alumni", "ero", "company"],
       alert: false,
       dialog: false,
       keySearch: "",
@@ -419,8 +404,7 @@ export default {
       alumnisToDisplay: null,
       numberOfalumni: 0,
       numberOferos: 0,
-      manageSelected: "company",
-      selectedRoleForInvite: "alumni",
+      manageSelected: "alumni",
       inviteEmailList: [],
       notChipEmail: null,
       numberOfalumniInvited: 0,
@@ -433,6 +417,9 @@ export default {
     };
   },
   methods: {
+    setActiveSubPage(page) {
+      this.manageSelected = page;
+    },
     openEditCompanyText(id, name, industry, location) {
       this.isEditCompanyText = true;
       this.companyDataToEdit.id = id;
@@ -496,7 +483,7 @@ export default {
       for (let invitedEmail of this.inviteEmailList) {
         let data = {
           email: invitedEmail,
-          role: this.selectedRoleForInvite,
+          role: this.manageSelected,
         };
         axios.post("invite", data).then((res) => {
           this.inviteEmailList = [];
@@ -585,7 +572,6 @@ export default {
     dialog: function (val) {
       if (!val) {
         this.inviteEmailList = [];
-        this.selectedRoleForInvite = "alumni";
       }
     },
     keySearch: function (val) {
@@ -613,6 +599,9 @@ export default {
     },
   },
   mounted() {
+    if(this.userEro.role === 'ero') {
+      this.manages = ['alumni', 'company'];
+    }
     axios.get("/users/email/all").then((res) => {
       this.existingEmails = res.data;
     });
@@ -632,8 +621,6 @@ export default {
         (this.invitedAlumnisStored.length * 100) /
         (this.validatedAlumnisStored.length + this.invitedAlumnisStored.length);
     });
-    this.removeUser();
-
     axios.get("/allcompanies").then((res) => {
       this.companyList = res.data;
     });
