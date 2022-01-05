@@ -33,8 +33,8 @@
               NEXT
               <v-icon>mdi-arrow-right</v-icon>
             </v-btn>
+            <small v-if="eroSupport !== null" class="black--text mt-0">{{ eroSupport }}</small>
           </v-col>
-            <small v-if="eroSupport !== null" class="black--text mt-1">{{ eroSupport }}</small>
         </v-row>
       </v-form>
     </div>
