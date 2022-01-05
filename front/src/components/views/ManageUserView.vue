@@ -26,7 +26,7 @@
       </v-col>
     </v-row>
     <v-row wrap>
-      <v-col cols="12" sm="12" md="5" lg="5">
+      <v-col cols="12" sm="12" md="5" lg="5" v-if="manageSelected !== 'company'">
         <v-card class="d-flex pa-2">
           <v-progress-circular
             :rotate="180"
@@ -50,21 +50,23 @@
           </div>
         </v-card>
       </v-col>
+      <v-col cols="2" v-if="manageSelected !== 'company'"></v-col>
       <v-col cols="8" md="5" lg="5">
         <v-select
+          class="mt-1"
           label="Role"
           dense
           solo
-          :items="roles"
-          v-model="selectedRole"
+          :items="manages"
+          v-model="manageSelected"
         ></v-select>
       </v-col>
-      <v-col cols="4" md="2" lg="2">
+      <v-col cols="4" md="2" lg="2" v-if="manageSelected !== 'company'">
         <v-flex class="d-flex justify-end">
           <v-dialog v-model="dialog" max-width="500px" persistent>
             <template v-slot:activator="{ on, attrs }">
               <v-btn
-                class="white--text"
+                class="white--text mt-1"
                 depressed
                 color="warning invite-btn"
                 v-bind="attrs"
@@ -84,7 +86,7 @@
                       v-if="userEro.role === 'admin'"
                       class="mt-5"
                       prepend-inner-icon="mdi-account-box-outline"
-                      :items="roles"
+                      :items="manages"
                       v-model="selectedRoleForInvite"
                       label="Select role"
                       :rules="[rules.required]"
@@ -145,10 +147,8 @@
       </v-col>
     </v-row>
     <!-- End -->
-    <v-card class="card_contain mt-5 mb-5" v-if="selectedRole === 'alumni'">
-      <v-card class="pa-10 text-center" v-if="alumnisToDisplay.length === 0"
-        >No People Found</v-card
-      >
+    <v-card class="card_contain mt-5 mb-5" v-if="manageSelected === 'alumni'">
+      <v-card class="pa-10 text-center" v-if="alumnisToDisplay.length === 0">No People Found</v-card>
       <v-card
         flat
         class="name-card pa-3"
@@ -196,7 +196,7 @@
         </v-layout>
       </v-card>
     </v-card>
-    <v-card class="card_contain mt-5" v-if="selectedRole === 'ero'">
+    <v-card class="card_contain mt-6" v-if="manageSelected === 'ero'">
       <v-card flat class="name-card pa-3" v-for="user in eros" :key="user.id">
         <v-layout row wrap :class="`pa-2 user ${user.status}`">
           <v-flex xs6 md1 sm2>
@@ -230,6 +230,146 @@
         </v-layout>
       </v-card>
     </v-card>
+    <!-- company -->
+    <v-card class="ma-0 pa-3 mb-7 text-center">Manage Company</v-card>
+    <v-card class="ma-0 pa-2" v-if="manageSelected === 'company'">
+      <v-row>
+        <v-col>
+          <v-list-item
+            class="ma-0 pa-3 companyLogo"
+            v-for="company of companyList"
+            :key="company.id"
+          >
+            <v-avatar class="mr-5 companyLogo" size="60">
+              <v-img :src="imageUrl + company.logo" alt=""></v-img>
+            </v-avatar>
+            <v-avatar size="60" class="edit">
+              <v-icon
+                size="20"
+                color="white"
+                @click="openLogoEditDialog(company.id, company.logo)"
+                class="mt-1"
+                >mdi-border-color</v-icon
+              >
+            </v-avatar>
+            <v-list-item-title class="pa-1">
+              <v-flex class="d-flex">
+                <v-list-item-title>
+                  {{ company.company_name }}
+                </v-list-item-title>
+                <v-menu bottom left> </v-menu>
+              </v-flex>
+              <v-list-item-subtitle class="mt-1">
+                {{ company.domain_company }} at
+                {{ company.location }}</v-list-item-subtitle
+              >
+            </v-list-item-title>
+            <v-icon
+              size="20"
+              class="mb-3 edit-text"
+              @click="isEditCompanyText = true"
+              >mdi-border-color</v-icon
+            >
+          </v-list-item>
+        </v-col>
+      </v-row>
+    </v-card>
+    <!-- edit logo -->
+    <v-dialog v-model="isEditLogo" persistent max-width="400px">
+      <v-card>
+        <v-card-title>
+          <span class="text-h6">EDIT COMPANY LOGO</span>
+        </v-card-title>
+        <v-divider></v-divider>
+        <v-card-text class="text-center">
+          <v-avatar size="200">
+            <v-img class="center mt-3" :src="companyLogo"> </v-img>
+          </v-avatar>
+        </v-card-text>
+        <v-card-actions class="btn-upload">
+          <div class="image-upload mb-2">
+            <input type="file" @change="fileChange" name="myFile" id="myFile" />
+            <label for="myFile" class="custom-file-upload" color="primary"
+              >SELECT PROFILE</label
+            >
+          </div>
+          <v-spacer></v-spacer>
+          <v-btn
+            class="mb-1"
+            small
+            depressed
+            color="primary"
+            text
+            @click="isEditLogo = false"
+          >
+            Cancel
+          </v-btn>
+          <v-btn
+            small
+            depressed
+            color="primary"
+            class="white--text mb-1"
+            @click="changeLogo"
+          >
+            Change
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <!-- edit logo -->
+    <!-- edit company text -->
+    <v-dialog v-model="isEditCompanyText" persistent max-width="400px">
+      <v-card>
+        <v-card-title class="mx-auto text--h6">Edit Company</v-card-title>
+        <v-divider></v-divider>
+        <v-card-text>
+          <v-form ref="form" v-model="valid" lazy-validation>
+            <v-text-field
+              label="Company Name"
+              clearable
+              v-model="newName"
+              :rules="[rules.required]"
+            ></v-text-field>
+            <v-text-field
+              label="Industry"
+              clearable
+              v-model="newIndustry"
+              :rules="[rules.required]"
+            ></v-text-field>
+            <v-text-field
+              class="mt-2"
+              v-model="newLocation"
+              clearable
+              label="Campany Location"
+              :rules="[rules.required]"
+            ></v-text-field>
+          </v-form>
+        </v-card-text>
+        <v-card-actions class="btn-upload">
+          <v-spacer></v-spacer>
+          <v-btn
+            class="mb-1"
+            small
+            depressed
+            color="primary"
+            text
+            @click="isEditCompanyText = false"
+          >
+            Cancel
+          </v-btn>
+          <v-btn
+            :disabled="!valid"
+            small
+            depressed
+            color="primary"
+            class="white--text mb-1"
+          >
+            Change
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <!--  -->
   </section>
 </template>
 <script>
@@ -238,9 +378,21 @@ export default {
   props: ["userEro"],
   data() {
     return {
+      newName: null,
+      newLocation: null,
+      newIndustry: null,
+      valid: false,
+      imageUrl: "http://127.0.0.1:8000/storage/profiles/",
+      companyLogo: null,
+      imageFile: null,
+      isEditLogo: false,
+      companyDataToEdit: {
+        id: null,
+      },
+      isEditCompanyText: false,
       existingEmails: null,
       percentage: 0,
-      roles: ["ero", "alumni"],
+      manages: ["company", "alumni", "ero"],
       alert: false,
       dialog: false,
       keySearch: "",
@@ -250,19 +402,45 @@ export default {
       alumnisToDisplay: null,
       numberOfalumni: 0,
       numberOferos: 0,
-      selectedRole: "alumni",
+      manageSelected: "alumni",
       selectedRoleForInvite: "alumni",
       inviteEmailList: [],
       notChipEmail: null,
       numberOfalumniInvited: 0,
       statusSelected: "validated",
       alertMessage: "",
+      companyList: [],
       rules: {
         required: (value) => !!value || "Required",
       },
     };
   },
   methods: {
+    openLogoEditDialog(id, logo) {
+      this.isEditLogo = true;
+      this.companyDataToEdit.id = id;
+      this.companyLogo = 'http://127.0.0.1:8000/storage/profiles/' + logo;
+    },
+    fileChange(e) {
+      this.imageFile = e.target.files[0];
+      this.companyLogo = URL.createObjectURL(this.imageFile);
+    },
+    changeLogo() {
+      if (this.imageFile !== null) {
+        let imageFile = new FormData();
+        imageFile.append("logo", this.imageFile);
+        imageFile.append("_method", "PUT");
+        axios.post("companies/updateLogos/" + this.companyDataToEdit.id, imageFile).then((res) => {
+          this.isEditLogo = false;
+          for(let company of this.companyList) {
+            if(company.id === this.companyDataToEdit.id) {
+              company.logo = res.data.companyLogo;
+            }
+          }
+        });
+      }
+      
+    },
     submitEmail() {
       this.numberOfalumniInvited += this.inviteEmailList.length;
       for (let invitedEmail of this.inviteEmailList) {
@@ -339,6 +517,14 @@ export default {
         }
       }
     },
+    isEditCompanyText: function (val) {
+      if (val) {
+        this.newName = null;
+        this.newIndustry = null;
+        this.newLocation = null;
+      }
+    },
+    // will manage existing email when we invite
     statusSelected: function (val) {
       if (val === "invited") {
         this.alumnisToDisplay = this.invitedAlumnisStored;
@@ -397,10 +583,47 @@ export default {
         (this.validatedAlumnisStored.length + this.invitedAlumnisStored.length);
     });
     this.removeUser();
+
+    axios.get("/allcompanies").then((res) => {
+      this.companyList = res.data;
+    });
   },
 };
 </script>
 <style scoped>
+.custom-file-upload {
+  font-size: 12px;
+  border-radius: 5px;
+  background: #00a3ff;
+  padding: 8px 9px;
+  cursor: pointer;
+  color: white;
+}
+input[type="file"] {
+  display: none;
+}
+.img {
+  position: absolute;
+  top: 80px;
+  left: 90px;
+}
+.companyLogo:hover .edit {
+  display: block;
+}
+.companyLogo:hover .edit-text {
+  display: block;
+}
+.edit {
+  cursor: pointer;
+  position: absolute;
+  display: none;
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.7);
+}
+.edit-text {
+  display: none;
+  cursor: pointer;
+}
 .pointer {
   cursor: pointer;
 }
