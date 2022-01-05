@@ -57,7 +57,6 @@
       </v-col>
       <v-col  cols="12" sm="12" md="5" lg="5" v-if="manageSelected !== 'alumni'"></v-col>
       <v-col cols="5" md="5" lg="5" v-if="manageSelected !== 'company'"></v-col>
-      <!-- <v-col cols="4" md="4" lg="4" v-if="manageSelected === 'company'"></v-col> -->
      
       <v-col cols="4" md="2" lg="2" v-if="manageSelected !== 'company'">
         <v-flex class="d-flex justify-end">
@@ -230,10 +229,10 @@
             v-for="company of companyList"
             :key="company.id"
           >
-            <v-avatar class="mr-5 companyLogo" size="80">
+            <v-avatar class="mr-5 companyLogo" size="60">
               <v-img :src="imageUrl + company.logo" alt=""></v-img>
             </v-avatar>
-            <v-avatar size="80" class="edit">
+            <v-avatar size="60" class="edit">
               <v-icon
                 size="20"
                 color="white"
@@ -250,9 +249,11 @@
                 <v-menu bottom left> </v-menu>
               </v-flex>
               <v-list-item-subtitle class="mt-1">
-                {{ company.domain_company }} at
-                {{ company.location }}</v-list-item-subtitle
-              >
+                {{ company.domain_company }}
+                </v-list-item-subtitle>
+              <v-list-item-subtitle class="mt-1">
+                 {{ company.location }}
+                </v-list-item-subtitle>
             <v-divider class="mt-2"></v-divider>
             </v-list-item-title>
             <v-icon
