@@ -16,6 +16,10 @@ class CompanyController extends Controller
     {
         return Company::latest()->get();
     }
+    public function getAllCompanies()
+    {
+        return Company::latest()->get();
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -66,17 +70,26 @@ class CompanyController extends Controller
         $request->validate([
             'company_name' => 'required',
             'location' => 'required',
-            'logo' => 'nullable|image|mimes:jpg,jpeg,png,gif,jfif,svg|max:1999',
+            'domain_company' => 'required'
         ]);
         $company = Company::findOrFail($id);
         $company ->company_name = $request->company_name;
         $company->location = $request->location;
-        $company->logo = $request->file('logo')->hashName();
-        $request->file('logo')->store('public/images/logos');
-        $company->domain_companies_id = $request->domain_companies_id;
-
+        $company->domain_company = $request->domain_company;
         $company->save();
         return response()->json(['message'=>'Your company have been updated', 'data'=>$company ], 200);
+    }
+    //update logo of company
+    public function updateLogo(Request $request, $id)
+    {
+        $request->validate([
+            'logo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:1999',
+        ]);
+        $request->logo->store('public/profiles');
+        $companyLogo = $request->logo->hashName();
+        Company::where('id',$id)->get()->first()->update(['logo' => $companyLogo]);
+
+        return response()->json(['message'=>'Your company have been updated',"companyLogo" => $request->logo->hashName()],200);
     }
 
     /**
