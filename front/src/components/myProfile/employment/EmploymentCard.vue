@@ -15,7 +15,6 @@
             <v-spacer></v-spacer>
             <v-btn
               color="grey--text"
-              small
               text
               @click="confirmDeleteialog = false"
             >
@@ -23,7 +22,6 @@
             </v-btn>
             <v-btn
               color="red"
-              small
               text
               @click="deleteEmployment(employment.id)"
             >

@@ -5,12 +5,15 @@
     <v-dialog v-model="dialog" persistent max-width="760px">
       <v-card class="pa-4">
        <v-layout row wrap class="mt-0 pr-4 pl-4">
-        <v-flex xs12 sm12 md12 lg11>
+        <v-flex xs10 sm11 md11 lg11>
             <v-avatar size="100">
               <v-img :src="imageUrl + alumni.profile" alt=""></v-img>
             </v-avatar>
+            <v-list-item class="ma-0 pa-0">
+              <h3>{{alumni.firstname + " " + alumni.lastname}}</h3>
+          </v-list-item>
         </v-flex>
-        <v-flex xs12 sm12 md12 lg1>
+        <v-flex xs2 sm1 md1 lg1>
           <v-btn @click="dialog = false" elevation="0" class="close-btn mx-2" small color="error">
             <v-icon dark>
               mdi-close
@@ -19,9 +22,6 @@
         </v-flex>
         <v-flex xs12 sm7 md8 lg8 class="ma-0">
           <v-list-item class="ma-0 pa-0">
-            <h3>{{alumni.firstname + " " + alumni.lastname}}</h3>
-          </v-list-item>
-          <v-list-item class="ma-0 pa-0">
            <div class="mr-3">
               <v-avatar size="30">
                 <img src="../../assets/pn-logo.png" alt="John" />
@@ -29,9 +29,17 @@
             </div>
             <v-list-item-title>{{ alumni.batch + "-" + alumni.major }}</v-list-item-title>
           </v-list-item>
+          <v-list-item class="ma-0 pa-0">
+          <div class="mr-3">
+              <v-avatar class="background-img" size="30">
+                <img src="../../assets/mail-logo.png" alt="John" />
+              </v-avatar>
+            </div>
+          <v-list-item-title>{{ alumni.email }}</v-list-item-title>
+          </v-list-item>
         </v-flex>
         <v-flex xs12 sm5 md4 lg4 class="ma-0">
-          <v-list-item class="ma-0 pa-0 d-flex justify-end">
+          <v-list-item class="ma-0 pa-0">
             <div class="mr-3">
               <v-avatar v-if="alumni.gender=='Female'" size="30">
                 <img
@@ -54,14 +62,6 @@
           </v-list-item>
         </v-flex>
         <v-flex>
-          <v-list-item class="ma-0 pa-0">
-          <div class="mr-3">
-              <v-avatar class="background-img" size="30">
-                <img src="../../assets/mail-logo.png" alt="John" />
-              </v-avatar>
-            </div>
-          <v-list-item-title>{{ alumni.email }}</v-list-item-title>
-          </v-list-item>
         </v-flex>
       </v-layout>  
         <v-divider class="mt-3 mb-3"></v-divider>

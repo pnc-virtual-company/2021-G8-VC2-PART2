@@ -2,10 +2,10 @@
   <section class="manageuser">
     <v-row class="mt-5">
       <v-tabs centered background-color="#e0e8ef">
-        <v-tab @click="setActiveSubPage(menu)" class="font-weight-bold" v-for="(menu, index) of manages" :key="index">{{ menu }}</v-tab>
+        <v-tab @click="setActiveSubPage(menu)" class="font-weight-bold" v-for="(menu, index) of getMenu" :key="index">{{ menu }}</v-tab>
       </v-tabs>
     </v-row>
-    <v-row class="mt-5">
+    <v-row class="mt-5" v-if="manageSelected === 'alumni'">
       <v-col cols="12" sm="6" md="12" lg="12">
         <v-alert
           v-model="alert"
@@ -18,7 +18,6 @@
           {{ alertMessage }}
         </v-alert>
         <v-text-field
-          v-if="manageSelected === 'alumni'"
           v-model="keySearch"
           prepend-inner-icon="mdi-magnify"
           placeholder="Search"
@@ -58,7 +57,7 @@
       </v-col>
       <v-col  cols="12" sm="12" md="5" lg="5" v-if="manageSelected !== 'alumni'"></v-col>
       <v-col cols="5" md="5" lg="5" v-if="manageSelected !== 'company'"></v-col>
-      <v-col cols="4" md="4" lg="4" v-if="manageSelected === 'company'"></v-col>
+      <!-- <v-col cols="4" md="4" lg="4" v-if="manageSelected === 'company'"></v-col> -->
      
       <v-col cols="4" md="2" lg="2" v-if="manageSelected !== 'company'">
         <v-flex class="d-flex justify-end">
@@ -137,7 +136,7 @@
       </v-col>
     </v-row>
     <!-- End -->
-    <v-card class="card_contain mt-5 mb-5" v-if="manageSelected === 'alumni'">
+    <v-card class="card_contain mt-6 mb-6" v-if="manageSelected === 'alumni'" color="#e0e8ef">
       <v-card class="pa-10 text-center" v-if="alumnisToDisplay.length === 0"
         >No People Found</v-card
       >
@@ -188,7 +187,7 @@
         </v-layout>
       </v-card>
     </v-card>
-    <v-card class="card_contain mt-6" v-if="manageSelected === 'ero'">
+    <v-card class="card_contain mt-6" v-if="manageSelected === 'ero'" color="#e0e8ef">
       <v-card flat class="name-card pa-3" v-for="user in eros" :key="user.id">
         <v-layout row wrap :class="`pa-2 user ${user.status}`">
           <v-flex xs6 md1 sm2>
@@ -223,7 +222,7 @@
       </v-card>
     </v-card>
     <!-- company -->
-    <v-card class="ma-0 pa-2" v-if="manageSelected === 'company'">
+    <v-card class="ma-0 pa-2 mt-2" v-if="manageSelected === 'company'">
       <v-row>
         <v-col>
           <v-list-item
@@ -395,7 +394,6 @@ export default {
       isEditCompanyText: false,
       existingEmails: null,
       percentage: 0,
-      manages: ["alumni", "ero", "company"],
       alert: false,
       dialog: false,
       keySearch: "",
@@ -416,6 +414,14 @@ export default {
         required: (value) => !!value || "Required",
       },
     };
+  },
+  computed: {
+    getMenu() {
+      if(this.userEro.role === 'ero') {
+        return ['alumni', 'company'];
+      }
+      return ["alumni", "ero", "company"];
+    }
   },
   methods: {
     setActiveSubPage(page) {
@@ -600,15 +606,12 @@ export default {
     },
   },
   mounted() {
-    if(this.userEro.role === 'ero') {
-      this.manages = ['alumni', 'company'];
-    }
-    axios.get("/users/email/all").then((res) => {
-      this.existingEmails = res.data;
-    });
     axios.get("/users/ero").then((res) => {
       this.eros = res.data;
       this.numberOferos = this.eros.length;
+    });
+    axios.get("/users/email/all").then((res) => {
+      this.existingEmails = res.data;
     });
     axios.get("/users/alumni").then((res) => {
       this.invitedAlumnisStored = res.data.filter(
