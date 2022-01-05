@@ -110,7 +110,7 @@
             </v-avatar>
             <v-list-item-title>
               <v-flex class="d-flex mt-2">
-                <v-list-item-title class="text-title details">
+                <v-list-item-title class="text-title details mt-1">
                   <a @click="dialog = true">
                     {{ alumni.firstname }} {{ alumni.lastname }}
                   </a>
@@ -128,7 +128,7 @@
                 >
               </v-flex>
               <v-flex class="d-flex mt-2">
-                <v-list-item-subtitle class="text mt-2">
+                <v-list-item-subtitle class="text mt-3">
                   {{ alumni.major }} {{ alumni.batch }}
                 </v-list-item-subtitle>
                 <v-list-item-subtitle
@@ -201,7 +201,7 @@ export default {
   border-radius: 10px;
 }
 .text {
-  font-size: 15px;
+  font-size: 13px;
 }
 .text-title {
   font-size: 18px;
