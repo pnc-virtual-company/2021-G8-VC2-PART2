@@ -2,15 +2,16 @@
   <section>
     <div class="step2 mt-10">
       <div class="profile">
-        <img src="../../assets/profilepic.svg" alt="" />
+        <img class="avatar_lg" src="../../assets/profilepic.svg" alt="" />
+        <img class="alumni_lg" src="../../assets/alumni_lg.png" alt="" />
       </div>
-      <div class="title-login">
-        <p v-if="status === 'invited'">COMPLETE INFORMATION</p>
+      <div class="title-login pa-5">
+        <p style="font-size:27px;" v-if="status === 'invited'">COMPLETE INFORMATION</p>
         <p v-else>INPUT PASSWORD</p>
       </div>
-      <v-form class="pa-10" ref="form" v-model="valid" lazy-validation>
+      <v-form class="pa-0" ref="form" v-model="valid" lazy-validation>
         <v-row class="justify-center row-input" v-if="status === 'invited'">
-          <v-col md="4" sm="5">
+          <v-col cols="5" lg="4" md="4" sm="4" xs="5">
             <v-text-field
               class="ma-0 pa-0"
               label="Firstname"
@@ -19,7 +20,7 @@
               :rules="[rules.required]"
             ></v-text-field>
           </v-col>
-          <v-col md="4" sm="5">
+          <v-col cols="5" lg="4" md="4" sm="4" xs="5">
             <v-text-field
               class="ma-0 pa-0"
               label="Lastname"
@@ -30,7 +31,7 @@
           </v-col>
         </v-row>
         <v-row class="justify-center row-input" v-if="status === 'invited' && role === 'alumni'">
-          <v-col md="4" sm="5">
+          <v-col cols="5" lg="4" md="4" sm="4" xs="5">
             <v-select
               v-model="signInData.selectedBatch"
               :items="batches"
@@ -41,7 +42,7 @@
               :rules="[rules.required]"
             ></v-select>
           </v-col>
-          <v-col md="4" sm="5">
+          <v-col cols="5" lg="4" md="4" sm="4" xs="5">
             <v-select
               v-model="signInData.selectedMajor"
               :items="majors"
@@ -54,7 +55,7 @@
           </v-col>
         </v-row>
         <v-row class="justify-center row-input" v-if="status === 'invited' && role === 'alumni'">
-          <v-col md="4" sm="5">
+          <v-col cols="5" lg="4" md="4" sm="4" xs="5">
             <v-text-field
               v-model="signInData.phone"
               class="ma-0 pa-0"
@@ -66,7 +67,7 @@
               :rules="[rules.required, rules.minPhone, rules.maxPhone]"
             ></v-text-field>
           </v-col>
-          <v-col md="4" sm="5">
+          <v-col cols="5" lg="4" md="4" sm="4" xs="5">
             <v-select
               v-model="signInData.selectedGender"
               class="ma-0 pa-0"
@@ -79,7 +80,7 @@
           </v-col>
         </v-row>
         <v-row class="justify-center row-input">
-          <v-col md="8" sm="8">
+          <v-col cols="10" lg="8" md="8" sm="8" xs="10">
             <v-text-field
               clearable
               class="ma-0 pa-0"
@@ -98,7 +99,7 @@
           </v-col>
         </v-row>
         <v-row class="justify-center row-input" v-if="status === 'invited'">
-          <v-col md="8" sm="8">
+          <v-col cols="10" lg="8" md="8" sm="8" xs="10">
             <v-text-field
               clearable
               class="ma-0 pa-0"
@@ -114,12 +115,12 @@
           </v-col>
         </v-row>
         <v-row class="justify-center row-input">
-          <v-col md="3" sm="3">
+          <v-col cols="3" lg="3" md="3" sm="3" xs="3">
             <v-btn depressed color="4d4d4d ma-0 pa-0" @click="$emit('back')">
               Back
             </v-btn>
           </v-col>
-          <v-col md="5" sm="5">
+          <v-col cols="7" lg="5" md="5" sm="5" xs="7">
             <v-btn
               :disabled="!valid"
               @click="validate"
@@ -214,6 +215,9 @@ export default {
 };
 </script>
 <style scoped>
+.alumni_lg{
+  display: none;
+}
 .row-input {
   margin-top: 0;
   padding: 0;
@@ -250,5 +254,13 @@ export default {
 }
 .v-btn {
   width: 100%;
+}
+@media (max-width: 1100px) {
+  .alumni_lg{
+    display: block;
+  }
+  .avatar_lg{
+    display: none;
+  }
 }
 </style>
