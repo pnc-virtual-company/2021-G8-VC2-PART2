@@ -16,7 +16,7 @@
     width: 100%;
     height: 300px;
     margin-top: 5px;
-    background: grey;
+    background: rgba(0, 0, 0, 0.192);
 }
 .img > img {
     width: 100%;

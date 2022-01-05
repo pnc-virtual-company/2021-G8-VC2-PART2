@@ -39,6 +39,7 @@ export default {
   },
   data() {
     return {
+      count: 0,
       showNavigation: false,
       user: {
         role: null,
@@ -61,21 +62,13 @@ export default {
     },
   },
   methods: {
-    // shortEmployments() {
-    //   let copyOfEmp = this.user.employments;
-    //   this.user.employments = [];
-    //   for(let emp of copyOfEmp) {
-    //     for(let )
-    //     let lastEmp = 
-    //     this.user.employments.push()
-    //   }
-    // },
     signOut() {
       localStorage.removeItem("userId");
       this.user = { role: null };
       this.$router.push("/signin");
     },
     submitStep1(email) {
+      this.count ++
       let route = "signin/";
       this.signInData.email = email;
       axios
@@ -89,7 +82,9 @@ export default {
         .catch((err) => {
           if (err.response.status === 401) {
             this.error.invalidEmail = "Invalid email address";
-            this.error.eroSupport = "To help you please contact ERO by + 855 71254321"
+            if(this.count >= 2) {
+              this.error.eroSupport = "Cannot login? Pleace contact External Relation Officer +85571254321"
+            }
           } else {
             console.log(err);
           }
