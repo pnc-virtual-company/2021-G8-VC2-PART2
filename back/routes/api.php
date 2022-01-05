@@ -50,15 +50,6 @@ Route::post('/alumniskills/add', [AlumniSkillController::class ,'createAlumniSki
 Route::post('/alumniskills/remove', [AlumniSkillController::class ,'deleteAlumniSkill']);
 
 
-//Route for position
-
-Route::get('/workPositions',[PositionController::class, "getWorkPositions"]);
-Route::get('/workPositions/{id}',[PositionController::class, "getOneWorkPosition"]);
-
-Route::post('/workPositions',[PositionController::class, "createWorkPosition"]);
-Route::put('/workPositions/{id}',[PositionController::class, "updateWorkPosition"]);
-Route::delete('/workPositions/{id}',[PositionController::class, "deleteWorkPosition"]);
-
 // Route for batch
 Route::get('/batches',[BatchController::class, "getAllBatchNames"]);
 
