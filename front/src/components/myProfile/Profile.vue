@@ -89,7 +89,7 @@
                     v-bind="attrs"
                     v-on="on"
                   >
-                    <v-icon color="black">mdi-camera</v-icon>
+                    <v-icon color="black" @click="openDialogEditProfile(userData.id, userData.profile)">mdi-camera</v-icon>
                   </v-btn>
                 </template>
 
@@ -147,11 +147,7 @@
           </div>
           <div class="d-flex">
             <h3 class="mt-2">
-              {{
-                userData.firstname +
-                " " +
-                userData.lastname
-              }}
+              {{ userData.firstname + " " + userData.lastname }}
             </h3>
           </div>
         </v-col>
@@ -173,13 +169,12 @@
           <v-list-item class="ma-0 pa-0">
             <div class="mr-3">
               <v-avatar size="30">
-                <img
-                  src="../../assets/pn-logo.png"
-                  alt="John"
-                >
+                <img src="../../assets/pn-logo.png" alt="John" />
               </v-avatar>
             </div>
-            <v-list-item-title>{{ userData.batch + "-" + userData.major }}</v-list-item-title>
+            <v-list-item-title>{{
+              userData.batch + "-" + userData.major
+            }}</v-list-item-title>
           </v-list-item>
           <v-list-item class="ma-0 pa-0">
             <v-icon size="30" class="mr-3" color="#00A3FF">mdi-account</v-icon>
@@ -190,16 +185,15 @@
           <v-list-item class="ma-0 pa-0 d-flex justify-end">
             <div class="mr-3">
               <v-avatar size="30">
-                <img
-                  src="../../assets/mail-logo.png"
-                  alt="John"
-                >
+                <img src="../../assets/mail-logo.png" alt="John" />
               </v-avatar>
             </div>
             <v-list-item-title>{{ userData.email }}</v-list-item-title>
           </v-list-item>
           <v-list-item class="ma-0 pa-0 d-flex justify-end">
-            <v-icon size="30" class="mr-3" color="#00A3FF">mdi-phone-in-talk</v-icon>
+            <v-icon size="30" class="mr-3" color="#00A3FF"
+              >mdi-phone-in-talk</v-icon
+            >
             <v-list-item-title>+855{{ userData.phone }}</v-list-item-title>
           </v-list-item>
         </v-flex>
@@ -217,8 +211,7 @@ export default {
       imageUrl: "http://127.0.0.1:8000/storage/profiles/",
       alert: false,
       dialog: false,
-      image:
-        "https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-PNG-Free-Image.png",
+      image: "",
       imageFile: null,
       valid: true,
       newEmail: "",
@@ -250,13 +243,16 @@ export default {
     },
   },
   methods: {
+    openDialogEditProfile(id, profile) {
+      this.userData.user_id = id;
+      this.image = this.imageUrl + profile;
+    },
     fileChange(e) {
       this.imageFile = e.target.files[0];
       this.image = URL.createObjectURL(this.imageFile);
     },
     changeProfile() {
       this.dialog = false;
-      console.log(this.imageFile)
       if (this.imageFile !== null) {
         let imageFile = new FormData();
         imageFile.append("profile", this.imageFile);

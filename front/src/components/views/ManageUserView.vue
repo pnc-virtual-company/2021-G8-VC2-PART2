@@ -305,7 +305,7 @@
           <div class="image-upload mb-2">
             <input type="file" @change="fileChange" name="myFile" id="myFile" />
             <label for="myFile" class="custom-file-upload" color="primary"
-              >SELECT PROFILE</label
+              >SELECT LOGO</label
             >
           </div>
           <v-spacer></v-spacer>
@@ -470,7 +470,7 @@ export default {
     openLogoEditDialog(id, logo) {
       this.isEditLogo = true;
       this.companyDataToEdit.id = id;
-      this.companyLogo = "http://127.0.0.1:8000/storage/profiles/" + logo;
+      this.companyLogo = this.imageUrl + logo;
     },
     fileChange(e) {
       this.imageFile = e.target.files[0];
