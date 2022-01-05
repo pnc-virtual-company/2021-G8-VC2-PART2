@@ -3,7 +3,7 @@
 use App\Http\Controllers\AlumniSkillController;
 use App\Http\Controllers\DomainCompanyController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Usercontroller;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\BatchController;
