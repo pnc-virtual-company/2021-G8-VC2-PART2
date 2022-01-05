@@ -85,8 +85,6 @@ export default {
             if(this.count >= 2) {
               this.error.eroSupport = "Cannot login? Pleace contact External Relation Officer +85571254321"
             }
-          } else {
-            console.log(err);
           }
         });
     },
@@ -113,8 +111,6 @@ export default {
         .catch((err) => {
           if (err.response.status === 401) {
             this.error.invalidEmailOrPassword = "Invalid email or password";
-          } else {
-            console.log(err);
           }
         });
     },
