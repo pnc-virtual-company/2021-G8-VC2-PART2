@@ -12,7 +12,10 @@
         >
           {{ alertMessage }}
         </v-alert>
+    <v-card class="ma-0 pa-3" v-if="manageSelected === 'ero'"><b>Manage ERO</b></v-card>
+    <v-card class="ma-0 pa-3" v-if="manageSelected === 'company'"><b>Manage Company</b></v-card>
         <v-text-field
+          v-if="manageSelected === 'alumni'"
           v-model="keySearch"
           prepend-inner-icon="mdi-magnify"
           placeholder="Search"
@@ -26,7 +29,7 @@
       </v-col>
     </v-row>
     <v-row wrap>
-      <v-col cols="12" sm="12" md="5" lg="5" v-if="manageSelected !== 'company'">
+      <v-col cols="12" sm="12" md="5" lg="5" v-if="manageSelected == 'alumni'">
         <v-card class="d-flex pa-2">
           <v-progress-circular
             :rotate="180"
@@ -50,8 +53,10 @@
           </div>
         </v-card>
       </v-col>
-      <v-col cols="2" v-if="manageSelected !== 'company'"></v-col>
-      <v-col cols="8" md="5" lg="5">
+      <v-col  cols="12" sm="12" md="5" lg="5" v-if="manageSelected !== 'alumni'"></v-col>
+      <v-col cols="2" md="2" lg="2" v-if="manageSelected !== 'company'"></v-col>
+      <v-col cols="4" md="4" lg="4" v-if="manageSelected === 'company'"></v-col>
+      <v-col cols="3" md="3" lg="3">
         <v-select
           class="mt-1"
           label="Role"
@@ -66,7 +71,7 @@
           <v-dialog v-model="dialog" max-width="500px" persistent>
             <template v-slot:activator="{ on, attrs }">
               <v-btn
-                class="white--text mt-1"
+                class="white--text mt-1 py-5"
                 depressed
                 color="warning invite-btn"
                 v-bind="attrs"
@@ -231,7 +236,6 @@
       </v-card>
     </v-card>
     <!-- company -->
-    <v-card class="ma-0 pa-3 mb-7 text-center">Manage Company</v-card>
     <v-card class="ma-0 pa-2" v-if="manageSelected === 'company'">
       <v-row>
         <v-col>
